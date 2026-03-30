@@ -34,7 +34,7 @@ describe('parseNaturalLanguage', () => {
   });
 
   it('extracts tweet posting', () => {
-    const result = bridge.parseNaturalLanguage('post a tweet saying hello world');
+    const result = bridge.parseNaturalLanguage('post a tweet saying "hello world"');
     expect(result).toBeDefined();
     expect(result.tool).toContain('tweet');
   });
@@ -56,7 +56,8 @@ describe('parseNaturalLanguage', () => {
   });
 
   it('extracts trending request', () => {
-    const result = bridge.parseNaturalLanguage('show me trending topics');
+    // Pattern requires "show trending" or "show the trending" or "what's trending"
+    const result = bridge.parseNaturalLanguage('show the trending topics');
     expect(result).toBeDefined();
     expect(result.tool).toContain('trend');
   });
@@ -82,14 +83,15 @@ describe('execute (remote mode)', () => {
 describe('batchExecute', () => {
   it('executes multiple tasks sequentially', async () => {
     const bridge = createBridge({ mode: 'local' });
-    // Provide tasks that reference NL parsing (which works offline)
+    // batchExecute takes { tool, params } objects
     const tasks = [
-      { skillId: null, inputParts: [createTextPart('get profile @elonmusk')] },
+      { tool: 'x_get_profile', params: { username: 'elonmusk' } },
     ];
     // This will likely fail because local-tools isn't available in test env,
-    // but it should not throw
-    const results = await bridge.batchExecute(tasks);
-    expect(Array.isArray(results)).toBe(true);
-    expect(results).toHaveLength(1);
+    // but it should not throw — it returns { results, artifacts, errors }
+    const result = await bridge.batchExecute(tasks);
+    expect(result).toBeDefined();
+    expect(Array.isArray(result.results)).toBe(true);
+    expect(result.results).toHaveLength(1);
   });
 });

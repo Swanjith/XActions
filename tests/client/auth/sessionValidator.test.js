@@ -278,8 +278,9 @@ describe('SessionValidator', () => {
     it('throws AuthenticationError when session is expired', async () => {
       mocks.fetch.mockReturnValueOnce(makeErrorResponse(401));
 
-      await expect(validator.getLoggedInUser()).rejects.toThrow(AuthenticationError);
-      await expect(validator.getLoggedInUser()).rejects.toThrow(/expired/);
+      const error = await validator.getLoggedInUser().catch((e) => e);
+      expect(error).toBeInstanceOf(AuthenticationError);
+      expect(error.message).toMatch(/expired/);
     });
 
     it('throws AuthenticationError when session is locked', async () => {

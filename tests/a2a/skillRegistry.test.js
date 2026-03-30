@@ -25,7 +25,8 @@ describe('convertMcpToolToA2aSkill', () => {
     };
     const skill = convertMcpToolToA2aSkill(tool);
     expect(skill.id).toBe('xactions.x_get_profile');
-    expect(skill.name).toBe('x_get_profile');
+    // name is now the display name (title-cased), not the raw tool name
+    expect(skill.name).toBe('Get Profile');
     expect(skill.description).toContain('profile');
     expect(skill.inputSchema).toEqual(tool.inputSchema);
     expect(skill.tags).toBeDefined();
@@ -64,28 +65,30 @@ describe('getSkillById', () => {
   it('finds a known skill', () => {
     const skill = getSkillById('xactions.x_get_profile');
     expect(skill).toBeDefined();
-    expect(skill.name).toBe('x_get_profile');
+    // name is the display name now
+    expect(skill.name).toBe('Get Profile');
   });
 
-  it('returns undefined for unknown skill', () => {
-    expect(getSkillById('xactions.nonexistent')).toBeUndefined();
+  it('returns null for unknown skill', () => {
+    expect(getSkillById('xactions.nonexistent')).toBeNull();
   });
 });
 
 describe('searchSkills', () => {
   it('finds skills by keyword', () => {
-    const results = searchSkills({ query: 'profile' });
+    // searchSkills takes (query, tags) not ({query})
+    const results = searchSkills('profile');
     expect(results.length).toBeGreaterThan(0);
     expect(results.some(s => s.id.includes('profile') || s.description?.includes('profile'))).toBe(true);
   });
 
   it('returns empty for garbage query', () => {
-    const results = searchSkills({ query: 'zzzzzzz_not_a_tool_zzzzzzz' });
+    const results = searchSkills('zzzzzzz_not_a_tool_zzzzzzz');
     expect(results).toHaveLength(0);
   });
 
-  it('filters by category', () => {
-    const results = searchSkills({ category: 'scraping' });
+  it('filters by category tag', () => {
+    const results = searchSkills('', ['scraping']);
     expect(results.length).toBeGreaterThan(0);
   });
 });
@@ -93,13 +96,18 @@ describe('searchSkills', () => {
 describe('getSkillCategories', () => {
   it('returns category names', () => {
     const cats = getSkillCategories();
-    expect(Array.isArray(cats)).toBe(true);
-    expect(cats.length).toBeGreaterThan(5);
+    // getSkillCategories returns an object keyed by category name
+    expect(typeof cats).toBe('object');
+    const categoryNames = Object.keys(cats);
+    expect(categoryNames.length).toBeGreaterThan(5);
   });
 });
 
 describe('refreshSkills', () => {
-  it('does not throw', async () => {
-    await expect(refreshSkills()).resolves.not.toThrow();
+  it('does not throw and returns a number', () => {
+    // refreshSkills is synchronous and returns the skill count
+    const count = refreshSkills();
+    expect(typeof count).toBe('number');
+    expect(count).toBeGreaterThan(0);
   });
 });

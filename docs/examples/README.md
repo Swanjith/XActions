@@ -163,6 +163,15 @@ Create, schedule, and manage your X/Twitter content.
 | [Content Calendar](content-calendar.md) | Plan and visualize your posting schedule |
 | [Content Repurposer](content-repurposer.md) | Transform tweets between formats |
 | [Pin Tweet Manager](pin-tweet-manager.md) | Pin/unpin tweets, auto-rotate pinned content |
+| [Edit Post](edit-post.md) | Edit existing posts or undo within Premium window |
+| [Share & Embed](share-embed.md) | Copy links, get embed codes, bulk share |
+| [Video Captions](video-captions.md) | Upload SRT/VTT captions for videos |
+| [Text Formatting](text-formatting.md) | Bold, italic, monospace via Unicode formatting |
+| [Mention Users](mention-users.md) | Compose posts mentioning multiple users |
+| [Like Post](like-post.md) | Like specific posts by URL or keyword |
+| [Repost Post](repost-post.md) | Repost or unrepost specific posts |
+| [Follow Account](follow-account.md) | Follow a list of usernames by profile |
+| [Post Interactions](post-interactions.md) | View who liked, retweeted, and quoted a post |
 
 ---
 
@@ -256,8 +265,11 @@ Create and manage lists and communities.
 |---------|-------------|
 | [List Manager](list-manager.md) | Create, manage, and populate lists |
 | [Manage Lists](manage-lists.md) | Manage X Lists with bulk operations |
+| [Follow List](follow-list.md) | Follow, unfollow, and pin X lists |
 | [Join Communities](join-communities.md) | Discover and join communities by keyword |
 | [Leave All Communities](leave-all-communities.md) | Leave all communities with whitelist |
+| [Create Community](create-community.md) | Create a new X Community with rules and settings |
+| [Manage Community](manage-community.md) | Member management, posting, moderation |
 
 ---
 
@@ -295,6 +307,8 @@ Manage Twitter Spaces, live audio, and events.
 |---------|-------------|
 | [Spaces & Live Audio](spaces-live-audio.md) | Create, join, and schedule Spaces |
 | [Spaces Manager](spaces-manager.md) | Manage Spaces, events, and live streams |
+| [Host Space](host-space.md) | Start a new Space with title, topic, and recording |
+| [Join Space](join-space.md) | Find and join live Spaces by keyword or host |
 
 ---
 
@@ -307,6 +321,16 @@ Premium-only features and subscription management.
 | [Premium Features](premium-features.md) | Premium feature management |
 | [Premium Manager](premium-manager.md) | Check Premium tier and available features |
 | [Articles & Longform](articles-longform.md) | Compose and publish articles (Premium+) |
+| [Subscribe Premium](subscribe-premium.md) | Tier comparison and subscription navigation |
+| [Verified Only](verified-only.md) | Toggle verified-only reply restrictions on posts |
+| [ID Verification](id-verification.md) | Check and navigate ID verification flow |
+| [Media Studio](media-studio.md) | Access Media Studio library and analytics |
+| [X Pro](x-pro.md) | Access X Pro (TweetDeck) multi-column view |
+| [Creator Subscriptions](creator-subscriptions.md) | Setup paid subscriptions and revenue sharing |
+| [Premium Gifting](premium-gifting.md) | Gift Premium subscription to another user |
+| [Delegate Access](delegate-access.md) | Manage delegate account access and permissions |
+| [View Analytics](view-analytics.md) | Scrape and export account/post analytics |
+| [Ads Manager](ads-manager.md) | Campaigns, post boosting, ads dashboard |
 
 ---
 
@@ -318,6 +342,11 @@ Search, trends, and explore automation.
 |---------|-------------|
 | [Discovery & Explore](discovery-explore.md) | Search, trends, topics, and explore feed |
 | [Streaming](streaming.md) | Real-time tweet streaming |
+| [Topic Manager](topic-manager.md) | Follow, unfollow, and discover topics |
+| [Save Search](save-search.md) | Save and manage search queries |
+| [Timeline Viewer](timeline-viewer.md) | Switch For You/Following timelines and collect posts |
+| [Upload Contacts](upload-contacts.md) | Navigate contact sync and discovery |
+| [Community Notes](community-notes.md) | View, write, and rate Community Notes |
 
 ---
 
@@ -339,25 +368,118 @@ Or just paste any script directly into your browser console on x.com — no inst
 
 Step-by-step tutorials with real-world scenarios, ASCII diagrams, multiple methods (Browser, CLI, MCP), and FAQ sections.
 
+### Content & Posting
 | Tutorial | Description |
 |----------|-------------|
-| [Unfollow Everyone Tutorial](tutorials/unfollow-everyone-tutorial.md) | Complete fresh start — unfollow all accounts with backup |
+| [Post Content Tutorial](tutorials/post-content-tutorial.md) | Post text, photos, GIFs, videos, and links |
+| [Create Threads Tutorial](tutorials/create-threads-tutorial.md) | Build and post multi-tweet threads |
+| [Create Polls Tutorial](tutorials/create-polls-tutorial.md) | Create polls with 2–4 options |
+| [Add Media Tutorial](tutorials/add-media-tutorial.md) | Attach photos, GIFs, and videos to posts |
+| [Video Captions Tutorial](tutorials/video-captions-tutorial.md) | Upload SRT/VTT captions for videos |
+| [ALT Text Tutorial](tutorials/alt-text-tutorial.md) | Add image descriptions for accessibility |
+| [Edit Post Tutorial](tutorials/edit-post-tutorial.md) | Edit posts within the Premium window |
+| [Undo Post Tutorial](tutorials/undo-post-tutorial.md) | Undo a post within 30 seconds (Premium) |
+| [Longer Content Tutorial](tutorials/longer-content-tutorial.md) | Post longer text and videos (Premium tiers) |
+| [Text Formatting Tutorial](tutorials/text-formatting-tutorial.md) | Bold, italic, monospace via Unicode |
+| [Create Articles Tutorial](tutorials/create-articles-tutorial.md) | Publish long-form articles (Premium+) |
+| [Schedule Posts Tutorial](tutorials/schedule-posts-tutorial.md) | Schedule posts for later publishing |
+
+### Engagement & Interaction
+| Tutorial | Description |
+|----------|-------------|
+| [Reply to Posts Tutorial](tutorials/reply-to-posts-tutorial.md) | Manual and automated post replies |
+| [Like Posts Tutorial](tutorials/like-posts-tutorial.md) | Like posts by URL or keyword filter |
+| [Repost Posts Tutorial](tutorials/repost-posts-tutorial.md) | Repost, auto-repost, and clear reposts |
+| [Quote Posts Tutorial](tutorials/quote-posts-tutorial.md) | Quote posts with commentary templates |
+| [Bookmark Posts Tutorial](tutorials/bookmark-posts-tutorial.md) | Bookmark, organize folders, export, clear |
+| [Share & Embed Tutorial](tutorials/share-embed-posts-tutorial.md) | Copy links and generate embed codes |
+| [Pin Post Tutorial](tutorials/pin-post-tutorial.md) | Pin/unpin posts to your profile |
+| [Delete Post Tutorial](tutorials/delete-post-tutorial.md) | Delete single or bulk posts with filters |
+| [Follow Accounts Tutorial](tutorials/follow-accounts-tutorial.md) | Follow by username, keyword, or engagement |
+| [Unfollow Everyone Tutorial](tutorials/unfollow-everyone-tutorial.md) | Complete fresh start — unfollow all accounts |
 | [Unfollow Non-Followers Tutorial](tutorials/unfollow-non-followers-tutorial.md) | Remove accounts that don't follow you back |
+| [Mute Accounts Tutorial](tutorials/mute-accounts-tutorial.md) | Mute users, keywords, and bulk manage |
+| [Block Accounts Tutorial](tutorials/block-accounts-tutorial.md) | Block, unblock, and auto-block bots |
+| [Report Posts Tutorial](tutorials/report-posts-tutorial.md) | Report spam, abuse, and fake accounts |
+| [Mention Users Tutorial](tutorials/mention-users-tutorial.md) | Compose posts mentioning multiple users |
+| [View Post Interactions Tutorial](tutorials/view-post-interactions-tutorial.md) | See who liked, retweeted, and quoted |
+
+### Direct Messages
+| Tutorial | Description |
+|----------|-------------|
+| [Send Direct Messages Tutorial](tutorials/send-direct-messages-tutorial.md) | Single DMs, bulk DMs, conversation export |
+| [Group DM Tutorial](tutorials/group-dm-tutorial.md) | Create group conversations with multiple users |
+| [DM Calls Tutorial](tutorials/dm-calls-tutorial.md) | Audio and video calls in DM conversations |
+| [Encrypted DM Tutorial](tutorials/encrypted-dm-tutorial.md) | Enable and send encrypted direct messages |
+
+### Spaces & Communities
+| Tutorial | Description |
+|----------|-------------|
+| [Host Spaces Tutorial](tutorials/host-spaces-tutorial.md) | Create, configure, and schedule Spaces |
+| [Join Spaces Tutorial](tutorials/join-spaces-tutorial.md) | Find and join live Spaces by topic |
+| [Create Communities Tutorial](tutorials/create-communities-tutorial.md) | Create a community with rules and settings |
+| [Join Communities Tutorial](tutorials/join-communities-tutorial.md) | Discover and join communities by keyword |
+| [Manage Communities Tutorial](tutorials/manage-communities-tutorial.md) | Members, roles, rules, moderation |
+
+### Lists, Topics & Discovery
+| Tutorial | Description |
+|----------|-------------|
+| [Create Lists Tutorial](tutorials/create-lists-tutorial.md) | Create lists and add members |
+| [Follow Lists Tutorial](tutorials/follow-lists-tutorial.md) | Follow, pin, and browse lists |
+| [Follow Topics Tutorial](tutorials/follow-topics-tutorial.md) | Browse, follow, and unfollow topics |
+| [Search Tutorial](tutorials/search-tutorial.md) | Basic and advanced search with operators |
+| [View Trends Tutorial](tutorials/view-trends-tutorial.md) | Trends, explore tab, and topic monitoring |
+| [Timeline Viewer Tutorial](tutorials/timeline-viewer-tutorial.md) | Switch For You/Following and collect posts |
+| [Notifications Tutorial](tutorials/notifications-tutorial.md) | Filter, mute, manage notification preferences |
+
+### Profile, Settings & Discovery
+| Tutorial | Description |
+|----------|-------------|
+| [Customize Profile Tutorial](tutorials/customize-profile-tutorial.md) | Bio, header, avatar, location, website |
+| [Protect Account Tutorial](tutorials/protect-account-tutorial.md) | Make account private (protected posts) |
+| [Upload Contacts Tutorial](tutorials/upload-contacts-tutorial.md) | Contact sync and people discovery |
+| [QR Codes Tutorial](tutorials/qr-codes-tutorial.md) | Generate and share QR codes |
+| [Community Notes Tutorial](tutorials/community-notes-tutorial.md) | View, write, and rate Community Notes |
 | [Detect Unfollowers Tutorial](tutorials/detect-unfollowers-tutorial.md) | Find out who unfollowed you |
 | [Video Downloader Tutorial](tutorials/video-downloader-tutorial.md) | Download Twitter videos for free |
 | [Followers Scraping Tutorial](tutorials/followers-scraping-tutorial.md) | Export your entire follower list to CSV |
+
+### Grok AI
+| Tutorial | Description |
+|----------|-------------|
+| [Use Grok Tutorial](tutorials/use-grok-tutorial.md) | Chat, image generation, post analysis |
+
+### Premium, Business & Creator
+| Tutorial | Description |
+|----------|-------------|
+| [Subscribe Premium Tutorial](tutorials/subscribe-premium-tutorial.md) | Tier comparison and subscription flow |
+| [Blue Checkmark Tutorial](tutorials/blue-checkmark-tutorial.md) | Verification, fewer ads, prioritized replies |
+| [Verified Only Tutorial](tutorials/verified-only-tutorial.md) | Reply restrictions and verification benefits |
+| [ID Verification Tutorial](tutorials/id-verification-tutorial.md) | Status check and verification requirements |
+| [Media Studio Tutorial](tutorials/media-studio-tutorial.md) | Media library, upload, analytics |
+| [X Pro Tutorial](tutorials/x-pro-tutorial.md) | Multi-column view setup |
+| [Creator Revenue Tutorial](tutorials/creator-revenue-tutorial.md) | Revenue sharing and creator subscriptions |
+| [Premium Gifting Tutorial](tutorials/premium-gifting-tutorial.md) | Gift Premium to another user |
+| [Delegate Feature Tutorial](tutorials/delegate-feature-tutorial.md) | Add delegates and configure permissions |
+| [View Analytics Tutorial](tutorials/view-analytics-tutorial.md) | Analytics dashboard, post metrics, export |
+| [Ads & Campaigns Tutorial](tutorials/ads-campaigns-tutorial.md) | Create campaigns and boost posts |
+| [Affiliate Benefits Tutorial](tutorials/affiliate-benefits-tutorial.md) | Referral programs and affiliate revenue |
+
+### Growth & Automation
+| Tutorial | Description |
+|----------|-------------|
 | [Auto-Liker Tutorial](tutorials/auto-liker-tutorial.md) | Auto-like tweets by keyword for organic growth |
-| [Tweet Scraping Tutorial](tutorials/tweet-scraping-tutorial.md) | Search and export tweets to JSON/CSV |
-| [Bookmark Exporter Tutorial](tutorials/bookmark-exporter-tutorial.md) | Export all your X bookmarks before they're gone |
 | [Auto-Commenter Tutorial](tutorials/auto-commenter-tutorial.md) | Auto-reply to new tweets for engagement growth |
-| [Profile Scraping Tutorial](tutorials/profile-scraping-tutorial.md) | Extract any profile's data to JSON instantly |
-| [Natural Flow Tutorial](tutorials/natural-flow-tutorial.md) | Human-like engagement sessions with presets and HUD |
 | [Follow Target Followers Tutorial](tutorials/follow-target-followers-tutorial.md) | Steal competitor audiences with smart filters |
-| [Smart Unfollow Tutorial](tutorials/smart-unfollow-tutorial.md) | Unfollow non-followers with full logging and export |
-| [Keyword Follow Tutorial](tutorials/keyword-follow-tutorial.md) | Auto-follow users by keyword search with filters |
-| [Hashtag Scraping Tutorial](tutorials/hashtag-scraping-tutorial.md) | Scrape tweets from any hashtag to JSON/CSV |
-| [Following Scraping Tutorial](tutorials/following-scraping-tutorial.md) | Export your following list with mutual status detection |
-| [Growth Suite Tutorial](tutorials/growth-suite-tutorial.md) | All-in-one growth: keyword follow + auto-like + smart unfollow |
+| [Smart Unfollow Tutorial](tutorials/smart-unfollow-tutorial.md) | Unfollow non-followers with full logging |
+| [Keyword Follow Tutorial](tutorials/keyword-follow-tutorial.md) | Auto-follow users by keyword search |
+| [Hashtag Scraping Tutorial](tutorials/hashtag-scraping-tutorial.md) | Scrape tweets from any hashtag |
+| [Tweet Scraping Tutorial](tutorials/tweet-scraping-tutorial.md) | Search and export tweets to JSON/CSV |
+| [Following Scraping Tutorial](tutorials/following-scraping-tutorial.md) | Export your following list |
+| [Natural Flow Tutorial](tutorials/natural-flow-tutorial.md) | Human-like engagement sessions |
+| [Bookmark Exporter Tutorial](tutorials/bookmark-exporter-tutorial.md) | Export all your X bookmarks |
+| [Profile Scraping Tutorial](tutorials/profile-scraping-tutorial.md) | Extract any profile's data to JSON |
+| [Growth Suite Tutorial](tutorials/growth-suite-tutorial.md) | All-in-one: keyword follow + auto-like + unfollow |
 
 ---
 

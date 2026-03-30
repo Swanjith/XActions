@@ -14,8 +14,8 @@ import {
   FACILITATOR_URL,
   NETWORK,
   AI_OPERATION_PRICES,
-  SUPPORTED_NETWORKS,
   getAcceptedNetworks,
+  getAcceptedTokens,
   isX402Configured,
 } from './config/x402-config.js';
 
@@ -26,10 +26,21 @@ import {
 function paymentInfo(operation) {
   const price = AI_OPERATION_PRICES[operation];
   if (!price) return undefined;
+
+  const productionNetworks = getAcceptedNetworks(false);
+  const testnetNetworks = getAcceptedNetworks(true).filter((n) => n.testnet);
+
   return {
     protocols: ['x402'],
     pricingMode: 'fixed',
     price: price.replace('$', ''),
+    currency: 'USDC',
+    network: NETWORK,
+    payTo: PAY_TO_ADDRESS,
+    facilitator: FACILITATOR_URL,
+    acceptedChains: productionNetworks.map((n) => n.network),
+    acceptedTestnets: testnetNetworks.map((n) => n.network),
+    acceptedTokens: ['USDC', 'USDT', 'DAI', 'WETH'],
   };
 }
 
@@ -62,6 +73,7 @@ const sessionProp = {
 export function generateSpec() {
   const configured = isX402Configured();
   const networks = getAcceptedNetworks(true);
+  const tokens = getAcceptedTokens(true);
 
   return {
     openapi: '3.1.0',
@@ -111,10 +123,12 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
       version: 2,
       facilitator: FACILITATOR_URL,
       payTo: PAY_TO_ADDRESS,
+      acceptedTokens: tokens,
       networks: networks.map((n) => ({
         network: n.network,
         name: n.name,
         usdc: n.usdc,
+        tokens: n.tokens,
         recommended: n.recommended || false,
         testnet: n.testnet || false,
       })),

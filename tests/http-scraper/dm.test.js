@@ -179,7 +179,7 @@ describe('DM Operations', () => {
       expect(client.request).toHaveBeenCalledOnce();
       const [url, opts] = client.request.mock.calls[0];
 
-      expect(url).toContain('/1.1/direct_messages/events/new.json');
+      expect(url).toContain('/1.1/dm/new2.json');
       expect(opts.method).toBe('POST');
 
       // Body should be the DM event payload

@@ -22,7 +22,7 @@ import {
   jsonRpcError,
 } from '../../src/a2a/types.js';
 
-// ── Constants ────────────────────────────────────────────────────────────────
+// -- Constants ----------------------------------------------------------------
 
 describe('TASK_STATES', () => {
   it('should contain all required states', () => {
@@ -36,12 +36,13 @@ describe('TASK_STATES', () => {
 });
 
 describe('VALID_TRANSITIONS', () => {
-  it('allows submitted → working', () => {
+  it('allows submitted -> working', () => {
     expect(VALID_TRANSITIONS.submitted).toContain('working');
   });
 
-  it('disallows completed → working', () => {
-    expect(VALID_TRANSITIONS.completed).toBeUndefined();
+  it('completed has empty transition list', () => {
+    // completed is a terminal state with an empty array, not undefined
+    expect(VALID_TRANSITIONS.completed).toEqual([]);
   });
 });
 
@@ -52,11 +53,11 @@ describe('ERROR_CODES', () => {
   });
 });
 
-// ── Factory functions ────────────────────────────────────────────────────────
+// -- Factory functions --------------------------------------------------------
 
 describe('createAgentCard', () => {
   it('returns a card with required fields', () => {
-    const card = createAgentCard({ url: 'http://localhost:3100' });
+    const card = createAgentCard({ name: 'XActions Agent', url: 'http://localhost:3100' });
     expect(card.name).toBe('XActions Agent');
     expect(card.url).toBe('http://localhost:3100');
     expect(card.version).toBe('1.0.0');
@@ -66,7 +67,7 @@ describe('createAgentCard', () => {
 
   it('accepts skill overrides', () => {
     const skills = [{ id: 'test', name: 'Test Skill' }];
-    const card = createAgentCard({ skills });
+    const card = createAgentCard({ name: 'Test', url: 'http://test.com', skills });
     expect(card.skills).toEqual(skills);
   });
 });
@@ -115,11 +116,11 @@ describe('createFilePart', () => {
   });
 });
 
-// ── Validators ───────────────────────────────────────────────────────────────
+// -- Validators ---------------------------------------------------------------
 
 describe('validateAgentCard', () => {
   it('returns valid for correct card', () => {
-    const card = createAgentCard({ url: 'http://localhost:3100' });
+    const card = createAgentCard({ name: 'XActions Agent', url: 'http://localhost:3100' });
     const result = validateAgentCard(card);
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
@@ -146,24 +147,25 @@ describe('validateTask', () => {
 });
 
 describe('isValidTransition', () => {
-  it('allows submitted → working', () => {
+  it('allows submitted -> working', () => {
     expect(isValidTransition('submitted', 'working')).toBe(true);
   });
 
-  it('rejects completed → submitted', () => {
+  it('rejects completed -> submitted', () => {
     expect(isValidTransition('completed', 'submitted')).toBe(false);
   });
 
-  it('allows working → completed', () => {
+  it('allows working -> completed', () => {
     expect(isValidTransition('working', 'completed')).toBe(true);
   });
 });
 
-// ── JSON-RPC helpers ─────────────────────────────────────────────────────────
+// -- JSON-RPC helpers ---------------------------------------------------------
 
 describe('jsonRpcSuccess', () => {
   it('wraps result correctly', () => {
-    const resp = jsonRpcSuccess('req-1', { data: 42 });
+    // jsonRpcSuccess(result, id) — result first, id second
+    const resp = jsonRpcSuccess({ data: 42 }, 'req-1');
     expect(resp.jsonrpc).toBe('2.0');
     expect(resp.id).toBe('req-1');
     expect(resp.result.data).toBe(42);
@@ -172,7 +174,8 @@ describe('jsonRpcSuccess', () => {
 
 describe('jsonRpcError', () => {
   it('wraps error correctly', () => {
-    const resp = jsonRpcError('req-2', -32600, 'Bad request');
+    // jsonRpcError(code, message, data, id)
+    const resp = jsonRpcError(-32600, 'Bad request', undefined, 'req-2');
     expect(resp.jsonrpc).toBe('2.0');
     expect(resp.id).toBe('req-2');
     expect(resp.error.code).toBe(-32600);

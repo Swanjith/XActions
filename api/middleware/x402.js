@@ -73,18 +73,17 @@ async function initializeMiddleware() {
 
   // Create resource server and register the EVM scheme for the configured network
   const server = new x402ResourceServer(facilitator);
-  server.register(NETWORK, new ExactEvmScheme());
+  const includeTestnet = process.env.NODE_ENV !== 'production';
+  const networksToRegister = new Set([
+    NETWORK,
+    ...getAcceptedNetworks(includeTestnet).map((n) => n.network)
+  ]);
 
-  // Also register testnet if we're in development and using mainnet
-  if (process.env.NODE_ENV !== 'production' && NETWORK !== 'eip155:84532') {
-    server.register('eip155:84532', new ExactEvmScheme());
-  }
-  // Also register mainnet if we're on testnet, so agents can choose
-  if (NETWORK !== 'eip155:8453') {
+  for (const networkId of networksToRegister) {
     try {
-      server.register('eip155:8453', new ExactEvmScheme());
+      server.register(networkId, new ExactEvmScheme());
     } catch {
-      // Already registered or not needed
+      // Ignore already-registered or unsupported network errors.
     }
   }
 

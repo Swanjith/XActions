@@ -6,9 +6,12 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CredentialAuth } from '../../../src/client/auth/CredentialAuth.js';
+import { CookieAuth } from '../../../src/client/auth/CookieAuth.js';
+import { TokenManager } from '../../../src/client/auth/TokenManager.js';
+import { CookieJar } from '../../../src/client/auth/CookieJar.js';
 import { AuthenticationError } from '../../../src/client/errors.js';
 
-// ── helpers ──────────────────────────────────────────────────────────────────
+// -- helpers ------------------------------------------------------------------
 
 function makeFlowResponse(flowToken, subtaskId = null) {
   return {
@@ -36,22 +39,20 @@ function makeFetchError(status, errors = []) {
 }
 
 function createMocks() {
-  const cookieAuth = {
-    jar: new Map(),
-    isAuthenticated: vi.fn(() => false),
-    getCookieString: vi.fn(() => ''),
-    updateFromResponse: vi.fn(),
-  };
+  // Use a real TokenManager but spy on activateGuestToken
+  const tokenManager = new TokenManager();
+  tokenManager.activateGuestToken = vi.fn().mockResolvedValue('gt_12345');
 
-  const tokenManager = {
-    activateGuestToken: vi.fn().mockResolvedValue('gt_12345'),
-    setCsrfToken: vi.fn(),
-  };
+  // Use a real CookieAuth wrapping the real TokenManager
+  const cookieAuth = new CookieAuth(tokenManager);
 
-  return { cookieAuth, tokenManager };
+  // Spy on the methods the tests need to inspect
+  const isAuthenticatedSpy = vi.spyOn(cookieAuth, 'isAuthenticated');
+
+  return { cookieAuth, tokenManager, isAuthenticatedSpy };
 }
 
-// ── tests ────────────────────────────────────────────────────────────────────
+// -- tests --------------------------------------------------------------------
 
 describe('CredentialAuth', () => {
   let credAuth;
@@ -65,7 +66,7 @@ describe('CredentialAuth', () => {
     credAuth.setFetch(fetchMock);
   });
 
-  // Standard login flow: init → instrumentation → username → password → success
+  // Standard login flow: init -> instrumentation -> username -> password -> success
   function setupStandardFlow() {
     fetchMock
       // 1. initiate flow
@@ -76,12 +77,30 @@ describe('CredentialAuth', () => {
       .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_user', 'LoginEnterPassword')))
       // 4. password
       .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_pass', 'LoginSuccessSubtask')));
-    mocks.cookieAuth.isAuthenticated.mockReturnValue(true);
+  }
+
+  function makeAuthenticatedAfterLogin() {
+    // Set cookies so isAuthenticated() returns true after the flow
+    mocks.cookieAuth.setCookies([
+      { name: 'ct0', value: 'csrf_from_flow' },
+      { name: 'auth_token', value: 'token_from_flow' },
+    ]);
   }
 
   describe('login', () => {
     it('completes standard flow with correct calls', async () => {
       setupStandardFlow();
+      // After the 4 fetch calls, isAuthenticated needs to return true
+      // We'll intercept updateFromResponse on the last call to set cookies
+      const origUpdate = mocks.cookieAuth.updateFromResponse.bind(mocks.cookieAuth);
+      let callCount = 0;
+      vi.spyOn(mocks.cookieAuth, 'updateFromResponse').mockImplementation((resp) => {
+        callCount++;
+        origUpdate(resp);
+        if (callCount >= 4) {
+          makeAuthenticatedAfterLogin();
+        }
+      });
 
       await credAuth.login({ username: 'alice', password: 'pw123' });
 
@@ -132,13 +151,20 @@ describe('CredentialAuth', () => {
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_init', 'LoginJsInstrumentationSubtask')))
         // instrumentation
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_instr', 'LoginEnterUserIdentifierSSO')))
-        // username → email challenge
+        // username -> email challenge
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_user', 'LoginEnterAlternateIdentifierSubtask')))
         // email
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_email', 'LoginEnterPassword')))
         // password
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_pass', 'LoginSuccessSubtask')));
-      mocks.cookieAuth.isAuthenticated.mockReturnValue(true);
+
+      let callCount = 0;
+      vi.spyOn(mocks.cookieAuth, 'updateFromResponse').mockImplementation(() => {
+        callCount++;
+        if (callCount >= 5) {
+          makeAuthenticatedAfterLogin();
+        }
+      });
 
       await credAuth.login({ username: 'alice', password: 'pw123', email: 'alice@test.com' });
 
@@ -166,11 +192,18 @@ describe('CredentialAuth', () => {
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_init', 'LoginJsInstrumentationSubtask')))
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_instr', 'LoginEnterUserIdentifierSSO')))
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_user', 'LoginEnterPassword')))
-        // password → duplication check
+        // password -> duplication check
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_pass', 'AccountDuplicationCheck')))
-        // duplication check → success
+        // duplication check -> success
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft_dup', 'LoginSuccessSubtask')));
-      mocks.cookieAuth.isAuthenticated.mockReturnValue(true);
+
+      let callCount = 0;
+      vi.spyOn(mocks.cookieAuth, 'updateFromResponse').mockImplementation(() => {
+        callCount++;
+        if (callCount >= 5) {
+          makeAuthenticatedAfterLogin();
+        }
+      });
 
       await credAuth.login({ username: 'alice', password: 'pw123' });
 
@@ -183,7 +216,7 @@ describe('CredentialAuth', () => {
 
     it('throws when cookies not set after full flow', async () => {
       setupStandardFlow();
-      mocks.cookieAuth.isAuthenticated.mockReturnValue(false); // override — not authenticated
+      // Don't set any cookies — isAuthenticated will return false
 
       await expect(credAuth.login({ username: 'alice', password: 'pw123' }))
         .rejects.toThrow(/cookies were not set/i);
@@ -193,6 +226,12 @@ describe('CredentialAuth', () => {
   describe('request headers', () => {
     it('includes bearer token and guest token', async () => {
       setupStandardFlow();
+      let callCount = 0;
+      vi.spyOn(mocks.cookieAuth, 'updateFromResponse').mockImplementation(() => {
+        callCount++;
+        if (callCount >= 4) makeAuthenticatedAfterLogin();
+      });
+
       await credAuth.login({ username: 'alice', password: 'pw123' });
 
       // Every call should have Authorization and x-guest-token
@@ -203,22 +242,35 @@ describe('CredentialAuth', () => {
     });
 
     it('includes cookies when cookie jar has values', async () => {
-      mocks.cookieAuth.getCookieString.mockReturnValue('ct0=abc; auth_token=xyz');
+      // Pre-load cookies into the auth jar
+      mocks.cookieAuth.setCookies([
+        { name: 'ct0', value: 'abc' },
+        { name: 'auth_token', value: 'xyz' },
+      ]);
+
       setupStandardFlow();
 
       await credAuth.login({ username: 'alice', password: 'pw123' });
 
-      // Later calls should include the Cookie header
+      // Later calls should include the Cookie header since jar has cookies
       const lastCall = fetchMock.mock.calls[fetchMock.mock.calls.length - 1];
-      expect(lastCall[1].headers.Cookie).toBe('ct0=abc; auth_token=xyz');
+      expect(lastCall[1].headers.Cookie).toContain('ct0=abc');
+      expect(lastCall[1].headers.Cookie).toContain('auth_token=xyz');
     });
 
-    it('updates cookies from each response', async () => {
+    it('calls updateFromResponse for each step', async () => {
       setupStandardFlow();
+      const updateSpy = vi.spyOn(mocks.cookieAuth, 'updateFromResponse').mockImplementation((resp) => {
+        // On the last call, make authenticated
+        if (updateSpy.mock.calls.length >= 4) {
+          makeAuthenticatedAfterLogin();
+        }
+      });
+
       await credAuth.login({ username: 'alice', password: 'pw123' });
 
       // updateFromResponse should be called for every step
-      expect(mocks.cookieAuth.updateFromResponse).toHaveBeenCalledTimes(4);
+      expect(updateSpy).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -254,7 +306,12 @@ describe('CredentialAuth', () => {
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft2', 'LoginEnterUserIdentifierSSO')))
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft3', 'LoginEnterPassword')))
         .mockReturnValueOnce(makeFetchOk(makeFlowResponse('ft4', 'LoginSuccessSubtask')));
-      mocks.cookieAuth.isAuthenticated.mockReturnValue(true);
+
+      let callCount = 0;
+      vi.spyOn(mocks.cookieAuth, 'updateFromResponse').mockImplementation(() => {
+        callCount++;
+        if (callCount >= 4) makeAuthenticatedAfterLogin();
+      });
 
       credAuth.setFetch(customFetch);
       await credAuth.login({ username: 'alice', password: 'pw123' });

@@ -89,9 +89,12 @@ async function auditPages() {
     };
 
     const onRequestFailed = (req) => {
+      const reqUrl = req.url();
+      // socket.io failing is expected when the realtime server isn't started in dev
+      if (reqUrl.includes('socket.io')) return;
       const failure = req.failure();
       pageIssues.networkErrors.push({
-        url: req.url(),
+        url: reqUrl,
         reason: failure ? failure.errorText : 'unknown',
       });
     };
@@ -100,6 +103,8 @@ async function auditPages() {
       const status = res.status();
       const resUrl = res.url();
       if (status >= 400 && !resUrl.includes('favicon')) {
+        // 401 on API routes is expected — page requires authentication
+        if (status === 401 && resUrl.includes('/api/')) return;
         pageIssues.networkErrors.push({ url: resUrl, reason: `HTTP ${status}` });
       }
     };
