@@ -82,9 +82,6 @@ import { validateConfig as validateX402Config } from './config/x402-config.js';
 // x402 discovery (OpenAPI + .well-known/x402)
 import x402DiscoveryRoutes from './routes/x402-discovery.js';
 
-// OpenAPI spec for x402scan resource discovery
-import { generateSpec as generateOpenAPISpec, generateWellKnown as generateX402WellKnown } from './openapi.js';
-
 const app = express();
 const httpServer = createServer(app);
 
@@ -230,16 +227,6 @@ app.get('/sitemap.xml', (req, res) => {
 
 app.get('/manifest.json', (req, res) => {
   res.type('application/json').sendFile(path.join(__dirname, '../public/manifest.json'));
-});
-
-// OpenAPI spec — enables x402scan automatic resource discovery
-app.get('/openapi.json', (req, res) => {
-  res.json(generateOpenAPISpec());
-});
-
-// /.well-known/x402 — compatibility fallback for x402scan discovery
-app.get('/.well-known/x402', (req, res) => {
-  res.json(generateX402WellKnown());
 });
 
 // AI API endpoints
