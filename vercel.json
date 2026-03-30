@@ -112,6 +112,10 @@
       "dest": "/dashboard/blog.html"
     },
     {
+      "src": "/blog/([^/]+?)(\\.html)?$",
+      "dest": "/dashboard/blog/$1.html"
+    },
+    {
       "src": "/changelog",
       "dest": "/dashboard/changelog.html"
     },
