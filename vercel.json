@@ -144,6 +144,10 @@
       "dest": "/dashboard/mcp.html"
     },
     {
+      "src": "/a2a",
+      "dest": "/dashboard/a2a.html"
+    },
+    {
       "src": "/analytics",
       "dest": "/dashboard/analytics.html"
     },

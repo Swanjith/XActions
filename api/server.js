@@ -498,6 +498,10 @@ app.get('/team', (req, res) => {
   res.sendFile(path.join(__dirname, '../dashboard/team.html'));
 });
 
+app.get('/price-correlation', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dashboard/price-correlation.html'));
+});
+
 // Error handling middleware — never expose stack traces or internal details in production
 app.use((err, req, res, next) => {
   console.error('❌ Unhandled error:', err.message);
