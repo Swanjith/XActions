@@ -219,33 +219,37 @@
     .empty__title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
     .empty__desc { font-size: 14px; max-width: 360px; line-height: 1.5; margin-bottom: 20px; }
 
+    /* ── Left Sidebar (nav) ──────────────────────────── */
+    .app-layout {
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar-left {
+      width: 275px;
+      padding: 0 12px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
     /* ── Responsive ────────────────────────────────── */
     @media (max-width: 768px) {
       .nav__links { display: none; }
       .sidebar { width: 100%; position: absolute; z-index: 50; left: -100%; transition: left 0.3s; }
       .sidebar.open { left: 0; }
+      .sidebar-left { width: 68px; padding: 0 4px; }
+      .sidebar-left .logo a span:last-child, .sidebar-left .nav-item span:last-child { display: none; }
+      .sidebar-left .nav-item { justify-content: center; padding: 12px; }
+      .sidebar-left .action-btn { width: 50px; height: 50px; padding: 0; font-size: 0; }
+      .sidebar-left .action-btn::before { content: '\2192'; font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
-
-  <!-- ── Nav ──────────────────────────────────────── -->
-  <nav class="nav">
-    <a href="/" class="nav__brand">⚡ XActions</a>
-    <div class="nav__links">
-      <a href="/dashboard" class="nav__link">Dashboard</a>
-      <a href="/automations" class="nav__link">Automations</a>
-      <a href="/unfollowers" class="nav__link">Unfollowers</a>
-      <a href="/monitor" class="nav__link">Monitor</a>
-      <a href="/workflows" class="nav__link">Workflows</a>
-      <a href="/graph" class="nav__link nav__link--active">Graph</a>
-      <a href="/run" class="nav__link">Scripts</a>
-      <a href="/docs" class="nav__link">Docs</a>
-    </div>
-    <div class="nav__right">
-      <a href="/docs" class="btn btn--sm btn--secondary">📖 Docs</a>
-    </div>
-  </nav>
 
   <!-- ── Tooltip ──────────────────────────────────── -->
   <div class="tooltip" id="tooltip">
@@ -255,8 +259,12 @@
     <div class="tooltip__row" id="tooltipInfluence"></div>
   </div>
 
-  <!-- ── Layout ───────────────────────────────────── -->
-  <div class="layout">
+  <div class="app-layout">
+    <aside class="sidebar-left" aria-label="Main navigation"></aside>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- ── Layout ───────────────────────────────────── -->
+    <div class="layout" style="flex:1;margin-top:0;">
 
     <!-- ── Sidebar ─────────────────────────────────── -->
     <aside class="sidebar" id="sidebar">
@@ -347,6 +355,7 @@
       <svg id="graphSvg" style="display:none;"></svg>
     </main>
   </div>
+  </div><!-- /.app-layout -->
 
   <!-- ── JavaScript ───────────────────────────────── -->
   <script>

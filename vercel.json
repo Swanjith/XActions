@@ -16,20 +16,12 @@
   ],
   "routes": [
     {
-      "src": "/icon-192.png",
-      "dest": "/public/icon-192.png"
-    },
-    {
-      "src": "/icon-512.png",
-      "dest": "/public/icon-512.png"
+      "src": "/(icon-192\\.png|icon-512\\.png|logo\\.png|og-[a-z-]+\\.png)",
+      "dest": "/public/$1"
     },
     {
       "src": "/dashboard",
-      "dest": "/site/index.html"
-    },
-    {
-      "src": "/dashboard/(.*)",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/index.html"
     },
     {
       "src": "/js/(.*)",
@@ -81,7 +73,7 @@
     },
     {
       "src": "/login",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/login.html"
     },
     {
       "src": "/pricing",
@@ -94,6 +86,18 @@
     {
       "src": "/docs",
       "dest": "/dashboard/docs.html"
+    },
+    {
+      "src": "/docs/([^/]+)/([^/]+)/([^/]+?)(\\.html)?$",
+      "dest": "/dashboard/docs/$1/$2/$3.html"
+    },
+    {
+      "src": "/docs/([^/]+)/([^/]+?)(\\.html)?$",
+      "dest": "/dashboard/docs/$1/$2.html"
+    },
+    {
+      "src": "/docs/([^/]+?)(\\.html)?$",
+      "dest": "/dashboard/docs/$1.html"
     },
     {
       "src": "/privacy",
@@ -113,7 +117,7 @@
     },
     {
       "src": "/admin",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/admin.html"
     },
     {
       "src": "/ai",
@@ -129,23 +133,47 @@
     },
     {
       "src": "/analytics",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/analytics.html"
+    },
+    {
+      "src": "/analytics-dashboard",
+      "dest": "/dashboard/analytics-dashboard.html"
     },
     {
       "src": "/automations",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/automations.html"
+    },
+    {
+      "src": "/agent",
+      "dest": "/dashboard/agent.html"
     },
     {
       "src": "/monitor",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/monitor.html"
     },
     {
       "src": "/unfollowers",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/unfollowers.html"
     },
     {
       "src": "/workflows",
-      "dest": "/site/index.html"
+      "dest": "/dashboard/workflows.html"
+    },
+    {
+      "src": "/calendar",
+      "dest": "/dashboard/calendar.html"
+    },
+    {
+      "src": "/thread-composer",
+      "dest": "/dashboard/thread-composer.html"
+    },
+    {
+      "src": "/team",
+      "dest": "/dashboard/team.html"
+    },
+    {
+      "src": "/graph",
+      "dest": "/dashboard/graph.html"
     },
     {
       "src": "/thread/(.*)",

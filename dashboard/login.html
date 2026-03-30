@@ -263,6 +263,39 @@
       color: var(--accent);
     }
 
+    /* Sign in with X button */
+    .btn-x {
+      width: 100%;
+      padding: 14px 24px;
+      background: #000;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-x:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .btn-x:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-x svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
     /* Footer */
     .footer {
       padding: 24px;
@@ -359,7 +392,14 @@
       <!-- Login Card -->
       <div class="card" id="login-card" role="region" aria-labelledby="page-title">
         <div class="error-message" id="login-error"></div>
-        
+
+        <button type="button" class="btn-x" id="btn-sign-in-x" onclick="signInWithX()">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Sign in with X
+        </button>
+
+        <div class="divider">or</div>
+
         <form id="login-form">
           <div class="form-group">
             <label class="form-label" for="login-identifier">Username or Email</label>
@@ -387,7 +427,14 @@
       <div class="card" id="register-card" role="region" aria-label="Create account" style="display: none;">
         <div class="error-message" id="register-error"></div>
         <div class="success-message" id="register-success"></div>
-        
+
+        <button type="button" class="btn-x" onclick="signInWithX()">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Sign up with X
+        </button>
+
+        <div class="divider">or</div>
+
         <form id="register-form">
           <div class="form-group">
             <label class="form-label" for="register-username">Username</label>
@@ -414,9 +461,45 @@
   <!-- Footer moved to bottom of page -->
 
   <script>
-    const API_URL = window.location.hostname === 'localhost' 
-      ? 'http://localhost:3001/api' 
+    const API_URL = window.location.hostname === 'localhost'
+      ? 'http://localhost:3001/api'
       : '/api';
+
+    // Handle OAuth callback — token arrives in URL hash fragment
+    (function handleOAuthCallback() {
+      const params = new URLSearchParams(window.location.search);
+      const hash = window.location.hash;
+
+      if (params.get('oauth') === 'success' && hash.startsWith('#token=')) {
+        const token = hash.substring('#token='.length);
+        if (token) {
+          localStorage.setItem('authToken', token);
+          // Clean URL and redirect to dashboard
+          window.location.replace('/dashboard?twitter_connected=true');
+          return;
+        }
+      }
+
+      // Show OAuth errors
+      const error = params.get('error');
+      if (error) {
+        const messages = {
+          missing_params: 'OAuth failed — missing parameters from X.',
+          invalid_state: 'OAuth session expired. Please try again.',
+          invalid_flow: 'Something went wrong. Please try again.',
+          twitter_connection_failed: 'Could not connect to X. Please try again.'
+        };
+        setTimeout(() => showError(messages[error] || 'Sign in failed. Please try again.'), 100);
+      }
+    })();
+
+    function signInWithX() {
+      const btn = document.getElementById('btn-sign-in-x');
+      btn.disabled = true;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;fill:white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Redirecting to X...';
+      // Redirect to backend which redirects to Twitter OAuth
+      window.location.href = `${API_URL}/twitter/login`;
+    }
 
     function showLogin() {
       document.getElementById('login-card').style.display = 'block';

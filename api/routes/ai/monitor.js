@@ -120,7 +120,7 @@ router.post('/account', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Monitor account error:', error);
+    console.error('❌ Monitor account error:', error);
     return errorResponse(res, 500, 'MONITOR_FAILED', error.message);
   }
 });
@@ -446,7 +446,7 @@ router.post('/alert/new-followers', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('New followers alert error:', error);
+    console.error('❌ New followers alert error:', error);
     return errorResponse(res, 500, 'ALERT_FAILED', error.message);
   }
 });

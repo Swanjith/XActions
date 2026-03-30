@@ -41,7 +41,8 @@
     // Core
     { href: '/', label: 'Home', icon: icons.home },
     { href: '/run', label: 'Run', icon: icons.run },
-    { href: '/features', label: 'Scripts', icon: icons.scripts },
+    { href: '/scripts', label: 'Scripts', icon: icons.scripts },
+    { href: '/features', label: 'Features', icon: icons.scripts },
     // Automation & Growth
     { href: '/automations', label: 'Automations', icon: icons.automations },
     { href: '/workflows', label: 'Workflows', icon: icons.workflows },

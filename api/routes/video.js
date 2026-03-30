@@ -132,11 +132,24 @@ router.get('/download', async (req, res) => {
       return res.status(400).json({ error: 'Missing required query param: url' });
     }
 
-    // Validate the URL points to Twitter's video CDN
-    const decodedUrl = decodeURIComponent(url);
-    if (!decodedUrl.includes('video.twimg.com') && !decodedUrl.includes('pbs.twimg.com')) {
+    // Validate the URL points to Twitter's video CDN using proper URL parsing
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(decodeURIComponent(url));
+    } catch {
+      return res.status(400).json({ error: 'Invalid URL format.' });
+    }
+
+    const allowedHosts = ['video.twimg.com', 'pbs.twimg.com'];
+    if (!allowedHosts.includes(parsedUrl.hostname)) {
       return res.status(400).json({ error: 'Invalid video URL. Must be a Twitter video CDN URL.' });
     }
+
+    if (parsedUrl.protocol !== 'https:') {
+      return res.status(400).json({ error: 'Only HTTPS URLs are allowed.' });
+    }
+
+    const decodedUrl = parsedUrl.href;
 
     // Fetch the video from Twitter's CDN
     const videoResponse = await fetch(decodedUrl, {

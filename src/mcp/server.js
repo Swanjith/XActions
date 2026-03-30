@@ -3995,7 +3995,7 @@ async function startHttpTransport() {
     // Existing session
     if (sessionId && sessions.has(sessionId)) {
       const session = sessions.get(sessionId);
-      await session.transport.handleRequest(req, res);
+      await session.transport.handleRequest(req, res, req.body);
       return;
     }
 
@@ -4019,7 +4019,7 @@ async function startHttpTransport() {
 
       const srv = createMcpServer();
       await srv.connect(transport);
-      await transport.handleRequest(req, res);
+      await transport.handleRequest(req, res, req.body);
       return;
     }
 

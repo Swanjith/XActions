@@ -158,20 +158,44 @@ router.post('/login',
   }
 );
 
-// Refresh token
+// Refresh token — only allow refresh within 24 hours of expiration
 router.post('/refresh', async (req, res) => {
   try {
     const { token } = req.body;
-    
+
     if (!token) {
       return res.status(401).json({ error: 'Token required' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, { ignoreExpiration: true });
+    // Decode without verification to check expiry window
+    const decoded = jwt.decode(token);
+    if (!decoded || !decoded.exp || !decoded.userId) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    // Only allow refresh if token expired within the last 24 hours
+    const now = Math.floor(Date.now() / 1000);
+    const maxRefreshWindow = 24 * 60 * 60; // 24 hours
+    if (decoded.exp < now - maxRefreshWindow) {
+      return res.status(401).json({ error: 'Token too old to refresh — please log in again' });
+    }
+
+    // Verify signature (allow recently expired tokens within the refresh window)
+    try {
+      jwt.verify(token, process.env.JWT_SECRET, { ignoreExpiration: true });
+    } catch {
+      return res.status(401).json({ error: 'Invalid token signature' });
+    }
+
+    // Verify user still exists
+    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
 
     // Generate new token
     const newToken = jwt.sign(
-      { userId: decoded.userId, email: decoded.email },
+      { userId: decoded.userId, username: decoded.username },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );

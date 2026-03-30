@@ -49,7 +49,7 @@ export function decrypt(encryptedText) {
     
     return decrypted;
   } catch (e) {
-    console.error('Decryption failed:', e.message);
+    console.error('❌ Decryption failed:', e.message);
     return null;
   }
 }

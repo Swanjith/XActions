@@ -43,17 +43,10 @@ function decrypt(encryptedData) {
       decrypted += decipher.final('utf8');
       return decrypted;
     }
-    if (parts.length !== 3) return null;
-    // Legacy format (without salt) — for backward compatibility
-    const key = crypto.scryptSync(ENCRYPTION_KEY || 'dev-only-key', 'salt', 32);
-    const iv = Buffer.from(parts[0], 'hex');
-    const authTag = Buffer.from(parts[1], 'hex');
-    const encrypted = parts[2];
-    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-    decipher.setAuthTag(authTag);
-    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
+    // Legacy format (3 parts, hardcoded salt) is no longer supported.
+    // Data encrypted with the old format must be re-encrypted.
+    console.warn('⚠️  Encountered legacy encryption format — re-save to upgrade');
+    return null;
   } catch (error) {
     console.error('❌ Decryption error:', error.message);
     return null;

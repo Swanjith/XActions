@@ -38,7 +38,7 @@ router.post('/tweet', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Tweet queued' });
   } catch (error) {
-    console.error('Post tweet error:', error);
+    console.error('❌ Post tweet error:', error);
     res.status(500).json({ error: 'Failed to post tweet' });
   }
 });
@@ -74,7 +74,7 @@ router.post('/thread', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Thread queued' });
   } catch (error) {
-    console.error('Post thread error:', error);
+    console.error('❌ Post thread error:', error);
     res.status(500).json({ error: 'Failed to post thread' });
   }
 });
@@ -111,7 +111,7 @@ router.post('/poll', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Poll queued' });
   } catch (error) {
-    console.error('Create poll error:', error);
+    console.error('❌ Create poll error:', error);
     res.status(500).json({ error: 'Failed to create poll' });
   }
 });
@@ -151,7 +151,7 @@ router.post('/schedule', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Scheduled post queued' });
   } catch (error) {
-    console.error('Schedule post error:', error);
+    console.error('❌ Schedule post error:', error);
     res.status(500).json({ error: 'Failed to schedule post' });
   }
 });
@@ -184,7 +184,7 @@ router.delete('/tweet/:tweetId', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Delete queued' });
   } catch (error) {
-    console.error('Delete tweet error:', error);
+    console.error('❌ Delete tweet error:', error);
     res.status(500).json({ error: 'Failed to delete tweet' });
   }
 });

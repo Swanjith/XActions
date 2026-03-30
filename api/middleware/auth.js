@@ -1,10 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
+import { tierMeetsRequirement, getTier, isWithinLimit } from '../config/subscription-tiers.js';
 
 const prisma = new PrismaClient();
-
-// Payment routes archived - XActions is now 100% free and open-source
-// All users have full access to all features - no credits or subscription tiers
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -66,21 +64,93 @@ const optionalAuthMiddleware = async (req, res, next) => {
   }
 };
 
-// Subscription check - DEPRECATED: XActions is now free
-// Kept for backward compatibility but always allows access
-const requireSubscription = (tier = 'free') => {
-  return (req, res, next) => {
-    // XActions is now 100% free - all users have full access
-    next();
+/**
+ * Require a minimum subscription tier.
+ * Loads the user's subscription from DB and checks tier level.
+ * Must be used after authMiddleware.
+ */
+const requireSubscription = (requiredTier = 'free') => {
+  return async (req, res, next) => {
+    if (requiredTier === 'free') return next();
+
+    try {
+      const subscription = await prisma.subscription.findUnique({
+        where: { userId: req.user.id },
+      });
+
+      const userTier = (subscription?.status === 'active' || subscription?.status === 'cancelled')
+        ? subscription.tier
+        : 'free';
+
+      // Cancelled subs still have access until cancelAt date
+      if (subscription?.status === 'cancelled' && subscription.cancelAt && subscription.cancelAt < new Date()) {
+        req.userTier = 'free';
+      } else {
+        req.userTier = userTier;
+      }
+
+      if (!tierMeetsRequirement(req.userTier, requiredTier)) {
+        return res.status(403).json({
+          error: 'Upgrade required',
+          requiredTier,
+          currentTier: req.userTier,
+          upgradeUrl: '/api/billing/plans',
+        });
+      }
+
+      next();
+    } catch (error) {
+      console.error('❌ Subscription check error:', error.message);
+      // Fail open — don't block users if DB is down
+      next();
+    }
   };
 };
 
-// Credit check - DEPRECATED: XActions is now free
-// Kept for backward compatibility but always allows access
-const checkCredits = (requiredCredits) => {
+/**
+ * Check daily usage against tier limits.
+ * limitKey: 'apiCallsPerDay' | 'scrapesPerDay' | 'automationsPerDay'
+ * Must be used after authMiddleware.
+ */
+const checkUsageLimit = (limitKey) => {
   return async (req, res, next) => {
-    // XActions is now 100% free - no credit checks
-    next();
+    try {
+      const subscription = await prisma.subscription.findUnique({
+        where: { userId: req.user.id },
+      });
+
+      const userTier = subscription?.status === 'active' ? subscription.tier : 'free';
+      const tierConfig = getTier(userTier);
+      const limit = tierConfig.limits[limitKey];
+
+      if (limit === -1) return next(); // unlimited
+
+      // Count today's operations
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const todayCount = await prisma.operation.count({
+        where: {
+          userId: req.user.id,
+          createdAt: { gte: todayStart },
+        },
+      });
+
+      if (!isWithinLimit(limit, todayCount)) {
+        return res.status(429).json({
+          error: 'Daily limit reached',
+          limit,
+          used: todayCount,
+          currentTier: userTier,
+          upgradeUrl: '/api/billing/plans',
+        });
+      }
+
+      next();
+    } catch (error) {
+      console.error('❌ Usage limit check error:', error.message);
+      next();
+    }
   };
 };
 
@@ -103,7 +173,7 @@ export {
   authMiddleware,
   optionalAuthMiddleware,
   requireSubscription,
-  checkCredits,
+  checkUsageLimit,
   requireAdmin,
 };
 

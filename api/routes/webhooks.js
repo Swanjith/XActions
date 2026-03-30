@@ -7,8 +7,43 @@
 
 import express from 'express';
 import crypto from 'crypto';
+import Stripe from 'stripe';
+import { handleWebhookEvent } from '../services/stripeService.js';
 
 const router = express.Router();
+
+/**
+ * POST /webhooks/stripe
+ * Stripe webhook endpoint — must receive raw body for signature verification
+ */
+router.post('/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  if (!webhookSecret) {
+    console.error('❌ STRIPE_WEBHOOK_SECRET not configured');
+    return res.status(500).json({ error: 'Webhook secret not configured' });
+  }
+
+  let event;
+  try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+  } catch (err) {
+    console.error(`❌ Stripe webhook signature verification failed: ${err.message}`);
+    return res.status(400).json({ error: 'Invalid signature' });
+  }
+
+  console.log(`💳 Stripe webhook: ${event.type} (${event.id})`);
+
+  try {
+    await handleWebhookEvent(event);
+    res.json({ received: true });
+  } catch (err) {
+    console.error(`❌ Stripe webhook handler error: ${err.message}`);
+    res.status(500).json({ error: 'Webhook handler failed' });
+  }
+});
 
 /**
  * Verify webhook signature

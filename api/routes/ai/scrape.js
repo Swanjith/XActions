@@ -109,7 +109,7 @@ router.post('/profile', async (req, res) => {
       requestedUsername: cleanUsername,
     });
   } catch (error) {
-    console.error('Profile scrape error:', error);
+    console.error('❌ Profile scrape error:', error);
     
     if (error.message?.includes('not found') || error.message?.includes('404')) {
       return errorResponse(res, 404, 'USER_NOT_FOUND', `User @${cleanUsername} not found`, {
@@ -186,7 +186,7 @@ router.post('/followers', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Followers scrape error:', error);
+    console.error('❌ Followers scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -244,7 +244,7 @@ router.post('/following', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Following scrape error:', error);
+    console.error('❌ Following scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -322,7 +322,7 @@ router.post('/tweets', async (req, res) => {
       filters: { includeReplies, includeRetweets },
     });
   } catch (error) {
-    console.error('Tweets scrape error:', error);
+    console.error('❌ Tweets scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -400,7 +400,7 @@ router.post('/search', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Search scrape error:', error);
+    console.error('❌ Search scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -473,7 +473,7 @@ router.post('/thread', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Thread scrape error:', error);
+    console.error('❌ Thread scrape error:', error);
     
     if (error.message?.includes('not found')) {
       return errorResponse(res, 404, 'TWEET_NOT_FOUND', 'Tweet not found', { retryable: false });
@@ -547,7 +547,7 @@ router.post('/hashtag', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Hashtag scrape error:', error);
+    console.error('❌ Hashtag scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -613,7 +613,7 @@ router.post('/media', async (req, res) => {
       filterType: type,
     });
   } catch (error) {
-    console.error('Media scrape error:', error);
+    console.error('❌ Media scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -669,7 +669,7 @@ router.post('/likes', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Likes scrape error:', error);
+    console.error('❌ Likes scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });
@@ -725,7 +725,7 @@ router.post('/retweets', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Retweets scrape error:', error);
+    console.error('❌ Retweets scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });

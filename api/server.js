@@ -36,6 +36,7 @@ import sessionAuthRoutes from './routes/session-auth.js';
 import licenseRoutes from './routes/license.js';
 import adminRoutes from './routes/admin.js';
 import webhookRoutes from './routes/webhooks.js';
+import billingRoutes from './routes/billing.js';
 // AI API routes - modular structure optimized for AI agent consumption
 import aiRoutes from './routes/ai/index.js';
 // Feature routes - comprehensive X/Twitter feature coverage
@@ -111,12 +112,22 @@ app.use(helmet({
 }));
 
 // Gzip/brotli compression — reduces HTML/JSON response size ~70%
-app.use(compression({ level: 6, threshold: 1024 }));
+// Skip compression on auth endpoints to mitigate BREACH attacks on token responses
+app.use(compression({
+  level: 6,
+  threshold: 1024,
+  filter: (req, res) => {
+    if (req.path.startsWith('/api/auth') || req.path.startsWith('/api/session')) {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
+}));
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? ['https://xactions.app', process.env.FRONTEND_URL].filter(Boolean)
-    : true, // Allow all origins in development
+    : (process.env.DEV_ORIGINS || 'http://localhost:3000,http://localhost:3001,http://localhost:5173').split(','),
   credentials: true
 }));
 
@@ -135,6 +146,17 @@ const authLimiter = rateLimit({
 });
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
+app.use('/api/auth/refresh', authLimiter);
+app.use('/api/twitter/login', authLimiter);
+
+// Rate limit agent start/stop — resource-intensive operations
+const agentLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: 'Too many agent control requests, please try again later' }
+});
+app.use('/api/agent/start', agentLimiter);
+app.use('/api/agent/stop', agentLimiter);
 
 // Stricter rate limits for expensive/resource-intensive operations
 const heavyLimiter = rateLimit({
@@ -153,11 +175,24 @@ const analyticsLimiter = rateLimit({
 });
 app.use('/api/analytics', analyticsLimiter);
 
-// Logging
-app.use(morgan('combined'));
+// Logging — use custom format that redacts Authorization header
+morgan.token('safe-referrer', (req) => {
+  const ref = req.headers.referer || req.headers.referrer || '-';
+  // Strip any token query params from referrer
+  try {
+    const url = new URL(ref, 'http://localhost');
+    url.searchParams.delete('token');
+    url.searchParams.delete('access_token');
+    return url.pathname + url.search;
+  } catch { return '-'; }
+});
+app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":safe-referrer" ":user-agent"'));
 
-// Body parsing
-app.use(express.json({ limit: '10kb' })); // Prevent large payload attacks
+// Body parsing — skip JSON parsing for Stripe webhooks (needs raw body for signature verification)
+app.use((req, res, next) => {
+  if (req.originalUrl === '/webhooks/stripe') return next();
+  express.json({ limit: '10kb' })(req, res, next);
+});
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // AI Agent Detection - adds req.isAI and req.agentType
@@ -193,6 +228,13 @@ app.get('/api/ai/health', x402HealthCheck);
 app.get('/api/ai/pricing', x402Pricing);
 app.use('/api/ai', aiRoutes);
 
+// Serve public assets (icons, OG images, logo)
+app.use(express.static(path.join(__dirname, '../public'), {
+  maxAge: '1y',
+  immutable: true,
+  etag: true,
+}));
+
 // Serve dashboard static files with cache headers
 app.use(express.static(path.join(__dirname, '../dashboard'), {
   maxAge: '1h',        // Cache HTML for 1 hour (content changes frequently)
@@ -210,8 +252,8 @@ app.use(express.static(path.join(__dirname, '../dashboard'), {
 app.use(brandingMiddleware());
 
 // Routes
-// Payment routes archived - XActions is now 100% free and open-source
-app.use('/webhooks', webhookRoutes); // Receive payment notifications
+app.use('/webhooks', webhookRoutes); // Receive payment & Stripe webhook notifications
+app.use('/api/billing', billingRoutes); // Stripe subscription management
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/operations', operationRoutes);
@@ -272,9 +314,8 @@ app.get('/dashboard', (req, res) => {
   res.redirect('/');
 });
 
-// Pricing page now redirects to docs - XActions is 100% free
 app.get('/pricing', (req, res) => {
-  res.redirect('/docs');
+  res.redirect('/api/billing/plans');
 });
 
 app.get('/docs', (req, res) => {
@@ -284,39 +325,38 @@ app.get('/graph', (req, res) => {
   res.sendFile(path.join(__dirname, '../dashboard/graph.html'));
 });
 // Documentation sub-pages — serves 167 auto-generated SEO pages
+const docsBasePath = path.resolve(__dirname, '../dashboard/docs');
+
+function serveSafeDoc(filePath, res) {
+  const resolved = path.resolve(filePath);
+  if (!resolved.startsWith(docsBasePath)) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  res.sendFile(resolved, (err) => {
+    if (err) {
+      res.status(404).sendFile(path.join(__dirname, '../dashboard/404.html'));
+    }
+  });
+}
+
 // 3-level paths: /docs/guides/developer/:slug
 app.get('/docs/:section/:subsection/:slug', (req, res) => {
   const section = req.params.section.replace(/[^a-zA-Z0-9-]/g, '');
   const subsection = req.params.subsection.replace(/[^a-zA-Z0-9-]/g, '');
   const slug = req.params.slug.replace(/[^a-zA-Z0-9-_]/g, '');
-  const filePath = path.join(__dirname, `../dashboard/docs/${section}/${subsection}/${slug}.html`);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      res.status(404).sendFile(path.join(__dirname, '../dashboard/404.html'));
-    }
-  });
+  serveSafeDoc(path.join(docsBasePath, section, subsection, `${slug}.html`), res);
 });
 // 2-level paths: /docs/guides/:slug, /docs/skills/:slug, /docs/tutorials/:slug, etc.
 app.get('/docs/:section/:slug', (req, res) => {
   const section = req.params.section.replace(/[^a-zA-Z0-9-]/g, '');
   const slug = req.params.slug.replace(/[^a-zA-Z0-9-_]/g, '');
-  const filePath = path.join(__dirname, `../dashboard/docs/${section}/${slug}.html`);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      res.status(404).sendFile(path.join(__dirname, '../dashboard/404.html'));
-    }
-  });
+  serveSafeDoc(path.join(docsBasePath, section, `${slug}.html`), res);
 });
 
 // Flat docs: /docs/:slug (71 pages from docs/examples/*.md)
 app.get('/docs/:slug', (req, res) => {
   const slug = req.params.slug.replace(/[^a-zA-Z0-9-]/g, '');
-  const filePath = path.join(__dirname, `../dashboard/docs/${slug}.html`);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      res.status(404).sendFile(path.join(__dirname, '../dashboard/404.html'));
-    }
-  });
+  serveSafeDoc(path.join(docsBasePath, `${slug}.html`), res);
 });
 
 app.get('/features', (req, res) => {
@@ -431,13 +471,19 @@ app.get('/team', (req, res) => {
   res.sendFile(path.join(__dirname, '../dashboard/team.html'));
 });
 
-// Error handling middleware
+// Error handling middleware — never expose stack traces or internal details in production
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
+  console.error('❌ Unhandled error:', err.message);
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack);
+  }
+  const status = err.status || 500;
+  res.status(status).json({
     error: {
-      message: err.message || 'Internal server error',
-      status: err.status || 500
+      message: status >= 500 && process.env.NODE_ENV === 'production'
+        ? 'Internal server error'
+        : err.message || 'Internal server error',
+      status
     }
   });
 });

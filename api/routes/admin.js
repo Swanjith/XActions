@@ -25,6 +25,15 @@ import {
 
 const router = Router();
 
+// Timing-safe comparison that handles different-length strings without throwing
+function safeCompare(a, b) {
+  if (!a || !b) return false;
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
 /**
  * POST /api/admin/licenses
  * Create a new license key
@@ -185,7 +194,7 @@ router.get('/x402/stats', (req, res) => {
   // Timing-safe auth check via API key header
   const adminKey = req.headers['x-admin-key'] || '';
   const expected = process.env.ADMIN_API_KEY || '';
-  if (!expected || !adminKey || !crypto.timingSafeEquals(Buffer.from(adminKey), Buffer.from(expected))) {
+  if (!expected || !safeCompare(adminKey, expected)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -206,7 +215,7 @@ router.get('/x402/webhooks', (req, res) => {
   // Timing-safe auth check via API key header
   const adminKey = req.headers['x-admin-key'] || '';
   const expected = process.env.ADMIN_API_KEY || '';
-  if (!expected || !adminKey || !crypto.timingSafeEquals(Buffer.from(adminKey), Buffer.from(expected))) {
+  if (!expected || !safeCompare(adminKey, expected)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -227,7 +236,7 @@ router.post('/x402/webhooks/test', async (req, res) => {
   // Timing-safe auth check via API key header
   const adminKey = req.headers['x-admin-key'] || '';
   const expected = process.env.ADMIN_API_KEY || '';
-  if (!expected || !adminKey || !crypto.timingSafeEquals(Buffer.from(adminKey), Buffer.from(expected))) {
+  if (!expected || !safeCompare(adminKey, expected)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
