@@ -2922,6 +2922,1226 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
         },
       },
 
+      // ─── Action (additional) ─────────────────────────────────────
+      '/api/ai/action/validate-session': {
+        post: {
+          tags: ['Actions'],
+          summary: 'Validate a Twitter session cookie',
+          'x-payment-info': paymentInfo('action:follow'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Session valid'), 402: payment402 },
+        },
+      },
+
+      // ─── Automation ──────────────────────────────────────────────
+      '/api/ai/automation/auto-reply': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Auto-reply to tweets matching keywords',
+          'x-payment-info': paymentInfo('automation:auto-reply'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } }, replyTemplate: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Auto-reply started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/auto-repost': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Auto-repost tweets matching keywords',
+          'x-payment-info': paymentInfo('automation:auto-repost'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Auto-repost started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/plug-replies': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Auto-plug replies on viral tweets',
+          'x-payment-info': paymentInfo('automation:plug-replies'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, plugText: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Plug replies started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/engagement-booster': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Systematic engagement booster',
+          'x-payment-info': paymentInfo('automation:engagement-booster'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Engagement booster started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/quote-tweet-auto': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Auto quote-tweet matching posts',
+          'x-payment-info': paymentInfo('automation:quote-tweet'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Quote-tweet automation started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/content-repurpose': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Repurpose top content into new formats',
+          'x-payment-info': paymentInfo('automation:repurpose'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, username: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Content repurposing started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/content-calendar': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Generate automated content calendar',
+          'x-payment-info': paymentInfo('automation:content-calendar'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, niche: { type: 'string' } } } } } },
+          responses: { 200: ok200('Content calendar generated'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/welcome-followers': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Welcome new followers via DM',
+          'x-payment-info': paymentInfo('automation:welcome-followers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, message: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Welcome automation started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/continuous-monitor': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Continuous follower monitoring',
+          'x-payment-info': paymentInfo('automation:continuous-monitor'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, username: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Monitoring started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/keyword-monitor': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Monitor keyword mentions continuously',
+          'x-payment-info': paymentInfo('automation:keyword-monitor'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Keyword monitoring started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/customer-service': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Customer service automation bot',
+          'x-payment-info': paymentInfo('automation:customer-service'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Customer service automation started'), 402: payment402 },
+        },
+      },
+      '/api/ai/automation/evergreen': {
+        post: {
+          tags: ['Automation'],
+          summary: 'Recycle evergreen tweets automatically',
+          'x-payment-info': paymentInfo('automation:evergreen'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Evergreen recycler started'), 402: payment402 },
+        },
+      },
+
+      // ─── Community ───────────────────────────────────────────────
+      '/api/ai/community/join': {
+        post: {
+          tags: ['Community'],
+          summary: 'Join communities by keyword',
+          'x-payment-info': paymentInfo('community:join'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keyword: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Communities joined'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/leave': {
+        post: {
+          tags: ['Community'],
+          summary: 'Leave a community',
+          'x-payment-info': paymentInfo('community:join'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['communityId'], properties: { ...sessionProp, communityId: { type: 'string' } } } } } },
+          responses: { 200: ok200('Left community'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/leave-all': {
+        post: {
+          tags: ['Community'],
+          summary: 'Leave all joined communities',
+          'x-payment-info': paymentInfo('community:leave-all'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Left all communities'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/create': {
+        post: {
+          tags: ['Community'],
+          summary: 'Create a new community',
+          'x-payment-info': paymentInfo('community:create'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['name'], properties: { ...sessionProp, name: { type: 'string' }, description: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Community created'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/manage': {
+        post: {
+          tags: ['Community'],
+          summary: 'Manage community members and settings',
+          'x-payment-info': paymentInfo('community:manage'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['communityId'], properties: { ...sessionProp, communityId: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Community managed'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/notes': {
+        post: {
+          tags: ['Community'],
+          summary: 'View and contribute community notes',
+          'x-payment-info': paymentInfo('community:notes'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Community notes'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/list': {
+        post: {
+          tags: ['Community'],
+          summary: 'List joined communities',
+          'x-payment-info': paymentInfo('community:join'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Communities list'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/members': {
+        post: {
+          tags: ['Community'],
+          summary: 'Get community members',
+          'x-payment-info': paymentInfo('community:manage'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['communityId'], properties: { ...sessionProp, communityId: { type: 'string' } } } } } },
+          responses: { 200: ok200('Community members'), 402: payment402 },
+        },
+      },
+      '/api/ai/community/search': {
+        post: {
+          tags: ['Community'],
+          summary: 'Search communities by keyword',
+          'x-payment-info': paymentInfo('community:join'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['query'], properties: { ...sessionProp, query: { type: 'string' } } } } } },
+          responses: { 200: ok200('Communities found'), 402: payment402 },
+        },
+      },
+
+      // ─── Moderation ──────────────────────────────────────────────
+      '/api/ai/moderation/block-bots': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Detect and block bot accounts',
+          'x-payment-info': paymentInfo('moderation:block-bots'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Bots blocked'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/mass-block': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Block multiple accounts',
+          'x-payment-info': paymentInfo('moderation:mass-block'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['usernames'], properties: { ...sessionProp, usernames: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Accounts blocked'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/mass-unblock': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Unblock multiple accounts',
+          'x-payment-info': paymentInfo('moderation:mass-unblock'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Accounts unblocked'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/mass-unmute': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Unmute multiple accounts',
+          'x-payment-info': paymentInfo('moderation:mass-unmute'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Accounts unmuted'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/mute-keywords': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Mute users by keyword',
+          'x-payment-info': paymentInfo('moderation:mute-keywords'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['keywords'], properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Keywords muted'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/muted-words': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Manage muted words list',
+          'x-payment-info': paymentInfo('moderation:muted-words'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Muted words'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/remove-followers': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Soft-block to remove followers',
+          'x-payment-info': paymentInfo('moderation:remove-followers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['usernames'], properties: { ...sessionProp, usernames: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Followers removed'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/report-spam': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Report spam accounts',
+          'x-payment-info': paymentInfo('moderation:report-spam'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['usernames'], properties: { ...sessionProp, usernames: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Accounts reported'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/shadowban-check': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Check if account is shadowbanned',
+          'x-payment-info': paymentInfo('moderation:shadowban-check'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['username'], properties: { ...sessionProp, username: { type: 'string' } } } } } },
+          responses: { 200: ok200('Shadowban status'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/verified-only': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Toggle verified-only replies',
+          'x-payment-info': paymentInfo('moderation:verified-only'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, enabled: { type: 'boolean' } } } } } },
+          responses: { 200: ok200('Setting updated'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/blocked-list': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Get list of blocked accounts',
+          'x-payment-info': paymentInfo('settings:blocked'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Blocked accounts'), 402: payment402 },
+        },
+      },
+      '/api/ai/moderation/muted-list': {
+        post: {
+          tags: ['Moderation'],
+          summary: 'Get list of muted accounts',
+          'x-payment-info': paymentInfo('settings:muted'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Muted accounts'), 402: payment402 },
+        },
+      },
+
+      // ─── Account ─────────────────────────────────────────────────
+      '/api/ai/account/backup': {
+        post: {
+          tags: ['Account'],
+          summary: 'Full account backup (tweets, likes, bookmarks, followers)',
+          'x-payment-info': paymentInfo('account:backup'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Backup started'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/download-data': {
+        post: {
+          tags: ['Account'],
+          summary: 'Request official Twitter data archive',
+          'x-payment-info': paymentInfo('account:download-data'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Data download requested'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/audit-followers': {
+        post: {
+          tags: ['Account'],
+          summary: 'Audit followers for bots and fake accounts',
+          'x-payment-info': paymentInfo('account:audit-followers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Audit started'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/delegate-access': {
+        post: {
+          tags: ['Account'],
+          summary: 'Manage delegate account access',
+          'x-payment-info': paymentInfo('account:delegate-access'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Delegate access updated'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/verify-identity': {
+        post: {
+          tags: ['Account'],
+          summary: 'Trigger identity verification flow',
+          'x-payment-info': paymentInfo('account:verify-identity'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Verification initiated'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/upload-contacts': {
+        post: {
+          tags: ['Account'],
+          summary: 'Upload and sync contacts',
+          'x-payment-info': paymentInfo('account:upload-contacts'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Contacts uploaded'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/multi-account': {
+        post: {
+          tags: ['Account'],
+          summary: 'Multi-account management',
+          'x-payment-info': paymentInfo('account:multi'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Accounts listed'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/join-date': {
+        post: {
+          tags: ['Account'],
+          summary: 'Get account join date',
+          'x-payment-info': paymentInfo('profile:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Join date'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/login-history': {
+        post: {
+          tags: ['Account'],
+          summary: 'Get account login history',
+          'x-payment-info': paymentInfo('settings:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Login history'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/connected-accounts': {
+        post: {
+          tags: ['Account'],
+          summary: 'Get connected third-party accounts',
+          'x-payment-info': paymentInfo('settings:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Connected accounts'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/appeal-suspension': {
+        post: {
+          tags: ['Account'],
+          summary: 'Appeal account suspension',
+          'x-payment-info': paymentInfo('profile:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Appeal submitted'), 402: payment402 },
+        },
+      },
+      '/api/ai/account/qr-code': {
+        post: {
+          tags: ['Account'],
+          summary: 'Generate QR code for profile',
+          'x-payment-info': paymentInfo('utility:qr-code'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('QR code generated'), 402: payment402 },
+        },
+      },
+
+      // ─── Ads ─────────────────────────────────────────────────────
+      '/api/ai/ads/campaigns': {
+        post: {
+          tags: ['Ads'],
+          summary: 'Manage ad campaigns',
+          'x-payment-info': paymentInfo('ads:manage'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Ad campaigns'), 402: payment402 },
+        },
+      },
+      '/api/ai/ads/dashboard': {
+        post: {
+          tags: ['Ads'],
+          summary: 'Get ads dashboard and analytics',
+          'x-payment-info': paymentInfo('ads:dashboard'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Ads dashboard'), 402: payment402 },
+        },
+      },
+      '/api/ai/ads/media-studio': {
+        post: {
+          tags: ['Ads'],
+          summary: 'Access Media Studio for ads',
+          'x-payment-info': paymentInfo('ads:media-studio'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Media Studio data'), 402: payment402 },
+        },
+      },
+      '/api/ai/ads/boost': {
+        post: {
+          tags: ['Ads'],
+          summary: 'Boost a tweet with ad spend',
+          'x-payment-info': paymentInfo('ads:manage'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['tweetId'], properties: { ...sessionProp, tweetId: { type: 'string' }, budget: { type: 'number' } } } } } },
+          responses: { 200: ok200Async('Tweet boosted'), 402: payment402 },
+        },
+      },
+      '/api/ai/ads/analytics': {
+        post: {
+          tags: ['Ads'],
+          summary: 'Get ad performance analytics',
+          'x-payment-info': paymentInfo('ads:dashboard'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Ad analytics'), 402: payment402 },
+        },
+      },
+
+      // ─── X Pro ───────────────────────────────────────────────────
+      '/api/ai/xpro/dashboard': {
+        post: {
+          tags: ['XPro'],
+          summary: 'Open X Pro (TweetDeck) dashboard',
+          'x-payment-info': paymentInfo('xpro:dashboard'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('X Pro dashboard'), 402: payment402 },
+        },
+      },
+      '/api/ai/xpro/columns': {
+        post: {
+          tags: ['XPro'],
+          summary: 'Manage X Pro monitoring columns',
+          'x-payment-info': paymentInfo('xpro:manage'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Columns managed'), 402: payment402 },
+        },
+      },
+      '/api/ai/xpro/manage': {
+        post: {
+          tags: ['XPro'],
+          summary: 'Manage X Pro settings and layout',
+          'x-payment-info': paymentInfo('xpro:manage'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('X Pro managed'), 402: payment402 },
+        },
+      },
+
+      // ─── Discovery ───────────────────────────────────────────────
+      '/api/ai/discovery/trending': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Get trending topics',
+          'x-payment-info': paymentInfo('discovery:trends'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Trending topics'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/trending-monitor': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Monitor trending topics over time',
+          'x-payment-info': paymentInfo('discovery:trending-monitor'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Trending monitor started'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/save-search': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Save a search query',
+          'x-payment-info': paymentInfo('discovery:save-search'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['query'], properties: { ...sessionProp, query: { type: 'string' } } } } } },
+          responses: { 200: ok200('Search saved'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/saved-searches': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'List saved searches',
+          'x-payment-info': paymentInfo('discovery:saved-searches'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Saved searches'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/topics': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Manage followed topics',
+          'x-payment-info': paymentInfo('discovery:topics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Topics'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/explore': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Browse the explore feed',
+          'x-payment-info': paymentInfo('discovery:explore'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Explore feed'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/search': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Search tweets, users, and media',
+          'x-payment-info': paymentInfo('discovery:search'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['query'], properties: { ...sessionProp, query: { type: 'string' } } } } } },
+          responses: { 200: ok200('Search results'), 402: payment402 },
+        },
+      },
+      '/api/ai/discovery/for-you': {
+        post: {
+          tags: ['Discovery'],
+          summary: 'Get For You feed recommendations',
+          'x-payment-info': paymentInfo('discovery:explore'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('For You feed'), 402: payment402 },
+        },
+      },
+
+      // ─── Premium ─────────────────────────────────────────────────
+      '/api/ai/premium/check': {
+        post: {
+          tags: ['Premium'],
+          summary: 'Check Premium subscription status',
+          'x-payment-info': paymentInfo('premium:check'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Premium status'), 402: payment402 },
+        },
+      },
+      '/api/ai/premium/gift': {
+        post: {
+          tags: ['Premium'],
+          summary: 'Gift Premium subscription to a user',
+          'x-payment-info': paymentInfo('premium:gift'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['username'], properties: { ...sessionProp, username: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Premium gifted'), 402: payment402 },
+        },
+      },
+      '/api/ai/premium/subscribe': {
+        post: {
+          tags: ['Premium'],
+          summary: 'Manage Premium subscription',
+          'x-payment-info': paymentInfo('premium:subscribe'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Subscription managed'), 402: payment402 },
+        },
+      },
+      '/api/ai/premium/features': {
+        post: {
+          tags: ['Premium'],
+          summary: 'List available Premium features',
+          'x-payment-info': paymentInfo('premium:check'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Premium features'), 402: payment402 },
+        },
+      },
+
+      // ─── Settings ────────────────────────────────────────────────
+      '/api/ai/settings/get': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Get account settings',
+          'x-payment-info': paymentInfo('settings:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Account settings'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/update': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Update account settings',
+          'x-payment-info': paymentInfo('settings:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Settings updated'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/protected': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Toggle protected tweets mode',
+          'x-payment-info': paymentInfo('settings:protected'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, enabled: { type: 'boolean' } } } } } },
+          responses: { 200: ok200('Protected mode updated'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/blocked': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Get blocked accounts list',
+          'x-payment-info': paymentInfo('settings:blocked'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Blocked accounts'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/muted': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Get muted accounts list',
+          'x-payment-info': paymentInfo('settings:muted'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Muted accounts'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/download-data': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Request Twitter data download',
+          'x-payment-info': paymentInfo('settings:download-data'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Data download requested'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/advanced': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Access advanced settings',
+          'x-payment-info': paymentInfo('settings:advanced'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Advanced settings'), 402: payment402 },
+        },
+      },
+      '/api/ai/settings/block-list': {
+        post: {
+          tags: ['Settings'],
+          summary: 'Import or export block list',
+          'x-payment-info': paymentInfo('settings:block-list'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Block list'), 402: payment402 },
+        },
+      },
+
+      // ─── Creator ─────────────────────────────────────────────────
+      '/api/ai/creator/analytics': {
+        post: {
+          tags: ['Creator'],
+          summary: 'Get creator monetization analytics',
+          'x-payment-info': paymentInfo('creator:analytics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Creator analytics'), 402: payment402 },
+        },
+      },
+      '/api/ai/creator/revenue': {
+        post: {
+          tags: ['Creator'],
+          summary: 'Get creator revenue data',
+          'x-payment-info': paymentInfo('creator:revenue'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Revenue data'), 402: payment402 },
+        },
+      },
+      '/api/ai/creator/subscribers': {
+        post: {
+          tags: ['Creator'],
+          summary: 'Get creator subscriber list',
+          'x-payment-info': paymentInfo('creator:subscribers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Subscribers list'), 402: payment402 },
+        },
+      },
+      '/api/ai/creator/studio': {
+        post: {
+          tags: ['Creator'],
+          summary: 'Access Creator Studio dashboard',
+          'x-payment-info': paymentInfo('creator:studio'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Creator Studio data'), 402: payment402 },
+        },
+      },
+      '/api/ai/creator/subscriptions': {
+        post: {
+          tags: ['Creator'],
+          summary: 'Manage creator subscriptions',
+          'x-payment-info': paymentInfo('creator:subscriptions'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Subscriptions data'), 402: payment402 },
+        },
+      },
+
+      // ─── Timeline ────────────────────────────────────────────────
+      '/api/ai/timeline/view': {
+        post: {
+          tags: ['Timeline'],
+          summary: 'View current timeline feed',
+          'x-payment-info': paymentInfo('scrape:timeline'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, feed: { type: 'string', enum: ['for-you', 'following'] } } } } } },
+          responses: { 200: ok200('Timeline posts'), 402: payment402 },
+        },
+      },
+      '/api/ai/timeline/scroll': {
+        post: {
+          tags: ['Timeline'],
+          summary: 'Auto-scroll timeline and collect posts',
+          'x-payment-info': paymentInfo('scrape:timeline'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, limit: { type: 'integer', default: 50 } } } } } },
+          responses: { 200: ok200Async('Timeline scroll started'), 402: payment402 },
+        },
+      },
+      '/api/ai/timeline/collect': {
+        post: {
+          tags: ['Timeline'],
+          summary: 'Collect and export timeline posts',
+          'x-payment-info': paymentInfo('scrape:timeline'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, limit: { type: 'integer', default: 100 } } } } } },
+          responses: { 200: ok200Async('Timeline collected'), 402: payment402 },
+        },
+      },
+      '/api/ai/timeline/export': {
+        post: {
+          tags: ['Timeline'],
+          summary: 'Export collected timeline posts',
+          'x-payment-info': paymentInfo('export:bookmarks'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, format: { type: 'string', enum: ['json', 'csv'] } } } } } },
+          responses: { 200: ok200('Timeline export'), 402: payment402 },
+        },
+      },
+      '/api/ai/timeline/switch-feed': {
+        post: {
+          tags: ['Timeline'],
+          summary: 'Switch between For You and Following feeds',
+          'x-payment-info': paymentInfo('discovery:explore'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, feed: { type: 'string', enum: ['for-you', 'following'], default: 'following' } } } } } },
+          responses: { 200: ok200Async('Feed switched'), 402: payment402 },
+        },
+      },
+
+      // ─── Topics ──────────────────────────────────────────────────
+      '/api/ai/topics/follow': {
+        post: {
+          tags: ['Topics'],
+          summary: 'Follow an X Topic',
+          'x-payment-info': paymentInfo('discovery:topics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['topicId'], properties: { ...sessionProp, topicId: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Topic followed'), 402: payment402 },
+        },
+      },
+      '/api/ai/topics/unfollow': {
+        post: {
+          tags: ['Topics'],
+          summary: 'Unfollow an X Topic',
+          'x-payment-info': paymentInfo('discovery:topics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['topicId'], properties: { ...sessionProp, topicId: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Topic unfollowed'), 402: payment402 },
+        },
+      },
+      '/api/ai/topics/discover': {
+        post: {
+          tags: ['Topics'],
+          summary: 'Discover topics by keyword',
+          'x-payment-info': paymentInfo('discovery:topics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keyword: { type: 'string' } } } } } },
+          responses: { 200: ok200('Topics found'), 402: payment402 },
+        },
+      },
+      '/api/ai/topics/list': {
+        post: {
+          tags: ['Topics'],
+          summary: 'List followed topics',
+          'x-payment-info': paymentInfo('discovery:topics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Followed topics'), 402: payment402 },
+        },
+      },
+
+      // ─── Articles ────────────────────────────────────────────────
+      '/api/ai/articles/compose': {
+        post: {
+          tags: ['Articles'],
+          summary: 'Compose a longform article draft',
+          'x-payment-info': paymentInfo('article:publish'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, title: { type: 'string' }, content: { type: 'string' } } } } } },
+          responses: { 200: ok200('Article composed'), 402: payment402 },
+        },
+      },
+      '/api/ai/articles/publish': {
+        post: {
+          tags: ['Articles'],
+          summary: 'Publish an article on X',
+          'x-payment-info': paymentInfo('article:publish'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['title', 'content'], properties: { ...sessionProp, title: { type: 'string' }, content: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Article published'), 402: payment402 },
+        },
+      },
+      '/api/ai/articles/analytics': {
+        post: {
+          tags: ['Articles'],
+          summary: 'Get article performance analytics',
+          'x-payment-info': paymentInfo('article:analytics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Article analytics'), 402: payment402 },
+        },
+      },
+      '/api/ai/articles/list': {
+        post: {
+          tags: ['Articles'],
+          summary: 'List published articles',
+          'x-payment-info': paymentInfo('article:analytics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Articles list'), 402: payment402 },
+        },
+      },
+      '/api/ai/articles/draft': {
+        post: {
+          tags: ['Articles'],
+          summary: 'Save article as draft',
+          'x-payment-info': paymentInfo('article:analytics'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, title: { type: 'string' }, content: { type: 'string' } } } } } },
+          responses: { 200: ok200('Draft saved'), 402: payment402 },
+        },
+      },
+
+      // ─── Leads ───────────────────────────────────────────────────
+      '/api/ai/leads/find': {
+        post: {
+          tags: ['Leads'],
+          summary: 'Find B2B leads from X conversations',
+          'x-payment-info': paymentInfo('engagement:find-influencers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Leads found'), 402: payment402 },
+        },
+      },
+      '/api/ai/leads/qualify': {
+        post: {
+          tags: ['Leads'],
+          summary: 'Qualify leads with scoring criteria',
+          'x-payment-info': paymentInfo('engagement:find-influencers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['usernames'], properties: { ...sessionProp, usernames: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200('Qualified leads'), 402: payment402 },
+        },
+      },
+      '/api/ai/leads/export': {
+        post: {
+          tags: ['Leads'],
+          summary: 'Export leads to CSV or JSON',
+          'x-payment-info': paymentInfo('export:bookmarks'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, format: { type: 'string', enum: ['json', 'csv'] } } } } } },
+          responses: { 200: ok200('Leads exported'), 402: payment402 },
+        },
+      },
+      '/api/ai/leads/monitor': {
+        post: {
+          tags: ['Leads'],
+          summary: 'Monitor keyword conversations for leads',
+          'x-payment-info': paymentInfo('monitor:keyword'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['keywords'], properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Lead monitoring started'), 402: payment402 },
+        },
+      },
+      '/api/ai/leads/score': {
+        post: {
+          tags: ['Leads'],
+          summary: 'Score and rank leads by quality',
+          'x-payment-info': paymentInfo('engagement:find-influencers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Lead scores'), 402: payment402 },
+        },
+      },
+      '/api/ai/leads/enrich': {
+        post: {
+          tags: ['Leads'],
+          summary: 'Enrich lead profiles with additional data',
+          'x-payment-info': paymentInfo('engagement:find-influencers'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['username'], properties: { ...sessionProp, username: { type: 'string' } } } } } },
+          responses: { 200: ok200('Enriched lead data'), 402: payment402 },
+        },
+      },
+
+      // ─── Viral ───────────────────────────────────────────────────
+      '/api/ai/viral/research': {
+        post: {
+          tags: ['Viral'],
+          summary: 'Research viral trends for content',
+          'x-payment-info': paymentInfo('analytics:viral-detector'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, niche: { type: 'string' } } } } } },
+          responses: { 200: ok200('Viral research'), 402: payment402 },
+        },
+      },
+      '/api/ai/viral/generate': {
+        post: {
+          tags: ['Viral'],
+          summary: 'Generate high-engagement thread from trends',
+          'x-payment-info': paymentInfo('writer:generate'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, topic: { type: 'string' } } } } } },
+          responses: { 200: ok200('Viral thread generated'), 402: payment402 },
+        },
+      },
+      '/api/ai/viral/analyze': {
+        post: {
+          tags: ['Viral'],
+          summary: 'Analyze why a tweet went viral',
+          'x-payment-info': paymentInfo('analytics:viral-detector'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['tweetId'], properties: { ...sessionProp, tweetId: { type: 'string' } } } } } },
+          responses: { 200: ok200('Viral analysis'), 402: payment402 },
+        },
+      },
+      '/api/ai/viral/trending-hooks': {
+        post: {
+          tags: ['Viral'],
+          summary: 'Get trending hook templates',
+          'x-payment-info': paymentInfo('analytics:viral-detector'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Trending hooks'), 402: payment402 },
+        },
+      },
+      '/api/ai/viral/headlines': {
+        post: {
+          tags: ['Viral'],
+          summary: 'Generate viral headline variations',
+          'x-payment-info': paymentInfo('writer:generate'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['topic'], properties: { ...sessionProp, topic: { type: 'string' } } } } } },
+          responses: { 200: ok200('Viral headlines'), 402: payment402 },
+        },
+      },
+
+      // ─── Billing ─────────────────────────────────────────────────
+      '/api/ai/billing/checkout': {
+        post: {
+          tags: ['Billing'],
+          summary: 'Create Stripe checkout session',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { plan: { type: 'string', enum: ['basic', 'pro', 'enterprise'] } } } } } },
+          responses: { 200: ok200('Checkout session created') },
+        },
+      },
+      '/api/ai/billing/portal': {
+        post: {
+          tags: ['Billing'],
+          summary: 'Open Stripe billing portal',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
+          responses: { 200: ok200('Billing portal URL') },
+        },
+      },
+      '/api/ai/billing/plans': {
+        post: {
+          tags: ['Billing'],
+          summary: 'List available subscription plans',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
+          responses: { 200: ok200('Subscription plans') },
+        },
+      },
+      '/api/ai/billing/usage': {
+        post: {
+          tags: ['Billing'],
+          summary: 'Get current billing usage',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
+          responses: { 200: ok200('Usage data') },
+        },
+      },
+      '/api/ai/billing/invoices': {
+        post: {
+          tags: ['Billing'],
+          summary: 'List billing invoices',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
+          responses: { 200: ok200('Invoices list') },
+        },
+      },
+
+      // ─── Webhooks ────────────────────────────────────────────────
+      '/api/ai/webhooks/create': {
+        post: {
+          tags: ['Webhooks'],
+          summary: 'Register a webhook endpoint',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['url'], properties: { url: { type: 'string', format: 'uri' }, events: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Webhook created') },
+        },
+      },
+      '/api/ai/webhooks/list': {
+        post: {
+          tags: ['Webhooks'],
+          summary: 'List registered webhooks',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
+          responses: { 200: ok200('Webhooks list') },
+        },
+      },
+      '/api/ai/webhooks/delete': {
+        post: {
+          tags: ['Webhooks'],
+          summary: 'Delete a webhook',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['webhookId'], properties: { webhookId: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Webhook deleted') },
+        },
+      },
+      '/api/ai/webhooks/test': {
+        post: {
+          tags: ['Webhooks'],
+          summary: 'Test a webhook with a sample payload',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { webhookId: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Test payload sent') },
+        },
+      },
+      '/api/ai/webhooks/events': {
+        post: {
+          tags: ['Webhooks'],
+          summary: 'List available webhook event types',
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
+          responses: { 200: ok200('Available events') },
+        },
+      },
+
+      // ─── Cleanup ─────────────────────────────────────────────────
+      '/api/ai/cleanup/delete-tweets': {
+        post: {
+          tags: ['Cleanup'],
+          summary: 'Delete tweets matching criteria',
+          'x-payment-info': paymentInfo('posting:bulk-delete'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, beforeDate: { type: 'string', format: 'date' }, dryRun: { type: 'boolean', default: false } } } } } },
+          responses: { 200: ok200Async('Tweet deletion started'), 402: payment402 },
+        },
+      },
+      '/api/ai/cleanup/unlike-all': {
+        post: {
+          tags: ['Cleanup'],
+          summary: 'Unlike all liked tweets',
+          'x-payment-info': paymentInfo('posting:unlike-all'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Unlike all started'), 402: payment402 },
+        },
+      },
+      '/api/ai/cleanup/clear-reposts': {
+        post: {
+          tags: ['Cleanup'],
+          summary: 'Clear all retweets/reposts',
+          'x-payment-info': paymentInfo('posting:clear-reposts'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Reposts cleared'), 402: payment402 },
+        },
+      },
+      '/api/ai/cleanup/clear-history': {
+        post: {
+          tags: ['Cleanup'],
+          summary: 'Clear browsing/search history',
+          'x-payment-info': paymentInfo('posting:bulk-delete'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('History cleared'), 402: payment402 },
+        },
+      },
+      '/api/ai/cleanup/bulk-delete': {
+        post: {
+          tags: ['Cleanup'],
+          summary: 'Bulk delete tweets by IDs or filter',
+          'x-payment-info': paymentInfo('posting:bulk-delete'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, tweetIds: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Bulk delete started'), 402: payment402 },
+        },
+      },
+      '/api/ai/cleanup/archive': {
+        post: {
+          tags: ['Cleanup'],
+          summary: 'Archive tweets before deleting',
+          'x-payment-info': paymentInfo('account:backup'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Archive created'), 402: payment402 },
+        },
+      },
+
+      // ─── Bookmarks ───────────────────────────────────────────────
+      '/api/ai/bookmarks/export': {
+        post: {
+          tags: ['Bookmarks'],
+          summary: 'Export bookmarks to JSON or CSV',
+          'x-payment-info': paymentInfo('export:bookmarks'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, format: { type: 'string', enum: ['json', 'csv'], default: 'json' } } } } } },
+          responses: { 200: ok200('Bookmarks exported'), 402: payment402 },
+        },
+      },
+      '/api/ai/bookmarks/folders': {
+        post: {
+          tags: ['Bookmarks'],
+          summary: 'Get or create bookmark folders',
+          'x-payment-info': paymentInfo('bookmarks:folder'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Bookmark folders'), 402: payment402 },
+        },
+      },
+      '/api/ai/bookmarks/organize': {
+        post: {
+          tags: ['Bookmarks'],
+          summary: 'Organize bookmarks into folders',
+          'x-payment-info': paymentInfo('bookmarks:folder'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Bookmarks organized'), 402: payment402 },
+        },
+      },
+      '/api/ai/bookmarks/search': {
+        post: {
+          tags: ['Bookmarks'],
+          summary: 'Search within bookmarks',
+          'x-payment-info': paymentInfo('bookmarks:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['query'], properties: { ...sessionProp, query: { type: 'string' } } } } } },
+          responses: { 200: ok200('Matching bookmarks'), 402: payment402 },
+        },
+      },
+      '/api/ai/bookmarks/clear': {
+        post: {
+          tags: ['Bookmarks'],
+          summary: 'Clear all bookmarks',
+          'x-payment-info': paymentInfo('bookmarks:clear'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Bookmarks cleared'), 402: payment402 },
+        },
+      },
+      '/api/ai/bookmarks/import': {
+        post: {
+          tags: ['Bookmarks'],
+          summary: 'Import bookmarks from file',
+          'x-payment-info': paymentInfo('bookmarks:get'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200Async('Bookmarks imported'), 402: payment402 },
+        },
+      },
+
+      // ─── Media ───────────────────────────────────────────────────
+      '/api/ai/media/upload': {
+        post: {
+          tags: ['Media'],
+          summary: 'Upload media to Twitter media library',
+          'x-payment-info': paymentInfo('ads:media-studio'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp, mediaUrl: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Media uploaded'), 402: payment402 },
+        },
+      },
+      '/api/ai/media/library': {
+        post: {
+          tags: ['Media'],
+          summary: 'Browse media library',
+          'x-payment-info': paymentInfo('ads:media-studio'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Media library'), 402: payment402 },
+        },
+      },
+      '/api/ai/media/analytics': {
+        post: {
+          tags: ['Media'],
+          summary: 'Get media performance analytics',
+          'x-payment-info': paymentInfo('ads:dashboard'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Media analytics'), 402: payment402 },
+        },
+      },
+      '/api/ai/media/captions': {
+        post: {
+          tags: ['Media'],
+          summary: 'Add captions to video media',
+          'x-payment-info': paymentInfo('posting:captions'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['mediaId'], properties: { ...sessionProp, mediaId: { type: 'string' } } } } } },
+          responses: { 200: ok200Async('Captions added'), 402: payment402 },
+        },
+      },
+      '/api/ai/media/studio': {
+        post: {
+          tags: ['Media'],
+          summary: 'Access Media Studio dashboard',
+          'x-payment-info': paymentInfo('ads:media-studio'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ...sessionProp } } } } },
+          responses: { 200: ok200('Media Studio'), 402: payment402 },
+        },
+      },
+      '/api/ai/media/download-batch': {
+        post: {
+          tags: ['Media'],
+          summary: 'Batch download media from multiple tweets',
+          'x-payment-info': paymentInfo('download:video'),
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['tweetIds'], properties: { ...sessionProp, tweetIds: { type: 'array', items: { type: 'string' } } } } } } },
+          responses: { 200: ok200Async('Batch download started'), 402: payment402 },
+        },
+      },
+
       // ─── Scripts ─────────────────────────────────────────────────
       '/api/scripts': {
         get: {
@@ -2975,6 +4195,26 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
       { name: 'Teams', description: 'Team management for collaborative automation' },
       { name: 'Writer', description: 'AI-powered tweet generation, voice analysis, content calendar' },
       { name: 'Scripts', description: 'Browser scripts for direct X/Twitter automation (downloadable)' },
+      { name: 'Automation', description: 'Auto-reply, auto-repost, content calendar, engagement booster' },
+      { name: 'Community', description: 'Join, leave, create, and manage X Communities' },
+      { name: 'Moderation', description: 'Block bots, mass block/mute, shadowban check, content filters' },
+      { name: 'Account', description: 'Account backup, audit, delegates, identity, QR codes' },
+      { name: 'Ads', description: 'Ad campaigns, media studio, boost tweets, ads analytics' },
+      { name: 'XPro', description: 'X Pro (TweetDeck): dashboard, columns, multi-column layout' },
+      { name: 'Discovery', description: 'Trending topics, saved searches, explore, For You feed' },
+      { name: 'Premium', description: 'Premium subscription check, gift, subscribe, features' },
+      { name: 'Settings', description: 'Account settings, protected mode, block/mute lists' },
+      { name: 'Creator', description: 'Creator analytics, revenue, subscribers, Studio' },
+      { name: 'Timeline', description: 'View, scroll, collect, and export timeline posts' },
+      { name: 'Topics', description: 'Follow, unfollow, and discover X Topics' },
+      { name: 'Articles', description: 'Compose, publish, and analyze longform articles' },
+      { name: 'Leads', description: 'B2B lead finding, scoring, enrichment, and export' },
+      { name: 'Viral', description: 'Viral research, thread generation, trending hooks' },
+      { name: 'Billing', description: 'Stripe subscriptions, checkout, portal, usage, invoices' },
+      { name: 'Webhooks', description: 'Real-time event webhooks for automation notifications' },
+      { name: 'Cleanup', description: 'Delete tweets, unlike all, clear reposts, bulk delete' },
+      { name: 'Bookmarks', description: 'Export, organize, search, and import bookmarks' },
+      { name: 'Media', description: 'Media library, upload, analytics, captions, batch download' },
     ],
   };
 }
@@ -3217,6 +4457,177 @@ const ALL_PAID_RESOURCES = [
   // ── Teams ─────────────────────────────────────────────────────────
   'POST /api/ai/teams/create',
   'POST /api/ai/teams/members',
+
+  // ── Automation ────────────────────────────────────────────────────
+  'POST /api/ai/automation/auto-reply',
+  'POST /api/ai/automation/auto-repost',
+  'POST /api/ai/automation/plug-replies',
+  'POST /api/ai/automation/engagement-booster',
+  'POST /api/ai/automation/quote-tweet-auto',
+  'POST /api/ai/automation/content-repurpose',
+  'POST /api/ai/automation/content-calendar',
+  'POST /api/ai/automation/welcome-followers',
+  'POST /api/ai/automation/continuous-monitor',
+  'POST /api/ai/automation/keyword-monitor',
+  'POST /api/ai/automation/customer-service',
+  'POST /api/ai/automation/evergreen',
+
+  // ── Community ─────────────────────────────────────────────────────
+  'POST /api/ai/community/join',
+  'POST /api/ai/community/leave',
+  'POST /api/ai/community/leave-all',
+  'POST /api/ai/community/create',
+  'POST /api/ai/community/manage',
+  'POST /api/ai/community/notes',
+  'POST /api/ai/community/list',
+  'POST /api/ai/community/members',
+  'POST /api/ai/community/search',
+
+  // ── Moderation ────────────────────────────────────────────────────
+  'POST /api/ai/moderation/block-bots',
+  'POST /api/ai/moderation/mass-block',
+  'POST /api/ai/moderation/mass-unblock',
+  'POST /api/ai/moderation/mass-unmute',
+  'POST /api/ai/moderation/mute-keywords',
+  'POST /api/ai/moderation/muted-words',
+  'POST /api/ai/moderation/remove-followers',
+  'POST /api/ai/moderation/report-spam',
+  'POST /api/ai/moderation/shadowban-check',
+  'POST /api/ai/moderation/verified-only',
+  'POST /api/ai/moderation/blocked-list',
+  'POST /api/ai/moderation/muted-list',
+
+  // ── Account ───────────────────────────────────────────────────────
+  'POST /api/ai/account/backup',
+  'POST /api/ai/account/download-data',
+  'POST /api/ai/account/audit-followers',
+  'POST /api/ai/account/delegate-access',
+  'POST /api/ai/account/verify-identity',
+  'POST /api/ai/account/upload-contacts',
+  'POST /api/ai/account/multi-account',
+  'POST /api/ai/account/join-date',
+  'POST /api/ai/account/login-history',
+  'POST /api/ai/account/connected-accounts',
+  'POST /api/ai/account/appeal-suspension',
+  'POST /api/ai/account/qr-code',
+
+  // ── Ads ───────────────────────────────────────────────────────────
+  'POST /api/ai/ads/campaigns',
+  'POST /api/ai/ads/dashboard',
+  'POST /api/ai/ads/media-studio',
+  'POST /api/ai/ads/boost',
+  'POST /api/ai/ads/analytics',
+
+  // ── X Pro ─────────────────────────────────────────────────────────
+  'POST /api/ai/xpro/dashboard',
+  'POST /api/ai/xpro/columns',
+  'POST /api/ai/xpro/manage',
+
+  // ── Discovery ─────────────────────────────────────────────────────
+  'POST /api/ai/discovery/trending',
+  'POST /api/ai/discovery/trending-monitor',
+  'POST /api/ai/discovery/save-search',
+  'POST /api/ai/discovery/saved-searches',
+  'POST /api/ai/discovery/topics',
+  'POST /api/ai/discovery/explore',
+  'POST /api/ai/discovery/search',
+  'POST /api/ai/discovery/for-you',
+
+  // ── Premium ───────────────────────────────────────────────────────
+  'POST /api/ai/premium/check',
+  'POST /api/ai/premium/gift',
+  'POST /api/ai/premium/subscribe',
+  'POST /api/ai/premium/features',
+
+  // ── Settings ──────────────────────────────────────────────────────
+  'POST /api/ai/settings/get',
+  'POST /api/ai/settings/update',
+  'POST /api/ai/settings/protected',
+  'POST /api/ai/settings/blocked',
+  'POST /api/ai/settings/muted',
+  'POST /api/ai/settings/download-data',
+  'POST /api/ai/settings/advanced',
+  'POST /api/ai/settings/block-list',
+
+  // ── Creator ───────────────────────────────────────────────────────
+  'POST /api/ai/creator/analytics',
+  'POST /api/ai/creator/revenue',
+  'POST /api/ai/creator/subscribers',
+  'POST /api/ai/creator/studio',
+  'POST /api/ai/creator/subscriptions',
+
+  // ── Timeline ──────────────────────────────────────────────────────
+  'POST /api/ai/timeline/view',
+  'POST /api/ai/timeline/scroll',
+  'POST /api/ai/timeline/collect',
+  'POST /api/ai/timeline/export',
+  'POST /api/ai/timeline/switch-feed',
+
+  // ── Topics ────────────────────────────────────────────────────────
+  'POST /api/ai/topics/follow',
+  'POST /api/ai/topics/unfollow',
+  'POST /api/ai/topics/discover',
+  'POST /api/ai/topics/list',
+
+  // ── Articles ──────────────────────────────────────────────────────
+  'POST /api/ai/articles/compose',
+  'POST /api/ai/articles/publish',
+  'POST /api/ai/articles/analytics',
+  'POST /api/ai/articles/list',
+  'POST /api/ai/articles/draft',
+
+  // ── Leads ─────────────────────────────────────────────────────────
+  'POST /api/ai/leads/find',
+  'POST /api/ai/leads/qualify',
+  'POST /api/ai/leads/export',
+  'POST /api/ai/leads/monitor',
+  'POST /api/ai/leads/score',
+  'POST /api/ai/leads/enrich',
+
+  // ── Viral ─────────────────────────────────────────────────────────
+  'POST /api/ai/viral/research',
+  'POST /api/ai/viral/generate',
+  'POST /api/ai/viral/analyze',
+  'POST /api/ai/viral/trending-hooks',
+  'POST /api/ai/viral/headlines',
+
+  // ── Billing ───────────────────────────────────────────────────────
+  'POST /api/ai/billing/checkout',
+  'POST /api/ai/billing/portal',
+  'POST /api/ai/billing/plans',
+  'POST /api/ai/billing/usage',
+  'POST /api/ai/billing/invoices',
+
+  // ── Webhooks ──────────────────────────────────────────────────────
+  'POST /api/ai/webhooks/create',
+  'POST /api/ai/webhooks/list',
+  'POST /api/ai/webhooks/delete',
+  'POST /api/ai/webhooks/test',
+  'POST /api/ai/webhooks/events',
+
+  // ── Cleanup ───────────────────────────────────────────────────────
+  'POST /api/ai/cleanup/delete-tweets',
+  'POST /api/ai/cleanup/unlike-all',
+  'POST /api/ai/cleanup/clear-reposts',
+  'POST /api/ai/cleanup/clear-history',
+  'POST /api/ai/cleanup/bulk-delete',
+  'POST /api/ai/cleanup/archive',
+
+  // ── Bookmarks ─────────────────────────────────────────────────────
+  'POST /api/ai/bookmarks/export',
+  'POST /api/ai/bookmarks/folders',
+  'POST /api/ai/bookmarks/organize',
+  'POST /api/ai/bookmarks/search',
+  'POST /api/ai/bookmarks/clear',
+  'POST /api/ai/bookmarks/import',
+
+  // ── Media ─────────────────────────────────────────────────────────
+  'POST /api/ai/media/upload',
+  'POST /api/ai/media/library',
+  'POST /api/ai/media/analytics',
+  'POST /api/ai/media/captions',
+  'POST /api/ai/media/studio',
+  'POST /api/ai/media/download-batch',
 ];
 
 export function generateWellKnown() {
