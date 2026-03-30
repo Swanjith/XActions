@@ -6,8 +6,20 @@
  */
 
 import { Router } from 'express';
+import authMiddleware from '../middleware/auth.js';
 
 const router = Router();
+
+// GET /api/teams — list teams for the authenticated user
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    const { getUserTeams } = await import('../../src/auth/teamManager.js');
+    const teams = await getUserTeams(req.user.username);
+    res.json({ teams });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // POST /api/teams — create a team
 router.post('/', async (req, res) => {

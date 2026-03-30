@@ -89,29 +89,13 @@
     <div class="activity-log" id="activity-log"></div>
   </main>
 
+  <script src="/js/config.js"></script>
   <script>
-    const API_BASE = window.location.origin;
-
-    // Demo data
-    const demoMembers = [
-      { username: 'nichxbt', role: 'owner', joinedAt: '2025-01-01T00:00:00Z' },
-      { username: 'alice', role: 'admin', joinedAt: '2025-06-15T10:30:00Z' },
-      { username: 'bob', role: 'member', joinedAt: '2025-08-01T14:00:00Z' },
-      { username: 'carol', role: 'viewer', joinedAt: '2025-10-20T09:00:00Z' },
-    ];
-
-    const demoActivity = [
-      { user: 'alice', action: 'Ran bulk unfollow (500 users)', timestamp: '2026-01-15T14:30:00Z' },
-      { user: 'bob', action: 'Exported analytics for @nichxbt', timestamp: '2026-01-15T12:00:00Z' },
-      { user: 'nichxbt', action: 'Invited carol as viewer', timestamp: '2026-01-14T18:00:00Z' },
-      { user: 'alice', action: 'Updated scheduler job "morning-tweet"', timestamp: '2026-01-14T10:00:00Z' },
-      { user: 'bob', action: 'Scraped followers of @elonmusk', timestamp: '2026-01-13T16:00:00Z' },
-      { user: 'nichxbt', action: 'Changed alice role to admin', timestamp: '2026-01-12T09:00:00Z' },
-    ];
+    let currentTeamId = null;
+    const avatars = ['👤', '👩‍💻', '👨‍💻', '🧑‍💻', '👩‍🔬', '👨‍🎨'];
 
     function renderMembers(members) {
       const grid = document.getElementById('members-grid');
-      const avatars = ['👤', '👩‍💻', '👨‍💻', '🧑‍💻', '👩‍🔬', '👨‍🎨'];
       grid.innerHTML = members.map((m, i) => `
         <div class="member-card">
           <div class="member-avatar">${avatars[i % avatars.length]}</div>
@@ -131,6 +115,7 @@
 
     function renderActivity(activity) {
       const log = document.getElementById('activity-log');
+      if (!activity.length) { log.innerHTML = '<p style="color:var(--text2);padding:12px 0">No activity yet.</p>'; return; }
       log.innerHTML = activity.map(a => `
         <div class="activity-row">
           <span class="time">${new Date(a.timestamp).toLocaleString()}</span>
@@ -140,34 +125,68 @@
       `).join('');
     }
 
-    window.changeRole = (username) => {
+    async function loadTeam() {
+      try {
+        const { teams } = await apiRequest('/teams');
+        if (!teams.length) {
+          document.getElementById('members-grid').innerHTML = '<p style="color:var(--text2)">No team found. Create one first.</p>';
+          return;
+        }
+        currentTeamId = teams[0].id;
+        const [{ members }, { activity }] = await Promise.all([
+          apiRequest(`/teams/${currentTeamId}/members`),
+          apiRequest(`/teams/${currentTeamId}/activity`),
+        ]);
+        renderMembers(members);
+        renderActivity(activity);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    window.changeRole = async (username) => {
       const newRole = prompt(`New role for @${username}: (admin, member, viewer)`);
-      if (['admin', 'member', 'viewer'].includes(newRole)) {
-        const m = demoMembers.find(m => m.username === username);
-        if (m) { m.role = newRole; renderMembers(demoMembers); }
+      if (!['admin', 'member', 'viewer'].includes(newRole)) return;
+      try {
+        await apiRequest(`/teams/${currentTeamId}/members/${username}/role`, {
+          method: 'PUT',
+          body: JSON.stringify({ role: newRole }),
+        });
+        showToast(`Updated @${username} to ${newRole}`, 'success');
+        loadTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
       }
     };
 
-    window.removeMember = (username) => {
+    window.removeMember = async (username) => {
       if (!confirm(`Remove @${username} from team?`)) return;
-      const idx = demoMembers.findIndex(m => m.username === username);
-      if (idx > -1) { demoMembers.splice(idx, 1); renderMembers(demoMembers); }
+      try {
+        await apiRequest(`/teams/${currentTeamId}/members/${username}`, { method: 'DELETE' });
+        showToast(`Removed @${username}`, 'success');
+        loadTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     };
 
-    document.getElementById('invite-btn').onclick = () => {
+    document.getElementById('invite-btn').onclick = async () => {
       const email = document.getElementById('invite-email').value.trim();
       const role = document.getElementById('invite-role').value;
-      if (!email) { alert('Enter an email'); return; }
-      const username = email.split('@')[0];
-      demoMembers.push({ username, role, joinedAt: new Date().toISOString() });
-      renderMembers(demoMembers);
-      document.getElementById('invite-email').value = '';
-      alert(`✅ Invite sent to ${email} as ${role}`);
+      if (!email) { showToast('Enter an email', 'error'); return; }
+      try {
+        await apiRequest(`/teams/${currentTeamId}/invite`, {
+          method: 'POST',
+          body: JSON.stringify({ email, role }),
+        });
+        showToast(`✅ Invite sent to ${email} as ${role}`, 'success');
+        document.getElementById('invite-email').value = '';
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     };
 
-    // Init
-    renderMembers(demoMembers);
-    renderActivity(demoActivity);
+    loadTeam();
   </script>
 <script src="/js/sidebar.js"></script>
 </body>
