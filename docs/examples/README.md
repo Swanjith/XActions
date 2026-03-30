@@ -223,6 +223,9 @@ Send, export, and manage DMs.
 | [DM Manager](dm-manager.md) | Full DM management: send, export, manage requests |
 | [DM Exporter](dm-exporter.md) | Export DM conversations with full details |
 | [Send Direct Message](send-direct-message.md) | Send personalized DMs to user list |
+| [Group DM](group-dm.md) | Create group conversations with multiple users |
+| [DM Calls](dm-calls.md) | Initiate audio and video calls in DM conversations |
+| [Encrypted DM](encrypted-dm.md) | Enable and send encrypted direct messages |
 
 ---
 
