@@ -91,7 +91,10 @@ function x402Gate(req, res, next) {
   const operation = match ? `${match[1]}:${match[2]}` : null;
   const price = operation ? AI_OPERATION_PRICES[operation] : null;
   if (!price) return next(); // free or unknown endpoint — pass through
-  const maxAmount = price.replace('$', '');
+
+  // Convert dollar price to USDC atomic units (6 decimals: 1 USDC = 1_000_000 units)
+  const dollarAmount = parseFloat(price.replace('$', ''));
+  const maxAmount = Math.round(dollarAmount * 1_000_000).toString();
 
   const resource = `https://xactions.app${req.path}`;
   const asset = USDC_ADDRESSES[NETWORK] || USDC_ADDRESSES['eip155:8453'];
