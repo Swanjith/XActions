@@ -10,6 +10,7 @@ dotenv.config();
 
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/user.js';
+import { generateSpec, generateWellKnown } from './openapi.js';
 
 const app = express();
 
@@ -37,6 +38,15 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'xactions-api', timestamp: new Date().toISOString() });
+});
+
+// x402 discovery endpoints
+app.get('/openapi.json', (req, res) => {
+  res.type('application/json').json(generateSpec());
+});
+
+app.get('/.well-known/x402', (req, res) => {
+  res.type('application/json').json(generateWellKnown());
 });
 
 // Auth routes

@@ -750,6 +750,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
         post: {
           tags: ['Writer'],
           summary: 'Analyze a user\'s writing voice from tweets',
+          'x-payment-info': paymentInfo('writer:analyze-voice'),
           requestBody: {
             required: true,
             content: {
@@ -773,6 +774,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
         post: {
           tags: ['Writer'],
           summary: 'Generate tweets in a user\'s voice',
+          'x-payment-info': paymentInfo('writer:generate'),
           requestBody: {
             required: true,
             content: {
@@ -797,6 +799,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
         post: {
           tags: ['Writer'],
           summary: 'Rewrite / improve an existing tweet',
+          'x-payment-info': paymentInfo('writer:rewrite'),
           requestBody: {
             required: true,
             content: {
@@ -820,6 +823,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
         post: {
           tags: ['Writer'],
           summary: 'Generate weekly content calendar',
+          'x-payment-info': paymentInfo('writer:calendar'),
           requestBody: {
             required: true,
             content: {
@@ -843,6 +847,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
         post: {
           tags: ['Writer'],
           summary: 'Generate a reply to a tweet',
+          'x-payment-info': paymentInfo('writer:reply'),
           requestBody: {
             required: true,
             content: {

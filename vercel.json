@@ -44,6 +44,14 @@
       "dest": "/api/serverless.js"
     },
     {
+      "src": "/openapi.json",
+      "dest": "/api/serverless.js"
+    },
+    {
+      "src": "/\\.well-known/x402",
+      "dest": "/api/serverless.js"
+    },
+    {
       "src": "/tutorials/unfollow(.html)?",
       "dest": "/dashboard/tutorials/unfollow.html"
     },
