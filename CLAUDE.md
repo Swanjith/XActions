@@ -71,7 +71,7 @@ prisma/             → Database schema + migrations
 scripts/            → Standalone utility scripts
 config/             → Agent config, niche configs, persona templates
 docs/               → Documentation
-  └── agents/       → Agent-specific references (selectors.md, patterns, contributing)
+  └── agents/       → Agent-specific references (selectors.md, patterns, contributing, agent-troubleshooting.md)
 extension/          → Browser extension (Chrome/Edge)
 bin/                → CLI entry point (unfollowx)
 archive/            → Legacy browser-only scripts (do not modify)
@@ -79,7 +79,7 @@ archive/            → Legacy browser-only scripts (do not modify)
 
 ## Skills
 
-49 skills in `skills/*/SKILL.md`. **Read the relevant SKILL.md before implementing** when a user's request matches a category.
+49 skills in `skills/*/SKILL.md`. **Read the relevant SKILL.md before implementing** when a user's request matches a category. Use `skills/index.json` for programmatic discovery. New skills: copy `skills/TEMPLATE.md`.
 
 - **Unfollow management** — mass unfollow, non-follower cleanup
 - **Analytics & insights** — engagement, hashtags, competitors, best times
@@ -200,6 +200,8 @@ PostgreSQL with Prisma ORM. Key models in `prisma/schema.prisma`:
 - Test files: `*.test.js`
 - Environment: Node.js (not jsdom, despite it being a dev dep)
 - Timeouts: 30s per test, 30s for hooks
+- `tests/x402-integration.test.js` requires a running server — failures are expected when server is down
+- See `docs/agents/agent-troubleshooting.md` for common test failure patterns and fixes
 
 ## Codespace Performance
 
