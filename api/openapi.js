@@ -59,6 +59,16 @@ const payment402 = {
 };
 
 /**
+ * Helper — standard 200 success response with schema
+ */
+function ok200(description) {
+  return {
+    description,
+    content: { 'application/json': { schema: { $ref: '#/components/schemas/SuccessResponse' } } },
+  };
+}
+
+/**
  * Helper — session body property
  */
 const sessionProp = {
@@ -289,7 +299,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Follower list' }, 402: payment402 },
+          responses: { 200: ok200('Follower list'), 402: payment402 },
         },
       },
       '/api/ai/scrape/following': {
@@ -313,7 +323,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Following list' }, 402: payment402 },
+          responses: { 200: ok200('Following list'), 402: payment402 },
         },
       },
       '/api/ai/scrape/tweets': {
@@ -337,7 +347,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Tweet list' }, 402: payment402 },
+          responses: { 200: ok200('Tweet list'), 402: payment402 },
         },
       },
       '/api/ai/scrape/thread': {
@@ -361,7 +371,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Thread data' }, 402: payment402 },
+          responses: { 200: ok200('Thread data'), 402: payment402 },
         },
       },
       '/api/ai/scrape/search': {
@@ -385,7 +395,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Search results' }, 402: payment402 },
+          responses: { 200: ok200('Search results'), 402: payment402 },
         },
       },
       '/api/ai/scrape/hashtag': {
@@ -409,7 +419,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Hashtag tweets' }, 402: payment402 },
+          responses: { 200: ok200('Hashtag tweets'), 402: payment402 },
         },
       },
       '/api/ai/scrape/media': {
@@ -433,7 +443,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Media list' }, 402: payment402 },
+          responses: { 200: ok200('Media list'), 402: payment402 },
         },
       },
 
@@ -487,7 +497,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Operation queued' }, 402: payment402 },
+          responses: { 200: ok200('Operation queued'), 402: payment402 },
         },
       },
       '/api/ai/action/detect-unfollowers': {
@@ -509,7 +519,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Unfollower list' }, 402: payment402 },
+          responses: { 200: ok200('Unfollower list'), 402: payment402 },
         },
       },
       '/api/ai/action/auto-like': {
@@ -533,7 +543,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Operation queued' }, 402: payment402 },
+          responses: { 200: ok200('Operation queued'), 402: payment402 },
         },
       },
       '/api/ai/action/follow-engagers': {
@@ -557,7 +567,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Operation queued' }, 402: payment402 },
+          responses: { 200: ok200('Operation queued'), 402: payment402 },
         },
       },
       '/api/ai/action/keyword-follow': {
@@ -581,7 +591,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Operation queued' }, 402: payment402 },
+          responses: { 200: ok200('Operation queued'), 402: payment402 },
         },
       },
       '/api/ai/action/status/{operationId}': {
@@ -620,7 +630,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Snapshot queued' }, 402: payment402 },
+          responses: { 200: ok200('Snapshot queued'), 402: payment402 },
         },
       },
       '/api/ai/monitor/followers': {
@@ -640,7 +650,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Follower diff' }, 402: payment402 },
+          responses: { 200: ok200('Follower diff'), 402: payment402 },
         },
       },
       '/api/ai/alert/new-followers': {
@@ -660,7 +670,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'New followers' }, 402: payment402 },
+          responses: { 200: ok200('New followers'), 402: payment402 },
         },
       },
       '/api/ai/monitor/snapshot/{username}': {
@@ -697,7 +707,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Video URLs' }, 402: payment402 },
+          responses: { 200: ok200('Video URLs'), 402: payment402 },
         },
       },
       '/api/ai/export/bookmarks': {
@@ -719,7 +729,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Bookmarks data' }, 402: payment402 },
+          responses: { 200: ok200('Bookmarks data'), 402: payment402 },
         },
       },
       '/api/ai/unroll/thread': {
@@ -742,7 +752,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Unrolled thread' }, 402: payment402 },
+          responses: { 200: ok200('Unrolled thread'), 402: payment402 },
         },
       },
 
@@ -768,7 +778,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Voice profile analysis' }, 402: payment402 },
+          responses: { 200: ok200('Voice profile analysis'), 402: payment402 },
         },
       },
       '/api/ai/writer/generate': {
@@ -793,7 +803,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Generated tweets' }, 402: payment402 },
+          responses: { 200: ok200('Generated tweets'), 402: payment402 },
         },
       },
       '/api/ai/writer/rewrite': {
@@ -817,7 +827,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Rewritten tweet' }, 402: payment402 },
+          responses: { 200: ok200('Rewritten tweet'), 402: payment402 },
         },
       },
       '/api/ai/writer/calendar': {
@@ -841,7 +851,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Content calendar' }, 402: payment402 },
+          responses: { 200: ok200('Content calendar'), 402: payment402 },
         },
       },
       '/api/ai/writer/reply': {
@@ -866,7 +876,7 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
               },
             },
           },
-          responses: { 200: { description: 'Generated reply' }, 402: payment402 },
+          responses: { 200: ok200('Generated reply'), 402: payment402 },
         },
       },
       '/api/ai/writer/voice-profiles': {
