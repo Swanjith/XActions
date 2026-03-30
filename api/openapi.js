@@ -322,6 +322,606 @@ const S = {
       tone: { type: 'string' },
     },
   },
+
+  // ── Scrape extras ────────────────────────────────────────────────
+  scrapeLikes: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, limit: { type: 'integer', default: 100 } },
+  },
+  scrapeRetweets: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, limit: { type: 'integer', default: 100 } },
+  },
+  scrapeReplies: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, limit: { type: 'integer', default: 50 } },
+  },
+  scrapeQuoteTweets: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, limit: { type: 'integer', default: 50 } },
+  },
+  scrapeUserLikes: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, limit: { type: 'integer', default: 100 } },
+  },
+  scrapeMentions: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, limit: { type: 'integer', default: 50 } },
+  },
+  scrapeRecommendations: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 20 } },
+  },
+
+  // ── Action extras ────────────────────────────────────────────────
+  actionAutoComment: {
+    type: 'object', required: ['keywords', 'templateMessages'],
+    properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } }, templateMessages: { type: 'array', items: { type: 'string' } }, limit: { type: 'integer', default: 10 } },
+  },
+  actionFollow: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  actionUnfollow: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  actionLike: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  actionRetweet: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  actionQuoteTweet: {
+    type: 'object', required: ['tweetId', 'text'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, text: { type: 'string', maxLength: 280 } },
+  },
+  actionPostTweet: {
+    type: 'object', required: ['text'],
+    properties: { ...sessionProp, text: { type: 'string', maxLength: 280 }, replyToTweetId: { type: 'string' } },
+  },
+  actionAutoFollow: {
+    type: 'object',
+    properties: { ...sessionProp, keyword: { type: 'string' }, hashtag: { type: 'string' }, limit: { type: 'integer', default: 50 } },
+  },
+  actionSmartUnfollow: {
+    type: 'object',
+    properties: { ...sessionProp, maxUnfollows: { type: 'integer', default: 100 }, dryRun: { type: 'boolean', default: false }, minFollowDays: { type: 'integer', default: 30 } },
+  },
+  actionAutoRetweet: {
+    type: 'object', required: ['keywords'],
+    properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } }, limit: { type: 'integer', default: 20 } },
+  },
+  actionBulkExecute: {
+    type: 'object', required: ['actions'],
+    properties: { ...sessionProp, actions: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, target: { type: 'string' } } } } },
+  },
+
+  // ── Posting ──────────────────────────────────────────────────────
+  postTweet: {
+    type: 'object', required: ['text'],
+    properties: { ...sessionProp, text: { type: 'string', maxLength: 280 }, replyToTweetId: { type: 'string' }, mediaUrls: { type: 'array', items: { type: 'string' } } },
+  },
+  postThread: {
+    type: 'object', required: ['tweets'],
+    properties: { ...sessionProp, tweets: { type: 'array', items: { type: 'string' }, minItems: 2 } },
+  },
+  createPoll: {
+    type: 'object', required: ['question', 'choices'],
+    properties: { ...sessionProp, question: { type: 'string' }, choices: { type: 'array', items: { type: 'string' }, minItems: 2, maxItems: 4 }, durationHours: { type: 'integer', default: 24 } },
+  },
+  scheduleTweet: {
+    type: 'object', required: ['text', 'scheduledAt'],
+    properties: { ...sessionProp, text: { type: 'string', maxLength: 280 }, scheduledAt: { type: 'string', format: 'date-time' } },
+  },
+  deleteTweet: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  replyTweet: {
+    type: 'object', required: ['tweetId', 'text'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, text: { type: 'string', maxLength: 280 } },
+  },
+  bookmarkTweet: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  getBookmarks: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 50 } },
+  },
+  clearBookmarks: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  publishArticle: {
+    type: 'object', required: ['title', 'content'],
+    properties: { ...sessionProp, title: { type: 'string' }, content: { type: 'string' } },
+  },
+
+  // ── Engagement ───────────────────────────────────────────────────
+  engagementFollow: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  engagementUnfollow: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  engagementLike: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  engagementRetweet: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  engagementQuoteTweet: {
+    type: 'object', required: ['tweetId', 'text'],
+    properties: { ...sessionProp, tweetId: { type: 'string' }, text: { type: 'string', maxLength: 280 } },
+  },
+  engagementAutoFollow: {
+    type: 'object',
+    properties: { ...sessionProp, keyword: { type: 'string' }, hashtag: { type: 'string' }, limit: { type: 'integer', default: 50 } },
+  },
+  engagementSmartUnfollow: {
+    type: 'object',
+    properties: { ...sessionProp, maxUnfollows: { type: 'integer', default: 100 }, dryRun: { type: 'boolean', default: false } },
+  },
+  engagementAutoRetweet: {
+    type: 'object', required: ['keywords'],
+    properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } }, limit: { type: 'integer', default: 20 } },
+  },
+  engagementBulkExecute: {
+    type: 'object', required: ['actions'],
+    properties: { ...sessionProp, actions: { type: 'array', items: { type: 'object' } } },
+  },
+  engagementNotifications: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 50 }, type: { type: 'string', enum: ['all', 'mentions', 'likes', 'follows', 'retweets'] } },
+  },
+  muteUser: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  unmuteUser: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  getTrends: {
+    type: 'object',
+    properties: { ...sessionProp, location: { type: 'string', default: 'worldwide' } },
+  },
+  getExplore: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 20 } },
+  },
+  detectBots: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  findInfluencers: {
+    type: 'object', required: ['keyword'],
+    properties: { ...sessionProp, keyword: { type: 'string' }, minFollowers: { type: 'integer', default: 1000 }, limit: { type: 'integer', default: 20 } },
+  },
+  smartTarget: {
+    type: 'object', required: ['goal'],
+    properties: { ...sessionProp, goal: { type: 'string' }, niche: { type: 'string' } },
+  },
+  cryptoAnalyze: {
+    type: 'object', required: ['ticker'],
+    properties: { ...sessionProp, ticker: { type: 'string', example: 'BTC' }, limit: { type: 'integer', default: 100 } },
+  },
+  audienceInsights: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  engagementReport: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, days: { type: 'integer', default: 30 } },
+  },
+
+  // ── Analytics ────────────────────────────────────────────────────
+  accountAnalytics: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, period: { type: 'string', default: '30d' } },
+  },
+  postAnalytics: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  creatorAnalytics: {
+    type: 'object',
+    properties: { ...sessionProp, period: { type: 'string', default: '30d' } },
+  },
+  brandMonitor: {
+    type: 'object', required: ['query'],
+    properties: { ...sessionProp, query: { type: 'string' }, limit: { type: 'integer', default: 100 } },
+  },
+  competitorAnalysis: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  audienceOverlap: {
+    type: 'object', required: ['username1', 'username2'],
+    properties: { ...sessionProp, username1: { type: 'string' }, username2: { type: 'string' } },
+  },
+  analyticsHistory: {
+    type: 'object',
+    properties: { ...sessionProp, username: { type: 'string' }, limit: { type: 'integer', default: 30 } },
+  },
+  analyticsSnapshot: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  growthRate: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, period: { type: 'string', default: '30d' } },
+  },
+  compareAccounts: {
+    type: 'object', required: ['usernames'],
+    properties: { ...sessionProp, usernames: { type: 'array', items: { type: 'string' }, minItems: 2 } },
+  },
+  analyticsAnalyzeVoice: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, tweetLimit: { type: 'integer', default: 100 } },
+  },
+  analyticsGenerateTweet: {
+    type: 'object', required: ['username', 'topic'],
+    properties: { ...sessionProp, username: { type: 'string' }, topic: { type: 'string' }, count: { type: 'integer', default: 5 } },
+  },
+  analyticsRewriteTweet: {
+    type: 'object', required: ['tweet'],
+    properties: { ...sessionProp, tweet: { type: 'string' }, goal: { type: 'string', enum: ['engagement', 'clarity', 'humor', 'professionalism'] } },
+  },
+  summarizeThread: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+  bestTime: {
+    type: 'object',
+    properties: { ...sessionProp, username: { type: 'string' }, timezone: { type: 'string', default: 'UTC' } },
+  },
+
+  // ── Messages ─────────────────────────────────────────────────────
+  sendDM: {
+    type: 'object', required: ['username', 'message'],
+    properties: { ...sessionProp, username: { type: 'string' }, message: { type: 'string' } },
+  },
+  listConversations: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 20 } },
+  },
+  exportDMs: {
+    type: 'object',
+    properties: { ...sessionProp, format: { type: 'string', enum: ['json', 'csv'], default: 'json' } },
+  },
+
+  // ── Profile ──────────────────────────────────────────────────────
+  updateProfile: {
+    type: 'object',
+    properties: { ...sessionProp, name: { type: 'string' }, bio: { type: 'string' }, location: { type: 'string' }, website: { type: 'string' } },
+  },
+  checkPremium: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  getSettings: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  toggleProtected: {
+    type: 'object',
+    properties: { ...sessionProp, protected: { type: 'boolean' } },
+  },
+  getBlocked: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 100 } },
+  },
+
+  // ── Grok ─────────────────────────────────────────────────────────
+  grokQuery: {
+    type: 'object', required: ['query'],
+    properties: { ...sessionProp, query: { type: 'string' }, context: { type: 'string' } },
+  },
+  grokSummarize: {
+    type: 'object', required: ['topic'],
+    properties: { ...sessionProp, topic: { type: 'string' } },
+  },
+  grokAnalyzeImage: {
+    type: 'object', required: ['imageUrl'],
+    properties: { ...sessionProp, imageUrl: { type: 'string' }, question: { type: 'string' } },
+  },
+
+  // ── Lists ────────────────────────────────────────────────────────
+  getLists: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  getListMembers: {
+    type: 'object', required: ['listId'],
+    properties: { ...sessionProp, listId: { type: 'string' }, limit: { type: 'integer', default: 100 } },
+  },
+
+  // ── Spaces ───────────────────────────────────────────────────────
+  listSpaces: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 20 } },
+  },
+  scrapeSpace: {
+    type: 'object', required: ['spaceId'],
+    properties: { ...sessionProp, spaceId: { type: 'string' } },
+  },
+  joinSpace: {
+    type: 'object', required: ['spaceId'],
+    properties: { ...sessionProp, spaceId: { type: 'string' } },
+  },
+  leaveSpace: {
+    type: 'object', required: ['spaceId'],
+    properties: { ...sessionProp, spaceId: { type: 'string' } },
+  },
+  spaceStatus: {
+    type: 'object', required: ['spaceId'],
+    properties: { ...sessionProp, spaceId: { type: 'string' } },
+  },
+  spaceTranscript: {
+    type: 'object', required: ['spaceId'],
+    properties: { ...sessionProp, spaceId: { type: 'string' } },
+  },
+
+  // ── Monitor extras ───────────────────────────────────────────────
+  monitorFollowing: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  monitorCompare: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, sinceDate: { type: 'string', format: 'date' } },
+  },
+  monitorKeyword: {
+    type: 'object', required: ['keyword'],
+    properties: { ...sessionProp, keyword: { type: 'string' }, interval: { type: 'integer', default: 60 } },
+  },
+  followerAlerts: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  trackEngagement: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+
+  // ── Sentiment ────────────────────────────────────────────────────
+  analyzeSentiment: {
+    type: 'object', required: ['query'],
+    properties: { ...sessionProp, query: { type: 'string' }, limit: { type: 'integer', default: 100 } },
+  },
+  monitorSentiment: {
+    type: 'object', required: ['brand'],
+    properties: { ...sessionProp, brand: { type: 'string' }, interval: { type: 'integer', default: 3600 } },
+  },
+  sentimentReport: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, days: { type: 'integer', default: 30 } },
+  },
+
+  // ── Streams ──────────────────────────────────────────────────────
+  startStream: {
+    type: 'object', required: ['keywords'],
+    properties: { ...sessionProp, keywords: { type: 'array', items: { type: 'string' } }, filters: { type: 'object' } },
+  },
+  stopStream: {
+    type: 'object', required: ['streamId'],
+    properties: { ...sessionProp, streamId: { type: 'string' } },
+  },
+  pauseStream: {
+    type: 'object', required: ['streamId'],
+    properties: { ...sessionProp, streamId: { type: 'string' } },
+  },
+  resumeStream: {
+    type: 'object', required: ['streamId'],
+    properties: { ...sessionProp, streamId: { type: 'string' } },
+  },
+  streamStatus: {
+    type: 'object', required: ['streamId'],
+    properties: { ...sessionProp, streamId: { type: 'string' } },
+  },
+  streamHistory: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 20 } },
+  },
+  listStreams: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+
+  // ── Workflows ────────────────────────────────────────────────────
+  listWorkflowActions: { type: 'object', properties: {} },
+  createWorkflow: {
+    type: 'object', required: ['name', 'steps'],
+    properties: { ...sessionProp, name: { type: 'string' }, steps: { type: 'array', items: { type: 'object' } } },
+  },
+  runWorkflow: {
+    type: 'object', required: ['workflowId'],
+    properties: { ...sessionProp, workflowId: { type: 'string' } },
+  },
+  listWorkflows: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+
+  // ── Personas ─────────────────────────────────────────────────────
+  personaPresets: { type: 'object', properties: {} },
+  createPersona: {
+    type: 'object', required: ['name'],
+    properties: { ...sessionProp, name: { type: 'string' }, niche: { type: 'string' }, config: { type: 'object' } },
+  },
+  listPersonas: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  personaStatus: {
+    type: 'object', required: ['personaId'],
+    properties: { ...sessionProp, personaId: { type: 'string' } },
+  },
+  editPersona: {
+    type: 'object', required: ['personaId'],
+    properties: { ...sessionProp, personaId: { type: 'string' }, config: { type: 'object' } },
+  },
+  deletePersona: {
+    type: 'object', required: ['personaId'],
+    properties: { ...sessionProp, personaId: { type: 'string' } },
+  },
+  runPersona: {
+    type: 'object', required: ['personaId'],
+    properties: { ...sessionProp, personaId: { type: 'string' } },
+  },
+
+  // ── Graph ────────────────────────────────────────────────────────
+  buildGraph: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' }, depth: { type: 'integer', default: 2, maximum: 3 } },
+  },
+  analyzeGraph: {
+    type: 'object', required: ['graphId'],
+    properties: { ...sessionProp, graphId: { type: 'string' }, algorithm: { type: 'string', enum: ['pagerank', 'betweenness', 'community'] } },
+  },
+  graphRecommendations: {
+    type: 'object', required: ['graphId'],
+    properties: { ...sessionProp, graphId: { type: 'string' }, limit: { type: 'integer', default: 20 } },
+  },
+  listGraphs: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+
+  // ── Portability ──────────────────────────────────────────────────
+  listPlatforms: { type: 'object', properties: {} },
+  exportAccount: {
+    type: 'object',
+    properties: { ...sessionProp, format: { type: 'string', enum: ['json', 'csv', 'zip'], default: 'json' } },
+  },
+  migrateAccount: {
+    type: 'object', required: ['platform'],
+    properties: { ...sessionProp, platform: { type: 'string', enum: ['bluesky', 'mastodon', 'threads'] } },
+  },
+  diffExports: {
+    type: 'object', required: ['export1', 'export2'],
+    properties: { ...sessionProp, export1: { type: 'string' }, export2: { type: 'string' } },
+  },
+  importData: {
+    type: 'object', required: ['platform'],
+    properties: { ...sessionProp, platform: { type: 'string' }, data: { type: 'object' } },
+  },
+  convertFormat: {
+    type: 'object', required: ['from', 'to'],
+    properties: { ...sessionProp, from: { type: 'string' }, to: { type: 'string' }, data: { type: 'object' } },
+  },
+
+  // ── CRM ──────────────────────────────────────────────────────────
+  syncCRM: {
+    type: 'object',
+    properties: { ...sessionProp, limit: { type: 'integer', default: 100 } },
+  },
+  tagContact: {
+    type: 'object', required: ['username', 'tags'],
+    properties: { ...sessionProp, username: { type: 'string' }, tags: { type: 'array', items: { type: 'string' } } },
+  },
+  searchCRM: {
+    type: 'object', required: ['query'],
+    properties: { ...sessionProp, query: { type: 'string' } },
+  },
+  segmentCRM: {
+    type: 'object', required: ['criteria'],
+    properties: { ...sessionProp, criteria: { type: 'object' } },
+  },
+
+  // ── Schedule ─────────────────────────────────────────────────────
+  addScheduled: {
+    type: 'object', required: ['text', 'scheduledAt'],
+    properties: { ...sessionProp, text: { type: 'string', maxLength: 280 }, scheduledAt: { type: 'string', format: 'date-time' } },
+  },
+  listScheduled: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  removeScheduled: {
+    type: 'object', required: ['id'],
+    properties: { ...sessionProp, id: { type: 'string' } },
+  },
+  addRSS: {
+    type: 'object', required: ['url'],
+    properties: { ...sessionProp, url: { type: 'string', format: 'uri' }, template: { type: 'string' } },
+  },
+  checkRSS: {
+    type: 'object',
+    properties: { ...sessionProp, feedId: { type: 'string' } },
+  },
+  getRSSDrafts: {
+    type: 'object',
+    properties: { ...sessionProp },
+  },
+  findEvergreen: {
+    type: 'object',
+    properties: { ...sessionProp, username: { type: 'string' }, minLikes: { type: 'integer', default: 10 } },
+  },
+
+  // ── Optimizer ────────────────────────────────────────────────────
+  optimizeTweet: {
+    type: 'object', required: ['text'],
+    properties: { ...sessionProp, text: { type: 'string' }, goal: { type: 'string', enum: ['engagement', 'reach', 'conversions'] } },
+  },
+  suggestHashtags: {
+    type: 'object', required: ['topic'],
+    properties: { ...sessionProp, topic: { type: 'string' }, count: { type: 'integer', default: 10 } },
+  },
+  predictPerformance: {
+    type: 'object', required: ['text'],
+    properties: { ...sessionProp, text: { type: 'string' } },
+  },
+  generateVariations: {
+    type: 'object', required: ['text'],
+    properties: { ...sessionProp, text: { type: 'string' }, count: { type: 'integer', default: 5 } },
+  },
+
+  // ── Utility extras ───────────────────────────────────────────────
+  analyzeProfile: {
+    type: 'object', required: ['username'],
+    properties: { ...sessionProp, username: { type: 'string' } },
+  },
+  analyzeTweet: {
+    type: 'object', required: ['tweetId'],
+    properties: { ...sessionProp, tweetId: { type: 'string' } },
+  },
+
+  // ── Notifications ────────────────────────────────────────────────
+  sendWebhook: {
+    type: 'object', required: ['event', 'url'],
+    properties: { url: { type: 'string', format: 'uri' }, event: { type: 'string' }, payload: { type: 'object' } },
+  },
+  testWebhook: {
+    type: 'object', required: ['url'],
+    properties: { url: { type: 'string', format: 'uri' } },
+  },
+
+  // ── Datasets ─────────────────────────────────────────────────────
+  listDatasets: { type: 'object', properties: {} },
+  getDataset: {
+    type: 'object', required: ['datasetId'],
+    properties: { ...sessionProp, datasetId: { type: 'string' } },
+  },
+
+  // ── Teams ────────────────────────────────────────────────────────
+  createTeam: {
+    type: 'object', required: ['name'],
+    properties: { ...sessionProp, name: { type: 'string' }, members: { type: 'array', items: { type: 'string' } } },
+  },
+  getTeamMembers: {
+    type: 'object', required: ['teamId'],
+    properties: { ...sessionProp, teamId: { type: 'string' } },
+  },
 };
 
 /**

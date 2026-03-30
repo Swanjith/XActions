@@ -38,6 +38,26 @@ import optimizerRoutes from './optimizer.js';
 import notificationsRoutes from './notifications.js';
 import datasetsRoutes from './datasets.js';
 import teamsRoutes from './teams.js';
+import automationRoutes from './automation.js';
+import communityRoutes from './community.js';
+import moderationRoutes from './moderation.js';
+import accountRoutes from './account.js';
+import adsRoutes from './ads.js';
+import xproRoutes from './xpro.js';
+import discoveryRoutes from './discovery.js';
+import premiumRoutes from './premium.js';
+import settingsRoutes from './settings.js';
+import creatorRoutes from './creator.js';
+import timelineRoutes from './timeline.js';
+import topicsRoutes from './topics.js';
+import articlesRoutes from './articles.js';
+import leadsRoutes from './leads.js';
+import viralRoutes from './viral.js';
+import billingRoutes from './billing.js';
+import webhooksRoutes from './webhooks.js';
+import cleanupRoutes from './cleanup.js';
+import bookmarksRoutes from './bookmarks.js';
+import mediaRoutes from './media.js';
 
 const router = express.Router();
 

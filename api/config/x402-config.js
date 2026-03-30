@@ -657,6 +657,14 @@ export const AI_OPERATION_PRICES = {
   'monitor:keyword': '$0.02',         // Monitor keyword mentions
   'monitor:follower-alerts': '$0.01', // Follower change alerts
   'monitor:track-engagement': '$0.02', // Track tweet engagement over time
+  'monitor:compare': '$0.01',         // Compare follower snapshots
+
+  // Action additions (/api/ai/action/*)
+  'action:auto-comment': '$0.02',     // Auto-comment on keyword tweets
+
+  // Analyze utility routes (/api/ai/analyze/*)
+  'analyze:profile': '$0.01',         // Deep profile analysis
+  'analyze:tweet': '$0.005',          // Analyze a single tweet
 };
 
 // Pricing for browser script downloads (GET /api/scripts/src/:name, GET /api/scripts/automation/:name)
