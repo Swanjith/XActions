@@ -80,6 +80,7 @@
     console.log(`⚙️ Max: ${CONFIG.maxRemovals === Infinity ? '∞' : CONFIG.maxRemovals} | Dry run: ${CONFIG.dryRun}`);
 
     let emptyScrolls = 0;
+    let lastHeight = document.body.scrollHeight;
 
     while (removed < CONFIG.maxRemovals && emptyScrolls < CONFIG.maxEmptyScrolls) {
       if (!(await shouldContinue())) break;
@@ -87,9 +88,15 @@
 
       const buttons = $$(SEL.unretweet);
       if (buttons.length === 0) {
-        emptyScrolls++;
         window.scrollTo(0, document.body.scrollHeight);
         await sleep(gaussian(CONFIG.scrollDelay, CONFIG.scrollDelay + 800));
+        const newHeight = document.body.scrollHeight;
+        if (newHeight === lastHeight) {
+          emptyScrolls++;
+        } else {
+          emptyScrolls = 0;
+          lastHeight = newHeight;
+        }
         continue;
       }
       emptyScrolls = 0;
@@ -141,6 +148,7 @@
       if (consecutiveErrors >= CONFIG.maxConsecutiveErrors) break;
       window.scrollTo(0, document.body.scrollHeight);
       await sleep(gaussian(CONFIG.scrollDelay, CONFIG.scrollDelay + 800));
+      lastHeight = document.body.scrollHeight;
     }
 
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
