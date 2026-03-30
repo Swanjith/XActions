@@ -20,6 +20,7 @@ import {
   FACILITATOR_URL,
   NETWORK,
   AI_OPERATION_PRICES,
+  SCRIPT_PRICES,
   getOperationName,
   SUPPORTED_NETWORKS,
   getAcceptedNetworks,
@@ -50,6 +51,15 @@ function buildRouteConfig() {
     const routePath = `POST /api/ai/${category}/${action}`;
 
     routes[routePath] = {
+      price,
+      network: NETWORK,
+      payTo: PAY_TO_ADDRESS,
+    };
+  }
+
+  // Script download routes
+  for (const [scriptPath, price] of Object.entries(SCRIPT_PRICES)) {
+    routes[`GET /api/scripts/${scriptPath}`] = {
       price,
       network: NETWORK,
       payTo: PAY_TO_ADDRESS,
@@ -181,8 +191,11 @@ async function initializeMiddleware() {
  */
 function extractOperation(requirements) {
   if (!requirements?.resource) return 'unknown';
-  const match = requirements.resource.match(/\/api\/ai\/([^/]+)\/([^/?]+)/);
-  return match ? `${match[1]}:${match[2]}` : 'unknown';
+  const aiMatch = requirements.resource.match(/\/api\/ai\/([^/]+)\/([^/?]+)/);
+  if (aiMatch) return `${aiMatch[1]}:${aiMatch[2]}`;
+  const scriptMatch = requirements.resource.match(/\/api\/scripts\/((?:automation|src)\/[^/?]+)/);
+  if (scriptMatch) return `script:${scriptMatch[1]}`;
+  return 'unknown';
 }
 
 /**
@@ -192,13 +205,20 @@ function extractOperation(requirements) {
  * Falls through gracefully if x402 is not configured (development mode).
  */
 export async function x402Middleware(req, res, next) {
-  // Only protect AI endpoints
-  if (!req.path.startsWith('/api/ai/')) {
+  const isAiPath = req.path.startsWith('/api/ai/');
+  const isScriptsPath = req.path.startsWith('/api/scripts/');
+
+  if (!isAiPath && !isScriptsPath) {
     return next();
   }
 
-  // Health and pricing endpoints are always free
-  if (req.path === '/api/ai/health' || req.path === '/api/ai/pricing') {
+  // Free endpoints: AI health/pricing + scripts listing
+  if (
+    req.path === '/api/ai/health' ||
+    req.path === '/api/ai/pricing' ||
+    req.path === '/api/scripts' ||
+    req.path === '/api/scripts/'
+  ) {
     return next();
   }
 

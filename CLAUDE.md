@@ -79,7 +79,7 @@ archive/            → Legacy browser-only scripts (do not modify)
 
 ## Skills
 
-32 skills in `skills/*/SKILL.md`. **Read the relevant SKILL.md before implementing** when a user's request matches a category.
+49 skills in `skills/*/SKILL.md`. **Read the relevant SKILL.md before implementing** when a user's request matches a category.
 
 - **Unfollow management** — mass unfollow, non-follower cleanup
 - **Analytics & insights** — engagement, hashtags, competitors, best times
@@ -112,6 +112,23 @@ archive/            → Legacy browser-only scripts (do not modify)
 - **Viral thread generation** — research trends and generate high-engagement threads
 - **A2A multi-agent** — Agent-to-Agent protocol integration
 - **XActions CLI** — `bin/unfollowx` command-line tool
+- **Account backup** — export tweets, likes, bookmarks, followers as JSON; trigger official data archive
+- **Video downloading** — download videos and GIFs from tweets, batch download, quality selection
+- **X Pro management** — navigate TweetDeck, setup monitoring columns, multi-column view
+- **Saved searches** — create, manage, run, and export saved search queries
+- **Delegate access** — add/remove account delegates and configure posting permissions
+- **Community notes** — view, write, rate, and browse Community Notes on posts
+- **Post editing** — edit existing posts or undo a tweet within the 30-second window (Premium)
+- **Account tools** — join date, login history, connected accounts, appeal suspension, QR codes, share/embed
+- **Media studio** — manage media library, upload, video analytics, monetization, captions
+- **Timeline viewing** — switch For You/Following, auto-scroll, collect and export timeline posts
+- **Topic management** — follow/unfollow X Topics, discover topics by keyword
+- **CRM management** — tag, segment, search, and sync followers as CRM contacts
+- **Teams management** — create teams, invite members, assign roles for collaborative automation
+- **Webhooks** — receive real-time event notifications for operations, follower changes
+- **Graph analysis** — network graph algorithms: PageRank, betweenness, community detection
+- **Billing management** — manage Stripe subscriptions, checkout, billing portal, plan changes
+- **x402 payments** — crypto pay-per-use API access via the x402 protocol, multi-chain/token
 - **XActions MCP server** — `src/mcp/server.js` for AI agents
 
 ## Key Technical Context

@@ -13,6 +13,27 @@ const TWITTER_CLIENT_ID = process.env.TWITTER_CLIENT_ID;
 const TWITTER_CLIENT_SECRET = process.env.TWITTER_CLIENT_SECRET;
 const CALLBACK_URL = `${process.env.API_URL}/api/twitter/callback`;
 
+// Validate FRONTEND_URL at startup — all OAuth redirects depend on it
+const FRONTEND_URL = (() => {
+  const url = process.env.FRONTEND_URL;
+  if (!url) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ FRONTEND_URL is required in production');
+      process.exit(1);
+    }
+    console.warn('⚠️  FRONTEND_URL not set — defaulting to http://localhost:3001');
+    return 'http://localhost:3001';
+  }
+  try {
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Bad protocol');
+    return url.replace(/\/$/, ''); // Strip trailing slash
+  } catch {
+    console.error(`❌ FRONTEND_URL is not a valid URL: "${url}"`);
+    process.exit(1);
+  }
+})();
+
 // In-memory OAuth state store (state -> { codeVerifier, flow, userId?, expiresAt })
 // Entries auto-expire after 10 minutes
 const oauthStateStore = new Map();
@@ -106,13 +127,13 @@ router.get('/callback', async (req, res) => {
     const { code, state } = req.query;
 
     if (!code || !state) {
-      return res.redirect(`${process.env.FRONTEND_URL}/login?error=missing_params`);
+      return res.redirect(`${FRONTEND_URL}/login?error=missing_params`);
     }
 
     // Verify state and get stored data (single-use, prevents replay)
     const oauthData = consumeOAuthState(state);
     if (!oauthData) {
-      return res.redirect(`${process.env.FRONTEND_URL}/login?error=invalid_state`);
+      return res.redirect(`${FRONTEND_URL}/login?error=invalid_state`);
     }
 
     const { twitterUser, tokens } = await exchangeCodeForUser(code, oauthData.codeVerifier);
@@ -170,7 +191,7 @@ router.get('/callback', async (req, res) => {
       );
 
       // Use hash fragment so token isn't sent to server in subsequent requests or logged
-      res.redirect(`${process.env.FRONTEND_URL}/login?oauth=success#token=${token}`);
+      res.redirect(`${FRONTEND_URL}/login?oauth=success#token=${token}`);
       return;
     }
 
@@ -181,14 +202,14 @@ router.get('/callback', async (req, res) => {
         data: twitterData
       });
 
-      res.redirect(`${process.env.FRONTEND_URL}/dashboard?twitter_connected=true`);
+      res.redirect(`${FRONTEND_URL}/dashboard?twitter_connected=true`);
       return;
     }
 
-    res.redirect(`${process.env.FRONTEND_URL}/login?error=invalid_flow`);
+    res.redirect(`${FRONTEND_URL}/login?error=invalid_flow`);
   } catch (error) {
     console.error('❌ Twitter OAuth callback error:', error.response?.data || error.message);
-    res.redirect(`${process.env.FRONTEND_URL}/login?error=twitter_connection_failed`);
+    res.redirect(`${FRONTEND_URL}/login?error=twitter_connection_failed`);
   }
 });
 

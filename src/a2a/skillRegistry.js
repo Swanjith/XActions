@@ -233,8 +233,7 @@ export function convertMcpToolToA2aSkill(tool) {
 
   return {
     id,
-    name: tool.name,
-    displayName,
+    name: displayName,
     description: tool.description || '',
     tags,
     inputSchema: tool.inputSchema || { type: 'object', properties: {} },
@@ -304,17 +303,18 @@ function ensureInitialized() {
  */
 export function getSkillCategories() {
   ensureInitialized();
-  const categorySet = new Set();
+  const categoryMap = {};
   for (const skill of _skills.values()) {
     const toolName = skill.id.replace('xactions.', '');
     for (const [cat, pattern] of Object.entries(CATEGORY_PATTERNS)) {
       if (pattern.test(toolName)) {
-        categorySet.add(cat);
+        if (!categoryMap[cat]) categoryMap[cat] = [];
+        categoryMap[cat].push(skill);
         break;
       }
     }
   }
-  return Array.from(categorySet);
+  return categoryMap;
 }
 
 /**
@@ -371,7 +371,7 @@ export function searchSkills(queryOrOpts = '', tagsArg = []) {
  */
 export function getSkillById(skillId) {
   ensureInitialized();
-  return _skills.get(skillId);
+  return _skills.get(skillId) ?? null;
 }
 
 /**
@@ -389,7 +389,7 @@ export function getAllSkills() {
  *
  * @returns {Promise<number>} New skill count
  */
-export async function refreshSkills() {
+export function refreshSkills() {
   _initialized = false;
   _skills = null;
   ensureInitialized();

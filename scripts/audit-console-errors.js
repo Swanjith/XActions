@@ -27,6 +27,16 @@ const IGNORE_PATTERNS = [
   /socket\.io/,
   /localhost:3100/,       // a2a service — optional separate process
   /ERR_CONNECTION_REFUSED.*310[0-9]/, // other local optional services
+  // Browser auto-generates these for every network failure — already captured via
+  // requestfailed/response handlers so they'd be double-reported here
+  /^Failed to load resource:/,
+  // manifest.json ERR_ABORTED is a Puppeteer timing artifact (manifest serves correctly)
+  /manifest\.json/,
+  // PWA icon pre-fetches (referenced in manifest) often abort after networkidle2 triggers
+  /icon-192\.png|icon-512\.png/,
+  // Auth-gated pages log cascade errors when API calls return 401/429 in dev
+  /Failed to list graphs/,
+  /Failed to load graph/,
 ];
 
 function isIgnored(text) {
@@ -95,7 +105,12 @@ async function auditPage(browser, route) {
     if (isIgnored(reqUrl)) return;
     if (reqUrl.includes('socket.io')) return;
     const failure = req.failure();
-    issues.networkErrors.push({ url: reqUrl, reason: failure?.errorText ?? 'unknown' });
+    const reason = failure?.errorText ?? 'unknown';
+    // ERR_ABORTED is a Puppeteer page-close artifact — the page closes while deferred
+    // resources are still in-flight. Real errors (404, CSP blocks) are caught via the
+    // console and response handlers, which fire before close.
+    if (reason === 'net::ERR_ABORTED') return;
+    issues.networkErrors.push({ url: reqUrl, reason });
   };
 
   const onResponse = (res) => {
@@ -103,7 +118,7 @@ async function auditPage(browser, route) {
     const resUrl = res.url();
     if (status < 400) return;
     if (resUrl.includes('favicon')) return;
-    if (status === 401 && resUrl.includes('/api/')) return; // auth-gated, expected
+    if ((status === 401 || status === 429) && resUrl.includes('/api/')) return; // auth-gated / rate-limited by audit itself
     if (isIgnored(resUrl)) return;
     issues.networkErrors.push({ url: resUrl, reason: `HTTP ${status}` });
   };
@@ -113,7 +128,7 @@ async function auditPage(browser, route) {
   page.on('response', onResponse);
 
   try {
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 12000 });
+    await page.goto(url, { waitUntil: 'load', timeout: 15000 });
     await new Promise((r) => setTimeout(r, 200));
   } catch (e) {
     const msg = e.message;

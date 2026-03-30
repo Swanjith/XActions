@@ -25,12 +25,23 @@ const randomDelay = (min = 1000, max = 3000) => sleep(min + Math.random() * (max
 let browserInstance = null;
 
 /**
- * Get or create browser instance
+ * Get or create browser instance — recovers from crashes automatically
  */
 async function getBrowser() {
+  // Check if existing instance is still connected
+  if (browserInstance) {
+    try {
+      // A crashed/closed browser throws on any call
+      await browserInstance.version();
+    } catch {
+      console.warn('⚠️  Browser disconnected — restarting');
+      browserInstance = null;
+    }
+  }
+
   if (!browserInstance) {
     browserInstance = await puppeteer.launch({
-      headless: 'new',
+      headless: process.env.PUPPETEER_HEADLESS === 'false' ? false : 'new',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -43,7 +54,13 @@ async function getBrowser() {
         '--window-size=1920,1080'
       ]
     });
+
+    // Auto-clear instance reference if browser closes unexpectedly
+    browserInstance.on('disconnected', () => {
+      browserInstance = null;
+    });
   }
+
   return browserInstance;
 }
 

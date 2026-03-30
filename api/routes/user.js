@@ -11,6 +11,18 @@ const prisma = new PrismaClient();
 // All routes require authentication
 router.use(authMiddleware);
 
+// Lightweight current-user endpoint for sidebar/header display
+router.get('/me', (req, res) => {
+  const u = req.user;
+  res.json({
+    id: u.id,
+    username: u.username,
+    twitterUsername: u.twitterUsername || null,
+    twitterConnected: !!u.twitterAccessToken,
+    hasSession: !!u.sessionCookie
+  });
+});
+
 // Get user profile
 router.get('/profile', async (req, res) => {
   try {

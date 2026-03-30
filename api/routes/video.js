@@ -165,8 +165,10 @@ router.get('/download', async (req, res) => {
       });
     }
 
-    // Set download headers
-    const filename = `${author || 'video'}_${tweetId || Date.now()}.mp4`;
+    // Sanitize user-supplied params before embedding in Content-Disposition
+    const safeAuthor = (author || 'video').replace(/[^\w-]/g, '_').slice(0, 50);
+    const safeTweetId = (tweetId || String(Date.now())).replace(/[^\w-]/g, '_').slice(0, 30);
+    const filename = `${safeAuthor}_${safeTweetId}.mp4`;
     res.setHeader('Content-Type', videoResponse.headers.get('content-type') || 'video/mp4');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 

@@ -76,6 +76,7 @@ import { initializePlugins, getPluginRoutes } from '../src/plugins/index.js';
 
 // Optional: x402 micropayment support for remote AI API (disabled by default)
 import { x402Middleware, x402HealthCheck, x402Pricing } from './middleware/x402.js';
+import scriptsRoutes from './routes/scripts.js';
 import aiDetectorMiddleware from './middleware/ai-detector.js';
 import { validateConfig as validateX402Config } from './config/x402-config.js';
 import { generateSpec as generateOpenAPISpec, generateWellKnown as generateX402WellKnown } from './openapi.js';
@@ -224,12 +225,24 @@ app.get('/manifest.json', (req, res) => {
   res.type('application/manifest+json').sendFile(path.join(__dirname, '../public/manifest.json'));
 });
 
-// x402 discovery endpoints
-app.get('/openapi.json', (req, res) => {
+// LLM discovery files — https://llmstxt.org
+app.get('/llms.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(__dirname, '../llms.txt'));
+});
+
+app.get('/llms-full.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(__dirname, '../llms-full.txt'));
+});
+
+// x402 discovery endpoints — public, allow any origin so x402scan and agents can crawl
+const openCors = { origin: '*', methods: ['GET', 'OPTIONS'] };
+app.options('/openapi.json', cors(openCors));
+app.get('/openapi.json', cors(openCors), (req, res) => {
   res.type('application/json').json(generateOpenAPISpec());
 });
 
-app.get('/.well-known/x402', (req, res) => {
+app.options('/.well-known/x402', cors(openCors));
+app.get('/.well-known/x402', cors(openCors), (req, res) => {
   res.type('application/json').json(generateX402WellKnown());
 });
 
@@ -237,6 +250,7 @@ app.get('/.well-known/x402', (req, res) => {
 app.get('/api/ai/health', x402HealthCheck);
 app.get('/api/ai/pricing', x402Pricing);
 app.use('/api/ai', aiRoutes);
+app.use('/api/scripts', scriptsRoutes);
 
 // Serve public assets (icons, OG images, logo)
 app.use(express.static(path.join(__dirname, '../public'), {

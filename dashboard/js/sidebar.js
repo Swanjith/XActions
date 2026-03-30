@@ -115,14 +115,70 @@
         ${nav}
       </nav>
       <a href="/run" class="action-btn">Run Script</a>
-      <a href="https://github.com/nirholas/XActions" class="user-menu" id="user-menu-link" target="_blank" rel="noopener noreferrer">
+      <a href="/" class="user-menu" id="user-menu-link">
         <div class="user-avatar" id="user-avatar">⚡</div>
         <div class="user-info">
-          <div class="user-name" id="user-display-name">Star on GitHub</div>
-          <div class="user-handle" id="user-handle">100% open source</div>
+          <div class="user-name" id="user-display-name">XActions</div>
+          <div class="user-handle" id="user-handle">Loading...</div>
         </div>
         <span class="user-menu-dots">···</span>
       </a>`;
+
+  // Populate user info from stored auth token
+  (function loadUserInfo() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      // Not logged in — show GitHub link
+      const link = document.getElementById('user-menu-link');
+      link.href = 'https://github.com/nirholas/XActions';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.getElementById('user-display-name').textContent = 'Star on GitHub';
+      document.getElementById('user-handle').textContent = '100% open source';
+      return;
+    }
+
+    // Decode JWT payload (base64) for immediate display — no network needed
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const username = payload.username || 'User';
+      document.getElementById('user-display-name').textContent = username;
+      document.getElementById('user-handle').textContent = `@${username}`;
+      document.getElementById('user-avatar').textContent = username[0].toUpperCase();
+
+      const link = document.getElementById('user-menu-link');
+      link.href = '/dashboard';
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
+    } catch {
+      // Malformed JWT — clear it and show logged-out state
+      localStorage.removeItem('authToken');
+      document.getElementById('user-display-name').textContent = 'Sign in';
+      document.getElementById('user-handle').textContent = '';
+      document.getElementById('user-menu-link').href = '/login';
+    }
+
+    // Fetch full user info from API for Twitter handle + avatar
+    const apiBase = window.location.hostname === 'localhost'
+      ? 'http://localhost:3001/api'
+      : '/api';
+
+    fetch(`${apiBase}/user/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        const displayName = data.twitterUsername || data.username || 'User';
+        const handle = data.twitterUsername ? `@${data.twitterUsername}` : `@${data.username}`;
+        document.getElementById('user-display-name').textContent = displayName;
+        document.getElementById('user-handle').textContent = handle;
+        if (data.twitterUsername) {
+          document.getElementById('user-avatar').textContent = data.twitterUsername[0].toUpperCase();
+        }
+      })
+      .catch(() => { /* non-critical, keep JWT-decoded display */ });
+  }());
 
   // Inject sidebar CSS overrides (wins cascade over inline <style> blocks)
   const style = document.createElement('style');

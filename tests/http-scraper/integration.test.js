@@ -279,6 +279,9 @@ describe('Integration: Non-Follower Detection Flow', () => {
     //   1. scrapeFollowing → resolveUserId (UserByScreenName) + Following endpoint
     //   2. scrapeFollowers → resolveUserId (UserByScreenName) + Followers endpoint
     // Total: minimum 4 fetch calls
+    // FOLLOWERS_RESPONSE has a cursor, so we must return a no-cursor page on the 2nd call
+    // to prevent infinite pagination (seen.size=5 never reaches limit=100).
+    let followersPageCount = 0;
     const fetchMock = vi.fn(async (url) => {
       if (url.includes('UserByScreenName')) {
         return mockResponse(graphqlBody(USER_RESOLVE_RESPONSE));
@@ -287,6 +290,9 @@ describe('Integration: Non-Follower Detection Flow', () => {
         return mockResponse(graphqlBody(FOLLOWING_RESPONSE));
       }
       if (url.includes(GRAPHQL.Followers.operationName)) {
+        followersPageCount++;
+        // Return empty page on 2nd call so pagination terminates
+        if (followersPageCount > 1) return mockResponse({});
         return mockResponse(graphqlBody(FOLLOWERS_RESPONSE));
       }
       return mockResponse({});

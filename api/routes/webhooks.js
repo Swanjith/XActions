@@ -49,17 +49,22 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
  * Verify webhook signature
  */
 function verifySignature(payload, signature, secret) {
-  if (!secret || !signature) return true; // Skip verification if no secret configured
-  
+  // If no secret is configured, skip verification (opt-in)
+  if (!secret) return true;
+  // Secret is configured — signature is mandatory
+  if (!signature) return false;
+
   const expectedSignature = crypto
     .createHmac('sha256', secret)
     .update(JSON.stringify(payload))
     .digest('hex');
-  
-  return crypto.timingSafeEquals(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
+
+  const sigBuf = Buffer.from(signature);
+  const expBuf = Buffer.from(expectedSignature);
+  // Buffers must be same length for timingSafeEqual
+  if (sigBuf.length !== expBuf.length) return false;
+
+  return crypto.timingSafeEqual(sigBuf, expBuf);
 }
 
 /**

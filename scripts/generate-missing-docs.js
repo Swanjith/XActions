@@ -259,7 +259,7 @@ function generateDoc(slug, meta) {
         let val = match[2].trim().replace(/,\s*$/, '');
         // Extract inline comment as description
         const commentMatch = val.match(/(.+?)\s*\/\/\s*(.+)/);
-        let desc = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
+        let desc = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim().toLowerCase().replace(/^\w/, c => c.toUpperCase());
         if (commentMatch) {
           val = commentMatch[1].trim();
           desc = commentMatch[2].trim();
@@ -359,12 +359,7 @@ This script provides the following capabilities:
 4. Press Enter to run
 
 \`\`\`javascript
-// Quick start — copy the full script from:
-// ${meta.srcFile}
-//
-// Or install via npm and use the CLI:
-// npm install -g xactions
-// xactions --help
+${info.content}
 \`\`\`
 ${configSection}
 ---
@@ -453,8 +448,12 @@ function main() {
 
   for (const [slug, meta] of Object.entries(SCRIPT_META)) {
     if (existingDocs.has(slug)) {
-      skipped++;
-      continue;
+      // Regenerate if it still has the old placeholder (no real code embedded)
+      const existing = fs.readFileSync(path.join(DOCS_DIR, `${slug}.md`), 'utf-8');
+      if (!existing.includes('Quick start — copy the full script from')) {
+        skipped++;
+        continue;
+      }
     }
 
     // Verify source file exists
