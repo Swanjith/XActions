@@ -12,6 +12,8 @@ dotenv.config();
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/user.js';
 import twitterRoutes from './routes/twitter.js';
+import videoRoutes from './routes/video.js';
+import unfollowersRoutes from './routes/unfollowers.js';
 import { generateSpec, generateWellKnown } from './openapi.js';
 import {
   PAY_TO_ADDRESS,
@@ -173,6 +175,12 @@ app.use('/api/twitter', twitterRoutes);
 
 // User routes
 app.use('/api/user', userRoutes);
+
+// Video routes
+app.use('/api/video', videoRoutes);
+
+// Unfollower tracking routes (stats, changes, chart, schedule — scan requires Railway)
+app.use('/api/unfollowers', unfollowersRoutes);
 
 // 404 for unmatched API routes
 app.use('/api', (req, res) => {

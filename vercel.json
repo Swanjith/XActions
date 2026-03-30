@@ -10,6 +10,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "llms*.txt",
+      "use": "@vercel/static"
+    },
+    {
       "src": "dashboard/**",
       "use": "@vercel/static"
     },
@@ -262,6 +266,18 @@
     {
       "src": "/404",
       "dest": "/dashboard/404.html"
+    },
+    {
+      "src": "/scripts",
+      "dest": "/dashboard/scripts/index.html"
+    },
+    {
+      "src": "/scripts/([^/]+?)(\\.html)?$",
+      "dest": "/dashboard/scripts/$1.html"
+    },
+    {
+      "src": "/llms-full\\.txt",
+      "dest": "/llms-full.txt"
     },
     {
       "src": "/(.*)",

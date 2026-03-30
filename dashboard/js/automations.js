@@ -50,14 +50,28 @@
       updateCounters();
     } catch (err) {
       console.error('Failed to fetch automation status:', err);
-      showToast('Failed to load automations', 'error');
+      automations = {};
+      renderGrid();
+      updateCounters();
+      showToast('Failed to load automations: ' + err.message, 'error');
     }
   }
 
   // ── Render the automation card grid ────────────────────
   function renderGrid() {
     grid.innerHTML = '';
-    for (const [id, auto] of Object.entries(automations)) {
+    const entries = Object.entries(automations);
+    if (entries.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-secondary);">
+          <div style="font-size:48px;margin-bottom:16px;">⚙️</div>
+          <p style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">No automations found</p>
+          <p style="font-size:14px;">Could not load automations. Check your connection and try refreshing.</p>
+          <button class="btn btn--start" style="margin-top:20px;" onclick="location.reload()">Reload</button>
+        </div>`;
+      return;
+    }
+    for (const [id, auto] of entries) {
       grid.appendChild(createCard(id, auto));
     }
   }

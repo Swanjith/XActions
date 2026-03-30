@@ -27,6 +27,11 @@
 /monitor /monitor.html 200
 /automations /automations.html 200
 /workflows /workflows.html 200
+/agent /agent.html 200
+/unfollowers /unfollowers.html 200
+/analytics /analytics.html 200
+/calendar /calendar.html 200
 
-# API proxy to backend (set XACTIONS_API_URL in Cloudflare Pages env)
-# /api/* https://your-railway-app.up.railway.app/api/:splat 200
+# API proxy to backend — set XACTIONS_API_URL in Cloudflare Pages env vars
+# to your Railway deployment URL (e.g. https://xactions-api.up.railway.app)
+/api/* https://xactions-api.up.railway.app/api/:splat 200
