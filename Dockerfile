@@ -62,7 +62,8 @@ COPY . .
 RUN groupadd -r xactions && useradd -r -g xactions -G audio,video xactions \
     && mkdir -p /home/xactions/Downloads \
     && chown -R xactions:xactions /home/xactions \
-    && chown -R xactions:xactions /app
+    && chown -R xactions:xactions /app \
+    && chmod +x /app/start.sh
 
 USER xactions
 
@@ -73,5 +74,5 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
 
-# Start the API server
-CMD ["node", "api/server.js"]
+# Run migrations then start the API server
+CMD ["/bin/sh", "/app/start.sh"]
