@@ -717,8 +717,8 @@
               ${session.logs.slice(0, 10).map(log => `
                 <div class="log-entry">
                   <span class="log-time">${new Date(log.time).toLocaleTimeString()}</span>
-                  <span class="log-action">${log.type || log.action}</span>
-                  ${log.handle ? `<span class="log-handle">@${log.handle}</span>` : ''}
+                  <span class="log-action">${esc(log.type || log.action)}</span>
+                  ${log.handle ? `<span class="log-handle">@${esc(log.handle)}</span>` : ''}
                 </div>
               `).join('')}
             </div>

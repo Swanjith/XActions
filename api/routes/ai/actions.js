@@ -129,7 +129,7 @@ router.post('/unfollow-non-followers', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Unfollow non-followers error:', error);
+    console.error('❌ Unfollow non-followers error:', error);
     return errorResponse(res, 500, 'ACTION_FAILED', error.message);
   }
 });

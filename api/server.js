@@ -136,6 +136,23 @@ const authLimiter = rateLimit({
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 
+// Stricter rate limits for expensive/resource-intensive operations
+const heavyLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many requests for this resource, please try again later' }
+});
+app.use('/api/graph', heavyLimiter);
+app.use('/api/operations', heavyLimiter);
+app.use('/api/crm', heavyLimiter);
+
+const analyticsLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  message: { error: 'Too many analytics requests, please try again later' }
+});
+app.use('/api/analytics', analyticsLimiter);
+
 // Logging
 app.use(morgan('combined'));
 

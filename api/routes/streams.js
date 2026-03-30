@@ -111,7 +111,7 @@ router.delete('/', async (_req, res) => {
     const result = await stopAllStreams();
     res.json(result);
   } catch (error) {
-    console.error('DELETE /api/streams error:', error);
+    console.error('❌ DELETE /api/streams error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -128,7 +128,7 @@ router.get('/:id', async (req, res) => {
     }
     res.json(status);
   } catch (error) {
-    console.error('GET /api/streams/:id error:', error);
+    console.error('❌ GET /api/streams/:id error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -147,7 +147,7 @@ router.patch('/:id', async (req, res) => {
     res.json(stream);
   } catch (error) {
     const status = error.message?.includes('not found') ? 404 : 500;
-    console.error('PATCH /api/streams/:id error:', error.message);
+    console.error('❌ PATCH /api/streams/:id error:', error.message);
     res.status(status).json({ error: error.message });
   }
 });
@@ -161,7 +161,7 @@ router.delete('/:id', async (req, res) => {
     const result = await stopStream(req.params.id);
     res.json(result);
   } catch (error) {
-    console.error('DELETE /api/streams/:id error:', error);
+    console.error('❌ DELETE /api/streams/:id error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -176,7 +176,7 @@ router.post('/:id/pause', async (req, res) => {
     res.json(stream);
   } catch (error) {
     const status = error.message?.includes('not found') ? 404 : 400;
-    console.error('POST /api/streams/:id/pause error:', error.message);
+    console.error('❌ POST /api/streams/:id/pause error:', error.message);
     res.status(status).json({ error: error.message });
   }
 });
@@ -191,7 +191,7 @@ router.post('/:id/resume', async (req, res) => {
     res.json(stream);
   } catch (error) {
     const status = error.message?.includes('not found') ? 404 : 400;
-    console.error('POST /api/streams/:id/resume error:', error.message);
+    console.error('❌ POST /api/streams/:id/resume error:', error.message);
     res.status(status).json({ error: error.message });
   }
 });
@@ -207,7 +207,7 @@ router.get('/:id/history', async (req, res) => {
     const events = await getStreamHistory(req.params.id, limit, eventType);
     res.json({ streamId: req.params.id, events, count: events.length });
   } catch (error) {
-    console.error('GET /api/streams/:id/history error:', error);
+    console.error('❌ GET /api/streams/:id/history error:', error);
     res.status(500).json({ error: error.message });
   }
 });

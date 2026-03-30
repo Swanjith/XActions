@@ -73,26 +73,62 @@ export function escapeHtml(str) {
 }
 
 /**
- * Generate CSRF token
+ * Generate CSRF token — HMAC of sessionId + timestamp, stored for verification
  */
+const csrfTokenStore = new Map();
+const CSRF_TOKEN_TTL = 60 * 60 * 1000; // 1 hour
+
 export function generateCsrfToken(sessionId) {
   const secret = process.env.JWT_SECRET;
   if (!secret && process.env.NODE_ENV === 'production') {
     throw new Error('JWT_SECRET must be set in production');
   }
-  return crypto
-    .createHmac('sha256', secret)
-    .update(sessionId + Date.now().toString())
+  const timestamp = Date.now().toString();
+  const token = crypto
+    .createHmac('sha256', secret || 'dev-only-key')
+    .update(sessionId + timestamp)
     .digest('hex');
+
+  // Store token with expiry for server-side validation
+  csrfTokenStore.set(token, { sessionId, createdAt: Date.now() });
+
+  // Evict expired tokens
+  for (const [key, val] of csrfTokenStore) {
+    if (Date.now() - val.createdAt > CSRF_TOKEN_TTL) {
+      csrfTokenStore.delete(key);
+    }
+  }
+
+  return token;
 }
 
 /**
- * Verify CSRF token
+ * Verify CSRF token — checks token exists in store and matches session
  */
 export function verifyCsrfToken(token, sessionId) {
-  // For now, just check it exists and is the right format
-  // In production, you'd store and compare
-  return token && token.length === 64;
+  if (!token || typeof token !== 'string' || token.length !== 64) {
+    return false;
+  }
+
+  const stored = csrfTokenStore.get(token);
+  if (!stored) {
+    return false;
+  }
+
+  // Check expiry
+  if (Date.now() - stored.createdAt > CSRF_TOKEN_TTL) {
+    csrfTokenStore.delete(token);
+    return false;
+  }
+
+  // Check session matches
+  if (stored.sessionId !== sessionId) {
+    return false;
+  }
+
+  // Single-use: delete after verification
+  csrfTokenStore.delete(token);
+  return true;
 }
 
 /**

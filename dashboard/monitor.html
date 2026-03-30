@@ -84,7 +84,7 @@
 
     /* ── Layout ────────────────────────────────────── */
     .layout {
-      display: flex; max-width: 1400px; margin: 53px auto 0; min-height: calc(100vh - 53px);
+      display: flex; max-width: 1400px; margin: 0 auto; min-height: 100vh;
     }
     .content { flex: 1; padding: 20px; overflow-y: auto; }
     .sidebar {
@@ -168,12 +168,32 @@
     .btn--stop { background: var(--error); color: #fff; }
     .btn--stop:hover { background: #d41c26; }
 
+    /* ── Left Sidebar ──────────────────────────────── */
+    .sidebar-left {
+      width: 275px;
+      padding: 0 12px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
     /* ── Responsive ────────────────────────────────── */
     @media (max-width: 900px) {
       .layout { flex-direction: column; }
       .sidebar { width: 100%; border-left: none; border-top: 1px solid var(--border); position: static; height: auto; }
       .chart-grid { grid-template-columns: 1fr; }
       .nav__links { display: none; }
+    }
+    @media (max-width: 768px) {
+      .sidebar-left { width: 68px; padding: 0 4px; }
+      .sidebar-left .logo a span:last-child, .sidebar-left .nav-item span:last-child { display: none; }
+      .sidebar-left .nav-item { justify-content: center; padding: 12px; }
+      .sidebar-left .action-btn { width: 50px; height: 50px; padding: 0; font-size: 0; }
+      .sidebar-left .action-btn::before { content: '\2192'; font-size: 1.5rem; }
     }
     /* Skip Navigation */
     .skip-nav {
@@ -209,26 +229,9 @@
 <body>
 
   <a href="#main-content" class="skip-nav">Skip to main content</a>
-  <!-- Nav -->
-  <nav class="nav" aria-label="Main navigation">
-    <a href="/dashboard" class="nav__brand">⚡ XActions</a>
-    <div class="nav__links">
-      <a href="/dashboard" class="nav__link">Dashboard</a>
-      <a href="/automations" class="nav__link">Automations</a>
-      <a href="/unfollowers" class="nav__link">Unfollowers</a>
-      <a href="/monitor" class="nav__link nav__link--active">Monitor</a>
-      <a href="/workflows" class="nav__link">Workflows</a>
-      <a href="/run" class="nav__link">Scripts</a>
-      <a href="/thread" class="nav__link">Thread Reader</a>
-      <a href="/docs" class="nav__link">Docs</a>
-    </div>
-    <div class="nav__right">
-      <span id="conn-status" class="conn-badge conn-badge--off" role="status" aria-live="polite">Disconnected</span>
-    </div>
-  </nav>
-
-  <!-- Layout -->
   <div class="layout">
+    <aside class="sidebar-left" aria-label="Main navigation"></aside>
+    <script src="/js/sidebar.js"></script>
     <!-- Main content -->
     <main class="content" id="main-content">
 

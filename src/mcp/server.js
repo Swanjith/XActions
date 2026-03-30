@@ -3786,90 +3786,98 @@ async function executeAITool(name, args) {
 // MCP Server Setup
 // ============================================================================
 
-const server = new Server(
-  {
-    name: 'xactions-mcp',
-    version: '3.0.0',
-  },
-  {
-    capabilities: {
-      tools: {},
+/**
+ * Create a configured MCP Server instance with all tool handlers registered.
+ * Returns a new instance each time — needed for HTTP mode (one server per session).
+ */
+function createMcpServer() {
+  const srv = new Server(
+    {
+      name: 'xactions-mcp',
+      version: '3.1.0',
     },
-  }
-);
+    {
+      capabilities: {
+        tools: {},
+      },
+    }
+  );
 
-// List available tools (core + plugins)
-server.setRequestHandler(ListToolsRequestSchema, async () => {
-  const pluginToolDefs = getPluginTools().map(({ _plugin, handler, ...def }) => def);
-  return { tools: [...TOOLS, ...pluginToolDefs] };
-});
+  // List available tools (core + plugins)
+  srv.setRequestHandler(ListToolsRequestSchema, async () => {
+    const pluginToolDefs = getPluginTools().map(({ _plugin, handler, ...def }) => def);
+    return { tools: [...TOOLS, ...pluginToolDefs] };
+  });
 
-// Execute tools
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
+  // Execute tools
+  srv.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name, arguments: args } = request.params;
 
-  try {
-    const result = await executeTool(name, args || {});
-    
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-    
-  } catch (error) {
-    // Handle payment errors (only relevant in remote mode with x402 enabled)
-    if (error.code === 'PAYMENT_REQUIRED') {
+    try {
+      const result = await executeTool(name, args || {});
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+
+    } catch (error) {
+      // Handle payment errors (only relevant in remote mode with x402 enabled)
+      if (error.code === 'PAYMENT_REQUIRED') {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                error: 'Payment required by remote API',
+                message: error.message,
+                hint: 'Use local mode (free) or configure X402_PRIVATE_KEY for remote mode',
+                localMode: 'Set XACTIONS_MODE=local to avoid payments entirely',
+              }, null, 2),
+            },
+          ],
+          isError: true,
+        };
+      }
+
+      if (error.code === 'PAYMENT_FAILED') {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                error: 'Payment failed',
+                message: error.message,
+                hint: 'Check wallet balance and try again',
+              }, null, 2),
+            },
+          ],
+          isError: true,
+        };
+      }
+
+      // Generic error
       return {
         content: [
           {
             type: 'text',
             text: JSON.stringify({
-              error: 'Payment required by remote API',
-              message: error.message,
-              hint: 'Use local mode (free) or configure X402_PRIVATE_KEY for remote mode',
-              localMode: 'Set XACTIONS_MODE=local to avoid payments entirely',
+              error: error.message,
+              ...(process.env.DEBUG ? { stack: error.stack } : {}),
             }, null, 2),
           },
         ],
         isError: true,
       };
     }
-    
-    if (error.code === 'PAYMENT_FAILED') {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              error: 'Payment failed',
-              message: error.message,
-              hint: 'Check wallet balance and try again',
-            }, null, 2),
-          },
-        ],
-        isError: true,
-      };
-    }
-    
-    // Generic error
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify({
-            error: error.message,
-            ...(process.env.DEBUG ? { stack: error.stack } : {}),
-          }, null, 2),
-        },
-      ],
-      isError: true,
-    };
-  }
-});
+  });
+
+  return srv;
+}
 
 // ============================================================================
 // Cleanup and Startup
@@ -3891,8 +3899,10 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-// Start server
-async function main() {
+/**
+ * Print startup banner and status info.
+ */
+function printBanner(pluginCount, pluginToolCount) {
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
   console.error('');
@@ -3900,13 +3910,7 @@ async function main() {
   console.error('   The free, open-source Twitter/X MCP server');
   console.error('   https://github.com/nirholas/XActions');
   console.error('');
-  
-  await initializeBackend();
-  
-  // Load plugins
-  const pluginCount = await initializePlugins();
-  const pluginToolCount = getPluginTools().length;
-  
+
   // ── Setup Wizard: Auth Detection ──
   if (SESSION_COOKIE) {
     console.error('✅ Authenticated (XACTIONS_SESSION_COOKIE set)');
@@ -3942,7 +3946,6 @@ async function main() {
     console.error(`   Plugins loaded: ${pluginCount} (${pluginToolCount} tools)`);
   }
 
-  // Group tools by category for display
   const categories = {
     'Scraping':  ['x_get_profile', 'x_get_followers', 'x_get_following', 'x_get_tweets', 'x_search_tweets', 'x_get_thread', 'x_download_video'],
     'Analysis':  ['x_detect_unfollowers', 'x_analyze_sentiment', 'x_best_time_to_post', 'x_competitor_analysis', 'x_brand_monitor'],
@@ -3958,13 +3961,116 @@ async function main() {
   }
 
   console.error('');
-  
+}
+
+// ============================================================================
+// HTTP Transport (for Railway / remote deployment)
+// ============================================================================
+
+/**
+ * Start the MCP server with Streamable HTTP transport.
+ * Each client session gets its own Server + Transport pair.
+ *
+ * Set MCP_TRANSPORT=http to use this mode.
+ * Listens on PORT (default 3001) at /mcp.
+ */
+async function startHttpTransport() {
+  const { default: express } = await import('express');
+
+  const app = express();
+  app.use(express.json());
+
+  /** @type {Map<string, { server: Server, transport: StreamableHTTPServerTransport }>} */
+  const sessions = new Map();
+
+  // Health check
+  app.get('/health', (_req, res) => {
+    res.json({ status: 'ok', transport: 'http', tools: TOOLS.length, sessions: sessions.size });
+  });
+
+  // MCP endpoint — handles POST (messages), GET (SSE stream), DELETE (session close)
+  app.all('/mcp', async (req, res) => {
+    const sessionId = req.headers['mcp-session-id'];
+
+    // Existing session
+    if (sessionId && sessions.has(sessionId)) {
+      const session = sessions.get(sessionId);
+      await session.transport.handleRequest(req, res);
+      return;
+    }
+
+    // New session (only via POST — the initialize request)
+    if (req.method === 'POST' && !sessionId) {
+      const transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: () => randomUUID(),
+        onsessioninitialized: (sid) => {
+          sessions.set(sid, { server: srv, transport });
+          console.error(`📡 Session started: ${sid}`);
+        },
+      });
+
+      transport.onclose = () => {
+        const sid = transport.sessionId;
+        if (sid) {
+          sessions.delete(sid);
+          console.error(`📡 Session closed: ${sid}`);
+        }
+      };
+
+      const srv = createMcpServer();
+      await srv.connect(transport);
+      await transport.handleRequest(req, res);
+      return;
+    }
+
+    // Invalid: GET/DELETE without session, or POST with unknown session
+    res.status(400).json({
+      jsonrpc: '2.0',
+      error: { code: -32000, message: 'Invalid or missing session. Send a POST initialize request first.' },
+      id: null,
+    });
+  });
+
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => {
+    console.error(`✅ Server running on HTTP — http://0.0.0.0:${port}/mcp`);
+    console.error('   Ready for remote MCP client connections.');
+    console.error('');
+  });
+}
+
+// ============================================================================
+// Stdio Transport (default — for Claude Desktop, Cursor, etc.)
+// ============================================================================
+
+async function startStdioTransport() {
+  const server = createMcpServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  
+
   console.error('✅ Server running on stdio');
   console.error('   Ready for connections from Claude, Cursor, Windsurf, and any MCP client.');
   console.error('');
+}
+
+// ============================================================================
+// Main
+// ============================================================================
+
+async function main() {
+  await initializeBackend();
+
+  const pluginCount = await initializePlugins();
+  const pluginToolCount = getPluginTools().length;
+
+  const transportMode = process.env.MCP_TRANSPORT || 'stdio';
+  printBanner(pluginCount, pluginToolCount);
+
+  if (transportMode === 'http') {
+    await startHttpTransport();
+  } else {
+    await startStdioTransport();
+  }
 }
 
 main().catch((error) => {

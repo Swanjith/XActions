@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Settings fetch queued' });
   } catch (error) {
-    console.error('Settings error:', error);
+    console.error('❌ Settings error:', error);
     res.status(500).json({ error: 'Failed to get settings' });
   }
 });
@@ -66,7 +66,7 @@ router.put('/protected', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Protected toggle queued' });
   } catch (error) {
-    console.error('Protected toggle error:', error);
+    console.error('❌ Protected toggle error:', error);
     res.status(500).json({ error: 'Failed to toggle protected' });
   }
 });
@@ -95,7 +95,7 @@ router.get('/blocked', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Blocked list fetch queued' });
   } catch (error) {
-    console.error('Blocked error:', error);
+    console.error('❌ Blocked error:', error);
     res.status(500).json({ error: 'Failed to get blocked accounts' });
   }
 });
@@ -124,7 +124,7 @@ router.get('/muted', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Muted list fetch queued' });
   } catch (error) {
-    console.error('Muted error:', error);
+    console.error('❌ Muted error:', error);
     res.status(500).json({ error: 'Failed to get muted accounts' });
   }
 });
@@ -155,7 +155,7 @@ router.post('/download-data', async (req, res) => {
 
     res.json({ operationId: operation.id, status: 'queued', message: 'Data download request queued' });
   } catch (error) {
-    console.error('Data download error:', error);
+    console.error('❌ Data download error:', error);
     res.status(500).json({ error: 'Failed to request data download' });
   }
 });

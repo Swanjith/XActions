@@ -113,7 +113,7 @@ async function processAutoLike({ operationId, userId, config }, isCancelled = ()
       cancelled: isCancelled()
     };
   } catch (error) {
-    console.error('Auto-like error:', error);
+    console.error('❌ Auto-like error:', error);
     throw error;
   }
 }

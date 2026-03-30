@@ -65,7 +65,7 @@ async function processUnfollowEveryone({ operationId, userId, config }) {
       dryRun
     };
   } catch (error) {
-    console.error('Unfollow everyone error:', error);
+    console.error('❌ Unfollow everyone error:', error);
     throw error;
   }
 }

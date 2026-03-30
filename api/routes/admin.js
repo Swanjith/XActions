@@ -148,7 +148,7 @@ router.post('/licenses/:key/revoke', authenticateToken, requireAdmin, async (req
       },
     });
   } catch (error) {
-    console.error('Revoke license error:', error);
+    console.error('❌ Revoke license error:', error);
     res.status(500).json({ error: 'Failed to revoke license' });
   }
 });
@@ -171,7 +171,7 @@ router.post('/licenses/:key/validate', authenticateToken, requireAdmin, async (r
     const result = await validateLicenseKey(key);
     res.json(result);
   } catch (error) {
-    console.error('Validate license error:', error);
+    console.error('❌ Validate license error:', error);
     res.status(500).json({ error: 'Failed to validate license' });
   }
 });
@@ -248,7 +248,7 @@ router.post('/x402/webhooks/test', async (req, res) => {
       generatedAt: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Webhook test error:', error);
+    console.error('❌ Webhook test error:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to test webhooks',

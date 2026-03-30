@@ -41,8 +41,27 @@
     .conn-badge--on { color: var(--success); border-color: var(--success); }
     .conn-badge--off { color: var(--error); border-color: var(--error); }
 
+    /* ── Sidebar ───────────────────────────────────── */
+    .app-layout {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+    .sidebar-left {
+      width: 275px;
+      padding: 0 12px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
     /* ── Layout ────────────────────────────────────── */
-    .main { max-width: 1200px; margin: 73px auto 40px; padding: 0 20px; }
+    .main { flex: 1; padding: 20px; }
 
     /* ── Header ────────────────────────────────────── */
     .page-header {
@@ -193,6 +212,13 @@
       input[type="url"] { width: 100%; }
       .setting-row { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
+    @media (max-width: 768px) {
+      .sidebar-left { width: 68px; padding: 0 4px; }
+      .sidebar-left .logo a span:last-child, .sidebar-left .nav-item span:last-child { display: none; }
+      .sidebar-left .nav-item { justify-content: center; padding: 12px; }
+      .sidebar-left .action-btn { width: 50px; height: 50px; padding: 0; font-size: 0; }
+      .sidebar-left .action-btn::before { content: '\2192'; font-size: 1.5rem; }
+    }
     @media (max-width: 480px) {
       .stats-bar { grid-template-columns: 1fr; }
     }
@@ -200,26 +226,12 @@
 </head>
 <body>
 
-  <!-- Nav -->
-  <nav class="nav">
-    <a href="/dashboard" class="nav__brand">⚡ XActions</a>
-    <div class="nav__links">
-      <a href="/dashboard" class="nav__link">Dashboard</a>
-      <a href="/automations" class="nav__link">Automations</a>
-      <a href="/unfollowers" class="nav__link nav__link--active">Unfollowers</a>
-      <a href="/monitor" class="nav__link">Monitor</a>
-      <a href="/workflows" class="nav__link">Workflows</a>
-      <a href="/run" class="nav__link">Scripts</a>
-      <a href="/thread" class="nav__link">Thread Reader</a>
-      <a href="/docs" class="nav__link">Docs</a>
-    </div>
-    <div class="nav__right">
-      <span id="conn-status" class="conn-badge conn-badge--off">Disconnected</span>
-    </div>
-  </nav>
+  <div class="app-layout">
+    <aside class="sidebar-left" aria-label="Main navigation"></aside>
+    <script src="/js/sidebar.js"></script>
 
-  <!-- Main Content -->
-  <div class="main">
+    <!-- Main Content -->
+    <div class="main">
 
     <!-- Header -->
     <div class="page-header">

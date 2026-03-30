@@ -140,7 +140,7 @@ router.post('/video', async (req, res) => {
       note: 'Video URLs are temporary and may expire. Download promptly.',
     });
   } catch (error) {
-    console.error('Video download error:', error);
+    console.error('❌ Video download error:', error);
     return errorResponse(res, 500, 'DOWNLOAD_FAILED', error.message);
   }
 });
@@ -225,7 +225,7 @@ router.post('/bookmarks', async (req, res) => {
       exportFormat: format,
     });
   } catch (error) {
-    console.error('Bookmark export error:', error);
+    console.error('❌ Bookmark export error:', error);
     return errorResponse(res, 500, 'EXPORT_FAILED', error.message);
   }
 });
@@ -350,7 +350,7 @@ router.post('/thread', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Thread unroll error:', error);
+    console.error('❌ Thread unroll error:', error);
     return errorResponse(res, 500, 'UNROLL_FAILED', error.message);
   }
 });
@@ -473,7 +473,7 @@ router.post('/profile', async (req, res) => {
       analyzedAt: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Profile analysis error:', error);
+    console.error('❌ Profile analysis error:', error);
     return errorResponse(res, 500, 'ANALYSIS_FAILED', error.message);
   }
 });
@@ -559,7 +559,7 @@ router.post('/tweet', async (req, res) => {
       durationMs: Date.now() - startTime,
     });
   } catch (error) {
-    console.error('Tweet analysis error:', error);
+    console.error('❌ Tweet analysis error:', error);
     return errorResponse(res, 500, 'ANALYSIS_FAILED', error.message);
   }
 });

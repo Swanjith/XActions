@@ -85,7 +85,7 @@ async function processUnfollowNonFollowers({ operationId, userId, config }) {
       dryRun
     };
   } catch (error) {
-    console.error('Unfollow non-followers error:', error);
+    console.error('❌ Unfollow non-followers error:', error);
     throw error;
   }
 }

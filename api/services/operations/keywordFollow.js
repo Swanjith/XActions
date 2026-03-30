@@ -151,7 +151,7 @@ async function processKeywordFollow({ operationId, userId, config }, isCancelled
       cancelled: isCancelled()
     };
   } catch (error) {
-    console.error('Keyword follow error:', error);
+    console.error('❌ Keyword follow error:', error);
     throw error;
   }
 }

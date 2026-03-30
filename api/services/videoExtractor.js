@@ -14,8 +14,8 @@
 // Constants
 // ============================================================================
 
-// Twitter's public bearer token (used by the web app, not user-specific)
-const BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
+// Twitter's public bearer token — load from env to avoid leaking in source control
+const BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN || '';
 
 const GRAPHQL_TWEET_DETAIL = 'https://api.x.com/graphql/sBoAB5nqJTOyR9sZ5qVLsw/TweetResultByRestId';
 

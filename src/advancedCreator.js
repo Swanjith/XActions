@@ -888,7 +888,7 @@
   // ─────────────────────────────────────────────────
   // Menu
   // ─────────────────────────────────────────────────
-  const W = 68;
+  const W = 74;
   console.log('╔' + '═'.repeat(W) + '╗');
   console.log('║  💰 ADVANCED CREATOR MONETIZATION — XActions' + ' '.repeat(W - 47) + '║');
   console.log('║  by nichxbt' + ' '.repeat(W - 14) + '║');

@@ -16,11 +16,15 @@ import express from 'express';
 import path from 'path';
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
+import { authMiddleware } from '../middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const router = express.Router();
+
+// All portability routes require authentication
+router.use(authMiddleware);
 
 // In-memory job tracking (could be backed by Bull/Redis in production)
 const jobs = new Map();
@@ -61,7 +65,7 @@ router.post('/export', async (req, res) => {
         const browser = await scrapers.createBrowser();
         const page = await scrapers.createPage(browser);
 
-        const cookie = authToken || req.body.cookie;
+        const cookie = authToken;
         if (cookie) {
           await scrapers.loginWithCookie(page, cookie);
         }

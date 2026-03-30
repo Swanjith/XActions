@@ -127,7 +127,7 @@ async function processAutoComment({ operationId, userId, config }, isCancelled =
       cancelled: isCancelled()
     };
   } catch (error) {
-    console.error('Auto-comment error:', error);
+    console.error('❌ Auto-comment error:', error);
     throw error;
   }
 }

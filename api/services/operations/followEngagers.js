@@ -124,7 +124,7 @@ async function processFollowEngagers({ operationId, userId, config }, isCancelle
       cancelled: isCancelled()
     };
   } catch (error) {
-    console.error('Follow engagers error:', error);
+    console.error('❌ Follow engagers error:', error);
     throw error;
   }
 }

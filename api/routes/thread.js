@@ -47,7 +47,7 @@ router.post('/unroll', async (req, res) => {
 
     return res.json(thread);
   } catch (error) {
-    console.error('Thread unroll error:', error.message);
+    console.error('❌ Thread unroll error:', error.message);
     return res.status(500).json({
       error: 'Failed to unroll thread',
       message: error.message,
@@ -96,7 +96,7 @@ router.post('/summarize', async (req, res) => {
 
     return res.json(result);
   } catch (error) {
-    console.error('Thread summarize error:', error.message);
+    console.error('❌ Thread summarize error:', error.message);
     return res.status(500).json({
       error: 'Failed to summarize thread',
       message: error.message,
@@ -138,7 +138,7 @@ router.get('/:tweetId', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Thread get error:', error.message);
+    console.error('❌ Thread get error:', error.message);
     return res.status(500).json({
       error: 'Failed to get thread',
       message: error.message,

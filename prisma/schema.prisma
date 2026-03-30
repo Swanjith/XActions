@@ -68,6 +68,7 @@ model Subscription {
   
   @@index([userId])
   @@index([stripeCustomerId])
+  @@index([status, endDate])
 }
 
 model Operation {
@@ -99,6 +100,7 @@ model Operation {
   updatedAt   DateTime @updatedAt
   
   @@index([userId, status])
+  @@index([userId, type, status])
   @@index([createdAt])
 }
 

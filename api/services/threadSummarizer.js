@@ -129,7 +129,7 @@ Rules:
       available: true,
     };
   } catch (error) {
-    console.error('Thread summarization error:', error.message);
+    console.error('❌ Thread summarization error:', error.message);
     return {
       summary: null,
       keyPoints: [],

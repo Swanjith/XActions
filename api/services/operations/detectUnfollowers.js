@@ -70,7 +70,7 @@ async function processDetectUnfollowers({ operationId, userId }) {
       }))
     };
   } catch (error) {
-    console.error('Detect unfollowers error:', error);
+    console.error('❌ Detect unfollowers error:', error);
     throw error;
   }
 }

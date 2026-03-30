@@ -233,11 +233,45 @@
       width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer;
     }
 
+    /* ── Sidebar ───────────────────────────────────── */
+    .layout {
+      display: flex;
+      max-width: 1300px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+    .sidebar-left {
+      width: 275px;
+      padding: 0 12px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .sidebar-right {
+      width: 350px;
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
     /* ── Responsive ────────────────────────────────── */
+    @media (max-width: 1280px) { .sidebar-right { width: 290px; } }
+    @media (max-width: 1024px) { .sidebar-right { display: none; } }
     @media (max-width: 768px) {
       .auto-grid { grid-template-columns: 1fr; }
       .page-header { flex-direction: column; gap: 12px; align-items: flex-start; }
       .nav__links { display: none; }
+      .sidebar-left { width: 68px; padding: 0 4px; }
+      .sidebar-left .logo a span:last-child, .sidebar-left .nav-item span:last-child { display: none; }
+      .sidebar-left .nav-item { justify-content: center; padding: 12px; }
+      .sidebar-left .action-btn { width: 50px; height: 50px; padding: 0; font-size: 0; }
+      .sidebar-left .action-btn::before { content: '\2192'; font-size: 1.5rem; }
     }
     /* Skip Navigation */
     .skip-nav {
@@ -273,26 +307,12 @@
 <body>
 
   <a href="#main-content" class="skip-nav">Skip to main content</a>
-  <!-- Nav -->
-  <nav class="nav" aria-label="Main navigation">
-    <a href="/dashboard" class="nav__brand">⚡ XActions</a>
-    <div class="nav__links">
-      <a href="/dashboard" class="nav__link">Dashboard</a>
-      <a href="/automations" class="nav__link nav__link--active">Automations</a>
-      <a href="/unfollowers" class="nav__link">Unfollowers</a>
-      <a href="/monitor" class="nav__link">Monitor</a>
-      <a href="/workflows" class="nav__link">Workflows</a>
-      <a href="/run" class="nav__link">Scripts</a>
-      <a href="/thread" class="nav__link">Thread Reader</a>
-      <a href="/docs" class="nav__link">Docs</a>
-    </div>
-    <div class="nav__right">
-      <span id="conn-status" class="conn-badge conn-badge--off" role="status" aria-live="polite">Disconnected</span>
-    </div>
-  </nav>
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Main navigation"></aside>
+    <script src="/js/sidebar.js"></script>
 
-  <!-- Main -->
-  <main class="main" id="main-content">
+    <!-- Main -->
+    <main class="main" id="main-content" style="flex:1;margin:0;padding:20px;max-width:none;">
     <div class="page-header">
       <div>
         <h1>⚙️ Automations</h1>
@@ -335,6 +355,8 @@
       <button class="btn btn--save" id="modal-save">Save Settings</button>
     </div>
   </div>
+
+  </div><!-- /.layout -->
 
   <script src="/js/config.js"></script>
   <script>requireAuth();</script>

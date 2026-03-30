@@ -144,7 +144,7 @@ async function validateLicense(licenseKey) {
       customer: result.customer,
     };
   } catch (e) {
-    console.error('License validation error:', e);
+    console.error('❌ License validation error:', e);
     return { valid: false, tier: 'free', error: 'License validation failed' };
   }
 }
