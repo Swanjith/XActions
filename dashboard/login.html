@@ -548,7 +548,8 @@
           localStorage.setItem('authToken', data.token);
           window.location.href = '/dashboard';
         } else {
-          showError(data.error || 'Login failed');
+          const msg = data.hint || data.details || data.error || 'Login failed';
+          showError(msg);
           btn.disabled = false;
           btn.textContent = 'Sign in';
         }
@@ -582,7 +583,8 @@
           localStorage.setItem('authToken', data.token);
           window.location.href = '/dashboard';
         } else {
-          showError(data.error || 'Registration failed', true);
+          const msg = data.hint || data.details || data.error || 'Registration failed';
+          showError(msg, true);
           btn.disabled = false;
           btn.textContent = 'Create account';
         }

@@ -85,6 +85,16 @@ router.post('/register',
       });
     } catch (error) {
       console.error('❌ Registration error:', error.message);
+      // Surface real error in development for debugging
+      if (process.env.NODE_ENV !== 'production') {
+        return res.status(500).json({
+          error: 'Registration failed',
+          details: error.message,
+          hint: error.message.includes('connect') || error.message.includes('ECONNREFUSED')
+            ? 'PostgreSQL is not running. Start it with: docker compose up -d postgres'
+            : undefined
+        });
+      }
       res.status(500).json({ error: 'Registration failed' });
     }
   }
@@ -154,6 +164,15 @@ router.post('/login',
       });
     } catch (error) {
       console.error('❌ Login error:', error.message);
+      if (process.env.NODE_ENV !== 'production') {
+        return res.status(500).json({
+          error: 'Login failed',
+          details: error.message,
+          hint: error.message.includes('connect') || error.message.includes('ECONNREFUSED')
+            ? 'PostgreSQL is not running. Start it with: docker compose up -d postgres'
+            : undefined
+        });
+      }
       res.status(500).json({ error: 'Login failed' });
     }
   }
