@@ -3,7 +3,7 @@ builder = "nixpacks"
 buildCommand = "npx prisma generate"
 
 [deploy]
-startCommand = "npx prisma migrate deploy && node api/server.js"
+startCommand = "(npx prisma migrate resolve --applied \"0_init\" 2>/dev/null || true) && npx prisma migrate deploy && node api/server.js"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 300
 numReplicas = 1
