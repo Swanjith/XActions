@@ -252,7 +252,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dashboard/index.html'));
+  res.redirect('/');
 });
 
 // Pricing page now redirects to docs - XActions is 100% free

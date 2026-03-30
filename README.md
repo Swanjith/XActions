@@ -16,7 +16,7 @@
 <h3>The complete X/Twitter automation toolkit</h3>
 
 <p>
-Scrapers &nbsp;·&nbsp; MCP Server for AI Agents &nbsp;·&nbsp; CLI &nbsp;·&nbsp; Browser Scripts &nbsp;·&nbsp; Dashboard<br>
+Scrapers &nbsp;·&nbsp; MCP Server for AI Agents &nbsp;·&nbsp; CLI &nbsp;·&nbsp; Browser Scripts &nbsp;·&nbsp; Browser Extension<br>
 <strong>No API keys. No monthly fees. 100% open source.</strong>
 </p>
 
@@ -42,7 +42,7 @@ Scrapers &nbsp;·&nbsp; MCP Server for AI Agents &nbsp;·&nbsp; CLI &nbsp;·&nbs
 
 <br>
 
-[**Dashboard**](https://xactions.app) &nbsp;·&nbsp; [**npm**](https://www.npmjs.com/package/xactions) &nbsp;·&nbsp; [**Docs**](docs/getting-started.md) &nbsp;·&nbsp; [**MCP Server**](docs/mcp-setup.md) &nbsp;·&nbsp; [**Docker**](Dockerfile) &nbsp;·&nbsp; [**API Ref**](docs/api-reference.md)
+[**Website**](https://xactions.app) &nbsp;·&nbsp; [**npm**](https://www.npmjs.com/package/xactions) &nbsp;·&nbsp; [**Docs**](docs/getting-started.md) &nbsp;·&nbsp; [**MCP Server**](docs/mcp-setup.md) &nbsp;·&nbsp; [**Docker**](Dockerfile) &nbsp;·&nbsp; [**API Ref**](docs/api-reference.md)
 
 </div>
 
@@ -119,7 +119,6 @@ See [CHANGELOG.md](CHANGELOG.md) for full details.
 - [Node.js API](#-nodejs-api) — Programmatic access
 - [Docker](#-docker) — One-command deployment
 - [API Reference](#-api-reference) — Full function documentation
-- [Dashboard](#-new-real-time-dashboard) — No-code web UI
 - [Claude Tutorials](#-claude-tutorials) — 22 ready-to-paste prompts
 - [Contributing](#-contributing) — Help make XActions better
 
@@ -201,7 +200,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full details.
   nextBatch();
 })();
 ```
-Or use the [dashboard](https://xactions.app) for a visual interface.
+Or use the [CLI](docs/cli-reference.md) or [MCP server](docs/mcp-setup.md) for more options.
 </details>
 
 <details>
@@ -314,13 +313,15 @@ XActions is open-source and completely free for humans. AI agents pay micropayme
 
 ---
 
-## ✨ Real-Time Dashboard
+## ✨ How It Works
+
+## ✨ How It Works
 
 <table>
 <tr>
-<td width="33%" align="center"><strong>1. Connect</strong><br><br>Paste one script in x.com<br>DevTools console</td>
-<td width="33%" align="center"><strong>2. Click</strong><br><br>Run operations from<br>the dashboard UI</td>
-<td width="33%" align="center"><strong>3. Watch</strong><br><br>See every action<br>happen in real-time</td>
+<td width="33%" align="center"><strong>1. Paste</strong><br><br>Copy a script into the<br>x.com DevTools console</td>
+<td width="33%" align="center"><strong>2. Run</strong><br><br>Use the CLI, MCP server,<br>or browser extension</td>
+<td width="33%" align="center"><strong>3. Done</strong><br><br>Everything runs locally.<br>No data leaves your machine</td>
 </tr>
 </table>
 
@@ -332,7 +333,7 @@ XActions is open-source and completely free for humans. AI agents pay micropayme
 
 ### 🆓 100% Free & Open Source
 
-Everything is **completely free** — browser scripts, CLI, Node.js library, MCP server, dashboard, and API.
+Everything is **completely free** — browser scripts, CLI, Node.js library, MCP server, and API.
 
 No API keys. No subscriptions. No paywalls. Just clone and run.
 
@@ -366,7 +367,7 @@ This only applies to the hosted remote API. Local mode is always free.
 <td align="center"><strong>XActions</strong></td>
 <td align="center"><strong>Others</strong></td>
 </tr>
-<tr><td><strong>Scope</strong></td><td>Browser + CLI + Node.js + MCP + Dashboard + Workflows</td><td>Usually 1 thing</td></tr>
+<tr><td><strong>Scope</strong></td><td>Browser + CLI + Node.js + MCP + Extension</td><td>Usually 1 thing</td></tr>
 <tr><td><strong>API Key</strong></td><td>Not needed</td><td>Most need Twitter API ($100/mo)</td></tr>
 <tr><td><strong>MCP Tools</strong></td><td>140+ for Claude, GPT, Cursor</td><td>0–2 tools</td></tr>
 <tr><td><strong>AI Features</strong></td><td>Sentiment, Grok, reputation</td><td>None</td></tr>
@@ -388,9 +389,6 @@ docker run -it xactions xactions profile elonmusk
 
 # Run the MCP server
 docker run -p 3000:3000 xactions npm run mcp
-
-# Run the dashboard
-docker run -p 3000:3000 xactions npm start
 
 # With environment variables
 docker run -e XACTIONS_SESSION_COOKIE=your_cookie xactions xactions followers elonmusk
@@ -1069,7 +1067,7 @@ xactions/
 │   ├── services/         # Business logic + Bull job queue
 │   ├── middleware/       # Auth, x402, AI detection
 │   └── realtime/         # Socket.IO handler
-├── dashboard/            # Web UI (static HTML + Chart.js)
+├── dashboard/            # Website (static HTML pages)
 ├── extension/            # Chrome/Firefox browser extension (Manifest V3)
 ├── docs/                 # Documentation
 ├── skills/               # 26 Agent Skills (skills/*/SKILL.md)

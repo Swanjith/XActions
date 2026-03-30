@@ -26,7 +26,8 @@
     "./plugins": "./src/plugins/index.js",
     "./mcp": "./src/mcp/server.js",
     "./cli": "./src/cli/index.js",
-    "./client": "./src/client/index.js"
+    "./client": "./src/client/index.js",
+    "./spaces": "./src/spaces/agent.js"
   },
   "bin": {
     "xactions": "./src/cli/index.js",
@@ -111,7 +112,8 @@
     "@x402/core": "npm:null@^0.1.0",
     "@x402/evm": "npm:null@^0.1.0",
     "@x402/express": "npm:null@^0.1.0",
-    "viem": "^2.0.0"
+    "viem": "^2.0.0",
+    "xspace-agent": "^0.1.0"
   },
   "devDependencies": {
     "jsdom": "^28.1.0",

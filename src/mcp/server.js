@@ -622,10 +622,53 @@ const TOOLS = [
       required: ['url'],
     },
   },
+  // ====== Space Agent (xspace-agent) ======
+  {
+    name: 'x_space_join',
+    description: 'Join an X Space with an AI voice agent that listens, transcribes, and speaks autonomously. Requires xspace-agent installed and AI API key configured.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        url: { type: 'string', description: 'Space URL (e.g. https://x.com/i/spaces/abc123)' },
+        provider: { type: 'string', description: 'AI provider: openai, claude, groq (default: openai)' },
+        systemPrompt: { type: 'string', description: 'Custom system prompt for the AI agent' },
+        model: { type: 'string', description: 'LLM model name (e.g. gpt-4o, claude-sonnet-4-20250514)' },
+        voiceId: { type: 'string', description: 'TTS voice ID' },
+        headless: { type: 'boolean', description: 'Run browser headless (default: true)' },
+      },
+      required: ['url'],
+    },
+  },
+  {
+    name: 'x_space_leave',
+    description: 'Leave the currently active X Space and get a summary of the session.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
+  {
+    name: 'x_space_status',
+    description: 'Get the status of the currently active X Space agent, including duration, transcription count, and recent events.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
+  {
+    name: 'x_space_transcript',
+    description: 'Get recent transcriptions from the active X Space session.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        limit: { type: 'number', description: 'Max transcriptions to return (default: 50)' },
+      },
+    },
+  },
   // ====== Analytics ======
   {
     name: 'x_get_analytics',
-    description: 'Get your account engagement analytics.',
+    description: 'Get your account engagement analytics.'
     inputSchema: {
       type: 'object',
       properties: {
@@ -2185,6 +2228,11 @@ async function executeTool(name, args) {
     args.cookie = SESSION_COOKIE;
   }
 
+  // Handle Space agent tools (xspace-agent integration)
+  if (name.startsWith('x_space_')) {
+    return await executeSpaceAgentTool(name, args);
+  }
+
   // Handle streaming tools directly (they work in both local and remote modes)
   if (name.startsWith('x_stream_')) {
     return await executeStreamTool(name, args);
@@ -2882,6 +2930,34 @@ async function executeXeepyTool(name, args) {
 
     default:
       throw new Error(`Xeepy tool not implemented: ${name}. This tool is defined but needs a handler.`);
+  }
+}
+
+/**
+ * Execute Space agent tools (xspace-agent integration)
+ */
+async function executeSpaceAgentTool(name, args) {
+  // Lazy-import to avoid loading xspace-agent deps when not needed
+  const spaceAgent = await import('../spaces/agent.js');
+
+  switch (name) {
+    case 'x_space_join':
+      return await spaceAgent.joinSpace({
+        ...args,
+        authToken: args.authToken || SESSION_COOKIE,
+      });
+
+    case 'x_space_leave':
+      return await spaceAgent.leaveSpace();
+
+    case 'x_space_status':
+      return spaceAgent.getSpaceAgentStatus();
+
+    case 'x_space_transcript':
+      return spaceAgent.getSpaceTranscript(args);
+
+    default:
+      throw new Error(`Unknown Space agent tool: ${name}`);
   }
 }
 

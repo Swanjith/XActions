@@ -24,7 +24,6 @@
   const navItems = [
     { href: '/', label: 'Home', icon: icons.home },
     { href: '/run', label: 'Run', icon: icons.run },
-    { href: '/dashboard', label: 'Dashboard', icon: icons.dashboard },
     { href: '/features', label: 'Scripts', icon: icons.scripts },
     { href: '/video', label: 'Video', icon: icons.video },
     { href: '/thread', label: 'Thread Reader', icon: icons.threads },
@@ -59,11 +58,11 @@
         ${nav}
       </nav>
       <a href="/run" class="action-btn">Run Script</a>
-      <a href="/login" class="user-menu" id="user-menu-link">
-        <div class="user-avatar" id="user-avatar">?</div>
+      <a href="https://github.com/nirholas/XActions" class="user-menu" id="user-menu-link" target="_blank" rel="noopener noreferrer">
+        <div class="user-avatar" id="user-avatar">⚡</div>
         <div class="user-info">
-          <div class="user-name" id="user-display-name">Login / Sign Up</div>
-          <div class="user-handle" id="user-handle">Click to continue</div>
+          <div class="user-name" id="user-display-name">Star on GitHub</div>
+          <div class="user-handle" id="user-handle">100% open source</div>
         </div>
         <span class="user-menu-dots">···</span>
       </a>`;

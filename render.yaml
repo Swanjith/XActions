@@ -80,10 +80,10 @@ services:
         value: "true"
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # Static Frontend (Dashboard)
+  # Static Frontend (Website — content pages only, dashboard hidden)
   # ─────────────────────────────────────────────────────────────────────────────
   - type: web
-    name: xactions-dashboard
+    name: xactions-website
     runtime: static
     buildCommand: echo "Static site — no build needed"
     staticPublishPath: ./dashboard
@@ -96,12 +96,6 @@ services:
         name: X-Frame-Options
         value: DENY
     routes:
-      - type: rewrite
-        source: /login
-        destination: /login.html
-      - type: rewrite
-        source: /pricing
-        destination: /pricing.html
       - type: rewrite
         source: /about
         destination: /about.html

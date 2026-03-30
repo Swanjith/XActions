@@ -1,7 +1,7 @@
 # Cloudflare Pages redirects
 # Format: /from /to [status]
 
-# Tutorial routes
+# Tutorial routes (clean URLs → .html files)
 /tutorials/unfollow /tutorials/unfollow.html 200
 /tutorials/automation /tutorials/automation.html 200
 /tutorials/monitoring /tutorials/monitoring.html 200

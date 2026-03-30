@@ -12,8 +12,12 @@
   ],
   "routes": [
     {
+      "src": "/dashboard",
+      "dest": "/site/index.html"
+    },
+    {
       "src": "/dashboard/(.*)",
-      "dest": "/dashboard/$1"
+      "dest": "/site/index.html"
     },
     {
       "src": "/js/(.*)",
@@ -24,44 +28,48 @@
       "dest": "/dashboard/css/$1"
     },
     {
+      "src": "/manifest.json",
+      "dest": "/dashboard/manifest.json"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "https://xactions-api.up.railway.app/api/$1"
     },
     {
-      "src": "/tutorials/unfollow",
+      "src": "/tutorials/unfollow(.html)?",
       "dest": "/dashboard/tutorials/unfollow.html"
     },
     {
-      "src": "/tutorials/automation",
+      "src": "/tutorials/automation(.html)?",
       "dest": "/dashboard/tutorials/automation.html"
     },
     {
-      "src": "/tutorials/monitoring",
+      "src": "/tutorials/monitoring(.html)?",
       "dest": "/dashboard/tutorials/monitoring.html"
     },
     {
-      "src": "/tutorials/scrapers",
-      "dest": "/dashboard/tutorials/scrapers.html"
-    },
-    {
-      "src": "/tutorials/scrapers-full",
+      "src": "/tutorials/scrapers-full(.html)?",
       "dest": "/dashboard/tutorials/scrapers-full.html"
     },
     {
-      "src": "/tutorials/mcp",
+      "src": "/tutorials/scrapers(.html)?",
+      "dest": "/dashboard/tutorials/scrapers.html"
+    },
+    {
+      "src": "/tutorials/mcp(.html)?",
       "dest": "/dashboard/tutorials/mcp.html"
     },
     {
-      "src": "/tutorials/communities",
+      "src": "/tutorials/communities(.html)?",
       "dest": "/dashboard/tutorials/communities.html"
     },
     {
-      "src": "/tutorials",
+      "src": "/tutorials(.html)?",
       "dest": "/dashboard/tutorials/index.html"
     },
     {
       "src": "/login",
-      "dest": "/dashboard/login.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/pricing",
@@ -93,7 +101,7 @@
     },
     {
       "src": "/admin",
-      "dest": "/dashboard/admin.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/ai",
@@ -109,23 +117,23 @@
     },
     {
       "src": "/analytics",
-      "dest": "/dashboard/analytics.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/automations",
-      "dest": "/dashboard/automations.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/monitor",
-      "dest": "/dashboard/monitor.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/unfollowers",
-      "dest": "/dashboard/unfollowers.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/workflows",
-      "dest": "/dashboard/workflows.html"
+      "dest": "/site/index.html"
     },
     {
       "src": "/thread/(.*)",

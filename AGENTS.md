@@ -103,3 +103,10 @@ Common resource hogs: `tsgo --noEmit` (~500% CPU), vitest workers (15x ~100% CPU
 - Always kill the terminal after the command completes
 - Do not reuse foreground shell sessions — stale sessions block future operations
 - If a terminal appears unresponsive, kill it and create a new one
+
+## Mandatory Rules
+
+1. **Never mock, stub, or fake anything.** Real implementations only.
+2. **TypeScript strict mode** — no `any`, no `@ts-ignore`.
+3. **Always kill terminals** after commands complete.
+4. **Always commit and push** as `nirholas`.

@@ -10,30 +10,57 @@
 | Unfollow non-followers | `src/unfollowback.js` |
 | Download Twitter video | `scripts/videoDownloader.js` |
 | Detect unfollowers | `src/detectUnfollowers.js` |
-| Train algorithm for a niche | `src/automation/algorithmTrainer.js` or `scripts/thoughtLeaderCultivator.js` |
+| Train algorithm for a niche | `src/automation/algorithmBuilder.js` (browser) or `xactions persona create` (CLI) |
 | Become a thought leader / grow account | `skills/algorithm-cultivation/SKILL.md` |
-| 24/7 LLM-powered growth agent | `docs/research/llm-powered-thought-leader.md` |
+| 24/7 LLM-powered growth agent | `src/algorithmBuilder.js` + `src/personaEngine.js` — run via `xactions persona run <id>` |
+| Create a persona for automation | `xactions persona create` or MCP tool `x_persona_create` |
 | Twitter automation without API | XActions uses browser automation |
 | MCP server for Twitter | `src/mcp/server.js` |
+
+## Architecture Overview
+
+XActions has **three runtime contexts** — know which one you're working in:
+
+| Context | Where it runs | Entry point | Key constraint |
+|---|---|---|---|
+| **Browser scripts** | DevTools console on x.com | IIFE, paste in console | No Node.js APIs, uses DOM & `sessionStorage` |
+| **Node.js library/CLI/MCP** | Local machine or server | `src/cli/index.js`, `src/mcp/server.js` | Uses Puppeteer for browser automation |
+| **API server** | Express.js backend | `api/server.js` | PostgreSQL via Prisma, Redis for job queue |
+
+### Tech Stack
+
+- **Runtime**: Node.js >= 18, ESM (`"type": "module"` — use `import`/`export`, never `require`)
+- **Backend**: Express.js with Helmet, CORS, rate limiting, Morgan logging
+- **Database**: PostgreSQL via Prisma ORM (`prisma/schema.prisma`)
+- **Job Queue**: Bull + Redis
+- **Browser Automation**: Puppeteer + puppeteer-extra-plugin-stealth
+- **Testing**: Vitest 4.x (`vitest run` to test, `vitest` for watch mode)
+- **MCP**: `@modelcontextprotocol/sdk` — server at `src/mcp/server.js`
 
 ## Project Structure
 
 ```
-src/           → Core scripts, automation/, scrapers/, cli/, mcp/
-api/           → Express.js backend (routes/, services/, middleware/)
-dashboard/     → Static HTML frontend
-scripts/       → Standalone utility scripts
-skills/        → 31 Agent Skills (skills/*/SKILL.md)
-docs/          → Documentation and examples
-archive/       → Legacy browser-only scripts
-prisma/        → Database schema
-bin/           → CLI entry point (unfollowx)
-extension/     → Browser extension (Chrome/Edge)
+src/                → Core library (60+ browser scripts + subdirectories)
+  ├── cli/          → CLI commands (commander.js)
+  ├── mcp/          → MCP server for AI agents
+  ├── scrapers/     → Puppeteer-based scrapers (twitter/, bluesky/, mastodon/, threads/)
+  ├── client/       → HTTP-only Twitter client (no Puppeteer needed)
+  ├── automation/   → Browser automation scripts (require core.js pasted first)
+  ├── agents/       → Thought leader agent, persona engine
+  ├── a2a/          → Agent-to-Agent protocol
+  └── utils/        → Shared utilities
+api/                → Express.js backend (routes/, services/, middleware/, realtime/)
+dashboard/          → Static HTML frontend
+skills/             → 32 Agent Skills (skills/*/SKILL.md) — read before implementing
+tests/              → Vitest tests (agents/, client/, http-scraper/, a2a/)
+types/              → TypeScript declarations (index.d.ts)
+prisma/             → Database schema + migrations
+docs/agents/        → selectors.md, browser-script-patterns.md, contributing-features.md
 ```
 
 ## Skills
 
-31 skills in `skills/*/SKILL.md`. Read the relevant SKILL.md when a user's request matches a category.
+32 skills in `skills/*/SKILL.md`. **Read the relevant SKILL.md before implementing** when a user's request matches a category.
 
 - **Unfollow management** — mass unfollow, non-follower cleanup
 - **Analytics & insights** — engagement, hashtags, competitors, best times
@@ -64,6 +91,7 @@ extension/     → Browser extension (Chrome/Edge)
 - **Content repurposing** — repackage top tweets into threads, carousels, variations
 - **Lead generation** — find and qualify B2B leads from X conversations
 - **Viral thread generation** — research trends and generate high-engagement threads
+- **A2A multi-agent** — Agent-to-Agent protocol integration
 - **XActions CLI** — `bin/unfollowx` command-line tool
 - **XActions MCP server** — `src/mcp/server.js` for AI agents
 
@@ -78,12 +106,35 @@ extension/     → Browser extension (Chrome/Edge)
 - Prefer `data-testid` selectors — most stable across X/Twitter UI updates
 - X enforces aggressive rate limits; all automation must include 1-3s delays between actions
 
+## Commands
+
+```bash
+npm run dev              # Start API server with nodemon
+npm run test             # Run all Vitest tests once
+npm run cli              # Run CLI
+npm run mcp              # Start MCP server
+npm run agent            # Run thought leader agent
+npx prisma migrate dev   # Run database migrations
+```
+
+## Environment Variables
+
+Copy `.env.example` for the full list. Key variables: `DATABASE_URL`, `JWT_SECRET`, `REDIS_HOST`, `REDIS_PORT`, `XACTIONS_SESSION_COOKIE`, `PUPPETEER_HEADLESS`.
+
+## Testing Conventions
+
+- Test framework: Vitest 4.x, config in `vitest.config.js`
+- Tests in `tests/` mirroring source structure, files: `*.test.js`
+- **No mocks, stubs, or fakes** — real implementations only
+- Timeouts: 30s per test, 30s for hooks
+
 ## Patterns & Style
 
 - Browser script patterns: [browser-script-patterns.md](docs/agents/browser-script-patterns.md)
 - Adding features: [contributing-features.md](docs/agents/contributing-features.md)
 - DOM selectors (verified January 2026): [selectors.md](docs/agents/selectors.md)
-- `const` over `let`, async/await, emojis in `console.log`
+- `const` over `let`, async/await, ESM imports only
+- Emojis in `console.log`: ❌ error, ⚠️ warning, ✅ success, 🔄 progress
 - Author credit: `// by nichxbt`
 
 ## Codespace Performance
@@ -102,3 +153,10 @@ Common resource hogs: `tsgo --noEmit` (~500% CPU), vitest workers (15x ~100% CPU
 - Always kill the terminal after the command completes
 - Do not reuse foreground shell sessions — stale sessions block future operations
 - If a terminal appears unresponsive, kill it and create a new one
+
+## Mandatory Rules
+
+1. **Never mock, stub, or fake anything.** Real implementations only.
+2. **TypeScript strict mode** — no `any`, no `@ts-ignore`.
+3. **Always kill terminals** after commands complete.
+4. **Always commit and push** as `nirholas`.
