@@ -900,12 +900,10 @@ Free alternatives: Browser scripts, CLI, and Node.js library at https://xactions
  * Lists all payable resources as "METHOD /path" entries per x402scan spec.
  */
 export function generateWellKnown() {
-  const resources = [];
-
-  for (const operation of Object.keys(AI_OPERATION_PRICES)) {
-    const [category, action] = operation.split(':');
-    resources.push(`POST /api/ai/${category}/${action}`);
-  }
+  const spec = generateSpec();
+  const resources = Object.entries(spec.paths)
+    .filter(([_, methods]) => methods?.post?.['x-payment-info'])
+    .map(([routePath]) => `POST ${routePath}`);
 
   return {
     version: 1,
