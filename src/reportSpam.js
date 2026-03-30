@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Report Spam Accounts on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Report multiple spam/bot accounts at once

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Like Posts on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Like specific posts by URL or like visible posts matching keywords

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // Submit all nirholas MCP repos to glama.ai by pushing glama.json to each repo
 // Glama crawls GitHub for glama.json — this is the official submission method
 // by nichxbt

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/algorithmBuilder.js
 // Browser console script for training X's algorithm by engaging with niche content
 // Paste in DevTools console on x.com/home or x.com/search

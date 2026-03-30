@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 /**
  * ============================================================
  * 🔒 Encrypted Direct Messages — Production Grade

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/contentRepurposer.js
 // Browser console script for repurposing top tweets into threads, storms, blog outlines
 // Paste in DevTools console on x.com/YOUR_USERNAME

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Subscribe to X Premium — by nichxbt
 // https://github.com/nirholas/XActions
 // Navigate to Premium subscription page, compare tiers, check status, and guide through signup.

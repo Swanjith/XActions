@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/auditFollowers.js
 // Browser console script for auditing follower quality on X/Twitter
 // Paste in DevTools console on x.com/USERNAME/followers

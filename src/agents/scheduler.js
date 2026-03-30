@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions — Scheduler Module
 // Circadian rhythm activity scheduler with human-like variance
 // by nichxbt

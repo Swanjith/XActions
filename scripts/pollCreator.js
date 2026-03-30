@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/pollCreator.js
 // Browser console script to create polls on X/Twitter
 // Paste in DevTools console on x.com/compose/tweet

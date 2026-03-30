@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/trendingTopicMonitor.js
 // Browser console script for tracking trending topics and detecting rising trends
 // Paste in DevTools console on x.com/explore/tabs/trending

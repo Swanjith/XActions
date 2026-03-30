@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 import express from 'express';
 import Stripe from 'stripe';
 import { PrismaClient } from '@prisma/client';

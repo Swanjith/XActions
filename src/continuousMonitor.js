@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // ContinuousMonitor.js — Auto-refresh monitoring for followers/following changes
 // https://github.com/nirholas/XActions
 //

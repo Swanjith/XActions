@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // MonitorAccount.js — Track follows/unfollows on ANY public X (Twitter) account
 // https://github.com/nirholas/XActions
 //

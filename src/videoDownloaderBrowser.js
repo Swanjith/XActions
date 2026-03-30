@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/videoDownloaderBrowser.js
 // Download videos from X/Twitter posts in browser
 // by nichxbt

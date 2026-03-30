@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/engagementLeaderboard.js
 // Browser console script for tracking who engages most with your content
 // Paste in DevTools console on x.com/YOUR_USERNAME

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 /**
  * ============================================================
  * 📝 Unfollow Non-Followers with Full Log — Production Grade

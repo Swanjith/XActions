@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/qrCodeSharing.js
 // Browser console script for generating a QR code for any X/Twitter profile
 // Paste in DevTools console on x.com/USERNAME

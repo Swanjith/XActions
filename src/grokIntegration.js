@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/grokIntegration.js
 // Grok AI integration for X/Twitter
 // by nichxbt

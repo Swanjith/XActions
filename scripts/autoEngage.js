@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/autoEngage.js
 // Browser console script for automated engagement on X/Twitter
 // Auto-like, auto-reply, bookmark management

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Auto-Snapshot — Periodic account metric snapshots
  * Automatically captures follower counts, engagement, and growth metrics on a schedule.

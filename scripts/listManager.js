@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/listManager.js
 // Browser console script for creating and managing X/Twitter lists
 // Paste in DevTools console on x.com/i/lists

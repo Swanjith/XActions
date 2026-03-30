@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Competitor Analysis on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Compare engagement, follower counts, and posting patterns of multiple accounts

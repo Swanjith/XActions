@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/schedulePosts.js
 // Browser console script for scheduling posts using X/Twitter's native scheduler
 // Paste in DevTools console on x.com

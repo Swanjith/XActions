@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/businessTools.js
 // Browser console script for brand mention monitoring and sentiment analysis
 // Paste in DevTools console on x.com/search or any timeline

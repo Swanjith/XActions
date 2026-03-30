@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/settingsManager.js
 // Account settings and privacy management for X/Twitter
 // by nichxbt

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/discoveryExplore.js
 // Discovery, Explore, Trends, Topics, Search for X/Twitter
 // by nichxbt

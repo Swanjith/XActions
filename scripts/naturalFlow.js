@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/naturalFlow.js
 // Simulates a natural X/Twitter browsing session:
 //   → scroll home timeline, like keyword-matched posts

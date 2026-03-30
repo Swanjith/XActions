@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * AI Scraping Endpoints
  * 
@@ -726,6 +727,255 @@ router.post('/retweets', async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Retweets scrape error:', error);
+    return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/scrape/replies
+ * Get replies to a tweet (search-based)
+ */
+router.post('/replies', async (req, res) => {
+  const { tweetUrl, tweetId, username, limit = 50, cursor } = req.body;
+
+  if (!tweetUrl && !tweetId) {
+    return res.status(400).json({
+      error: 'INVALID_INPUT',
+      code: 'E_MISSING_TWEET_REF',
+      message: 'tweetUrl or tweetId is required',
+    });
+  }
+
+  let effectiveTweetId = tweetId;
+  if (tweetUrl) {
+    const match = tweetUrl.match(/status\/(\d+)/);
+    if (match) effectiveTweetId = match[1];
+  }
+
+  const effectiveLimit = Math.min(Math.max(parseInt(limit) || 50, 1), 200);
+
+  try {
+    const startTime = Date.now();
+    const { scrapeThread } = await import('../../services/browserAutomation.js');
+    const thread = await scrapeThread(req.sessionCookie, effectiveTweetId);
+
+    const replies = (thread.tweets || [])
+      .filter(t => t.id !== effectiveTweetId)
+      .slice(0, effectiveLimit)
+      .map(t => ({
+        id: t.id,
+        text: t.text,
+        author: { username: t.author?.username || t.username, displayName: t.author?.name },
+        createdAt: t.timestamp || t.createdAt,
+        metrics: {
+          likes: parseInt(t.likes) || 0,
+          retweets: parseInt(t.retweets) || 0,
+          replies: parseInt(t.replies) || 0,
+        },
+      }));
+
+    return successResponse(res, {
+      tweetId: effectiveTweetId,
+      replies,
+      pagination: { count: replies.length, limit: effectiveLimit },
+    }, { durationMs: Date.now() - startTime });
+  } catch (error) {
+    console.error('❌ Replies scrape error:', error);
+    return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/scrape/quote-tweets
+ * Get quote tweets for a tweet
+ */
+router.post('/quote-tweets', async (req, res) => {
+  const { tweetUrl, tweetId, limit = 50, cursor } = req.body;
+
+  if (!tweetUrl && !tweetId) {
+    return res.status(400).json({ error: 'INVALID_INPUT', message: 'tweetUrl or tweetId is required' });
+  }
+
+  let effectiveTweetId = tweetId;
+  if (tweetUrl) {
+    const match = tweetUrl.match(/status\/(\d+)/);
+    if (match) effectiveTweetId = match[1];
+  }
+
+  const effectiveLimit = Math.min(Math.max(parseInt(limit) || 50, 1), 200);
+
+  try {
+    const startTime = Date.now();
+    const { searchTweets } = await import('../../services/browserAutomation.js');
+    const results = await searchTweets(req.sessionCookie, `quoted_tweet_id:${effectiveTweetId}`, {
+      limit: effectiveLimit,
+      filter: 'latest',
+      cursor,
+    });
+
+    return successResponse(res, {
+      tweetId: effectiveTweetId,
+      quoteTweets: (results.items || []).map(t => ({
+        id: t.id,
+        text: t.text,
+        author: {
+          username: t.author?.username || t.username,
+          displayName: t.author?.name,
+          verified: t.author?.verified || false,
+        },
+        createdAt: t.timestamp || t.createdAt,
+        url: t.url,
+        metrics: { likes: parseInt(t.likes) || 0, retweets: parseInt(t.retweets) || 0 },
+      })),
+      pagination: {
+        count: (results.items || []).length,
+        limit: effectiveLimit,
+        nextCursor: results.nextCursor || null,
+        hasMore: !!results.nextCursor,
+      },
+    }, { durationMs: Date.now() - startTime });
+  } catch (error) {
+    console.error('❌ Quote tweets scrape error:', error);
+    return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/scrape/user-likes
+ * Get tweets a user has liked
+ */
+router.post('/user-likes', async (req, res) => {
+  const { username, limit = 50, cursor } = req.body;
+
+  if (!username) return res.status(400).json({ error: 'INVALID_INPUT', message: 'username is required' });
+
+  const cleanUsername = username.replace(/^@/, '').toLowerCase();
+  const effectiveLimit = Math.min(Math.max(parseInt(limit) || 50, 1), 200);
+
+  try {
+    const startTime = Date.now();
+    const { scrapeTweets } = await import('../../services/browserAutomation.js');
+    // Likes tab scraped via profile likes tab
+    const tweets = await scrapeTweets(req.sessionCookie, cleanUsername, {
+      limit: effectiveLimit,
+      tab: 'likes',
+      cursor,
+    });
+
+    return successResponse(res, {
+      username: cleanUsername,
+      likedTweets: (tweets.items || []).map(t => ({
+        id: t.id,
+        text: t.text,
+        author: { username: t.author?.username || t.username, displayName: t.author?.name },
+        createdAt: t.timestamp || t.createdAt,
+        url: t.url,
+        metrics: { likes: parseInt(t.likes) || 0, retweets: parseInt(t.retweets) || 0 },
+      })),
+      pagination: {
+        count: (tweets.items || []).length,
+        limit: effectiveLimit,
+        nextCursor: tweets.nextCursor || null,
+        hasMore: !!tweets.nextCursor,
+      },
+    }, { durationMs: Date.now() - startTime });
+  } catch (error) {
+    console.error('❌ User likes scrape error:', error);
+    return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/scrape/mentions
+ * Get mentions of a user
+ */
+router.post('/mentions', async (req, res) => {
+  const { username, limit = 50, filter = 'latest', cursor } = req.body;
+
+  if (!username) return res.status(400).json({ error: 'INVALID_INPUT', message: 'username is required' });
+
+  const cleanUsername = username.replace(/^@/, '').toLowerCase();
+  const effectiveLimit = Math.min(Math.max(parseInt(limit) || 50, 1), 200);
+
+  try {
+    const startTime = Date.now();
+    const { searchTweets } = await import('../../services/browserAutomation.js');
+    const results = await searchTweets(req.sessionCookie, `@${cleanUsername}`, {
+      limit: effectiveLimit,
+      filter: filter === 'top' ? 'top' : 'latest',
+      cursor,
+    });
+
+    return successResponse(res, {
+      username: cleanUsername,
+      mentions: (results.items || []).map(t => ({
+        id: t.id,
+        text: t.text,
+        author: {
+          username: t.author?.username || t.username,
+          displayName: t.author?.name,
+          verified: t.author?.verified || false,
+          followersCount: parseInt(t.author?.followers) || null,
+        },
+        createdAt: t.timestamp || t.createdAt,
+        url: t.url,
+        metrics: { likes: parseInt(t.likes) || 0, retweets: parseInt(t.retweets) || 0, replies: parseInt(t.replies) || 0 },
+      })),
+      pagination: {
+        count: (results.items || []).length,
+        limit: effectiveLimit,
+        nextCursor: results.nextCursor || null,
+        hasMore: !!results.nextCursor,
+      },
+    }, { durationMs: Date.now() - startTime });
+  } catch (error) {
+    console.error('❌ Mentions scrape error:', error);
+    return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/scrape/recommendations
+ * Get recommended users to follow based on profile
+ */
+router.post('/recommendations', async (req, res) => {
+  const { username, limit = 20 } = req.body;
+
+  if (!username) return res.status(400).json({ error: 'INVALID_INPUT', message: 'username is required' });
+
+  const cleanUsername = username.replace(/^@/, '').toLowerCase();
+  const effectiveLimit = Math.min(Math.max(parseInt(limit) || 20, 1), 50);
+
+  try {
+    const startTime = Date.now();
+    const { scrapeProfile, scrapeFollowers } = await import('../../services/browserAutomation.js');
+    const profile = await scrapeProfile(req.sessionCookie, cleanUsername);
+
+    // Get followers of followers as recommendations (2nd-degree connections)
+    const followers = await scrapeFollowers(req.sessionCookie, cleanUsername, { limit: 10 });
+    const seen = new Set([cleanUsername]);
+    const recommendations = [];
+
+    for (const follower of (followers.users || []).slice(0, 5)) {
+      if (seen.has(follower.username)) continue;
+      seen.add(follower.username);
+      recommendations.push({
+        username: follower.username,
+        displayName: follower.name || follower.displayName,
+        bio: follower.bio || null,
+        verified: follower.verified || false,
+        followersCount: parseInt(follower.followers) || null,
+        reason: `Followed by @${cleanUsername}'s followers`,
+      });
+    }
+
+    return successResponse(res, {
+      username: cleanUsername,
+      recommendations: recommendations.slice(0, effectiveLimit),
+      count: Math.min(recommendations.length, effectiveLimit),
+    }, { durationMs: Date.now() - startTime });
+  } catch (error) {
+    console.error('❌ Recommendations scrape error:', error);
     return errorResponse(res, 500, 'SCRAPE_FAILED', error.message);
   }
 });

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/adCampaignManager.js
 // Ad campaign management for X/Twitter
 // by nichxbt

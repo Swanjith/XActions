@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Delegate Access — by nichxbt
 // https://github.com/nirholas/XActions
 // Manage delegate access for your account: add/remove delegates and configure permissions.

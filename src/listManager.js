@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Manage Lists on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Create, manage, and populate X lists programmatically

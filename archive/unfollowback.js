@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Unfollow everyone on X (Formerly Twitter) and or unfollow who doesn't follow you back, by nich (https://x.com/nichxbt)
 // https://github.com/nirholas/xactions
 // 1. Go to https://x.com/YOUR_USER_NAME/following

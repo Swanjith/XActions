@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/competitorAnalysis.js
 // Browser console script for comparing competitor account stats and engagement
 // Paste in DevTools console on x.com (any page)

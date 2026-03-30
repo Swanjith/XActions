@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/massBlock.js
 // Browser console script for mass blocking users on X/Twitter
 // Paste in DevTools console on x.com (followers, following, search, or any page with user cells)

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Viral Tweet Scraper
  * Find top performing tweets by keyword or from any account

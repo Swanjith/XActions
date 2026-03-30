@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * AI Monitoring Endpoints
  * 
@@ -509,6 +510,140 @@ router.get('/list', async (req, res) => {
     });
   } catch (error) {
     return errorResponse(res, 500, 'LIST_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/monitor/keyword
+ * Start monitoring a keyword for new mentions
+ */
+router.post('/keyword', async (req, res) => {
+  const { keyword, interval = '15m', action = 'start', monitorId } = req.body;
+
+  if (action === 'start' && !keyword) {
+    return res.status(400).json({ error: 'INVALID_INPUT', message: 'keyword is required' });
+  }
+
+  try {
+    const { queueJob, cancelJob, getRecentJobs } = await import('../../services/jobQueue.js');
+
+    if (action === 'stop' && monitorId) {
+      await cancelJob(monitorId);
+      return res.json({ success: true, data: { monitorId, status: 'stopped' } });
+    }
+
+    if (action === 'list') {
+      const jobs = await getRecentJobs({ type: 'monitorKeyword', limit: 20 });
+      return res.json({ success: true, data: { monitors: jobs.map(j => ({ monitorId: j.id, keyword: j.config?.keyword, status: j.status })) } });
+    }
+
+    const operationId = generateOperationId();
+    await queueJob({
+      id: operationId,
+      type: 'monitorKeyword',
+      config: { keyword, interval, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        monitorId: operationId, status: 'started', keyword, interval,
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 60000 },
+      },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'MONITOR_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/monitor/follower-alerts
+ * Get notifications when specific accounts follow/unfollow
+ */
+router.post('/follower-alerts', async (req, res) => {
+  const { username, webhookUrl, action = 'start', alertId } = req.body;
+
+  try {
+    const { queueJob, cancelJob } = await import('../../services/jobQueue.js');
+
+    if (action === 'stop' && alertId) {
+      await cancelJob(alertId);
+      return res.json({ success: true, data: { alertId, status: 'stopped' } });
+    }
+
+    if (!username) return res.status(400).json({ error: 'INVALID_INPUT', message: 'username is required' });
+
+    const operationId = generateOperationId();
+    await queueJob({
+      id: operationId,
+      type: 'followerAlerts',
+      config: {
+        username: username.replace(/^@/, '').toLowerCase(),
+        webhookUrl: webhookUrl || null,
+        sessionCookie: req.sessionCookie,
+      },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        alertId: operationId, status: 'started',
+        username: username.replace(/^@/, '').toLowerCase(),
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 300000 },
+      },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'MONITOR_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/monitor/track-engagement
+ * Track engagement on specific tweets over time
+ */
+router.post('/track-engagement', async (req, res) => {
+  const { tweetIds, tweetUrls, interval = '1h', duration = '24h' } = req.body;
+
+  const urls = tweetUrls || [];
+  const ids = tweetIds || [];
+  const allIds = [
+    ...ids,
+    ...urls.map(u => { const m = u.match(/status\/(\d+)/); return m ? m[1] : null; }).filter(Boolean),
+  ];
+
+  if (allIds.length === 0) {
+    return res.status(400).json({ error: 'INVALID_INPUT', message: 'tweetIds or tweetUrls are required' });
+  }
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'trackEngagement',
+      config: {
+        tweetIds: allIds.slice(0, 20),
+        interval, duration,
+        sessionCookie: req.sessionCookie,
+      },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'track-engagement',
+        config: { tweetCount: allIds.length, interval, duration },
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 60000 },
+      },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'MONITOR_FAILED', error.message);
   }
 });
 

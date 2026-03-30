@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Schedule Posts on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Queue multiple posts to be published at specified times

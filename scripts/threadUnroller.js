@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Thread Unroller
  * Save any Twitter/X thread as clean text or markdown

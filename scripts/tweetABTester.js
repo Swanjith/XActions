@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/tweetABTester.js
 // Browser console script for A/B testing tweet variants and comparing engagement
 // Paste in DevTools console on x.com

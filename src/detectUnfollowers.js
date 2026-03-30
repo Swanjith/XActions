@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // DetectUnfollowers.js — Find out who unfollowed you on X (Twitter)
 // https://github.com/nirholas/XActions
 //

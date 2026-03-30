@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Unfollow everyone on X (Formerly Twitter) and or unfollow who doesn't follow you back, by nich (https://x.com/nichxbt)
 // https://github.com/nirholas/xactions
 // https://github.com/tahajalili (Ethan JL) - Added feature to keep track of unfollowed users in UnfollowWDFBLog.js

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/tweetPerformance.js
 // Browser console script for ranking tweets by engagement and categorizing by type
 // Paste in DevTools console on x.com/USERNAME

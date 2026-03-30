@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/joinCommunities.js
 // Browser console script for discovering and joining X communities by keyword
 // Paste in DevTools console on x.com/i/communities/suggested

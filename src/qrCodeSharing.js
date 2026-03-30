@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // QR Code Profile Sharing on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Generate a shareable QR code for any X profile

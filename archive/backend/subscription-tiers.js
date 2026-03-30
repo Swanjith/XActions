@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Follow bonus: 1 credit = useless alone, needs more
 const FOLLOW_BONUS_CREDITS = 1;
 

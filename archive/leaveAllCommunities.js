@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Leave ALL X Communities - by nichxbt
 // https://github.com/nirholas/xactions
 // 1. Go to https://x.com/YOUR_USERNAME/communities

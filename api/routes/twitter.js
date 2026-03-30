@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 import express from 'express';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';

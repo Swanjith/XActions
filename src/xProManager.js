@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/xProManager.js
 // X Pro (TweetDeck) automation for X/Twitter
 // by nichxbt

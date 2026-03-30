@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/scrapeSpaces.js
 // Browser console script to scrape X/Twitter Spaces data
 // Paste in DevTools console on x.com/i/spaces or a Space page

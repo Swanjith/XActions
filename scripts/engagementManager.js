@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/engagementManager.js
 // Browser console script for liking, bookmarking, or replying to visible tweets
 // Paste in DevTools console on x.com/home or any timeline

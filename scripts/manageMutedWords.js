@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/manageMutedWords.js
 // Browser console script for bulk-adding muted words on X/Twitter
 // Paste in DevTools console on x.com/settings/muted_keywords

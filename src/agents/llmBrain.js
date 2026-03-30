@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions — LLM Brain Module
 // Tiered LLM client for intelligent decision-making
 // by nichxbt

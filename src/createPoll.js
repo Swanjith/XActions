@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Create Poll on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Create a poll tweet programmatically

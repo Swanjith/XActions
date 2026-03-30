@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // NewFollowersAlert.js — Get notified when you gain new followers
 // https://github.com/nirholas/XActions
 //

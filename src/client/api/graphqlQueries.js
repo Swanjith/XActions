@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Client — GraphQL Query ID Registry
  * Twitter's internal GraphQL endpoints with query IDs from the web client bundle.

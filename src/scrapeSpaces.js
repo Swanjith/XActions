@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Scrape Spaces (Audio/Video Broadcasts) on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Find and collect metadata about X Spaces

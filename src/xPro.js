@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // X Pro (TweetDeck) — by nichxbt
 // https://github.com/nirholas/XActions
 // Navigate to X Pro / TweetDeck, setup monitoring columns, and multi-column view helpers.

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/articlePublisher.js
 // Long-form article publishing for X/Twitter (Premium+)
 // by nichxbt

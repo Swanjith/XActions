@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Social Graph Visualizer
  * Exports graph data for D3.js, Gephi (GEXF), and standalone HTML

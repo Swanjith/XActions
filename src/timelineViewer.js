@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Timeline Viewer — by nichxbt
 // https://github.com/nirholas/XActions
 // Switch between For You / Following timelines, auto-scroll and collect posts, and export data.

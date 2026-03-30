@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Portability API Routes
  * Export accounts, migrate to other platforms, compare exports.

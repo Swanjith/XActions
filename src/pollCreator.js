@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/pollCreator.js
 // Poll creation and management for X/Twitter
 // by nichxbt

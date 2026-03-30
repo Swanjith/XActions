@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/monitorAccount.js
 // Browser console script for tracking follows/unfollows on any public account
 // Paste in DevTools console on x.com/USERNAME/followers or /following

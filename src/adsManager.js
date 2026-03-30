@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Business Ads & Campaigns — by nichxbt
 // https://github.com/nirholas/XActions
 // Navigate to ads dashboard, create campaigns, boost posts, and view campaign analytics.

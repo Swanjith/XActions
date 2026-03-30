@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/editProfile.js
 // Browser console script to update X/Twitter profile fields
 // Paste in DevTools console on x.com/settings/profile

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/leaveAllCommunities.js
 // Browser console script for leaving all X communities
 // Paste in DevTools console on x.com/USERNAME/communities

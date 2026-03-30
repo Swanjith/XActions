@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Plugin Manager
  * Manages plugin lifecycle: install, uninstall, enable, disable, and hook execution.

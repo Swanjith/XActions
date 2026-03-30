@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/accountHealthMonitor.js
 // Browser console script for computing a 0-100 account health score
 // Paste in DevTools console on x.com/USERNAME

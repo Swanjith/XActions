@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/businessTools.js
 // Business and advertising tools for X/Twitter
 // by nichxbt

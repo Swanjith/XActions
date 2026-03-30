@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/savedSearchManager.js
 // Saved search and discovery tools for X/Twitter
 // by nichxbt

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/timelineScraper.js
 // Timeline scraping tools for X/Twitter
 // by nichxbt

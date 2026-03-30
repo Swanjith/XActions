@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/publishArticle.js
 // Browser console script for publishing articles on X/Twitter (Premium+)
 // Paste in DevTools console on x.com/compose/article

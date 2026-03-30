@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/clearAllBookmarks.js
 // Browser console script for clearing all bookmarks on X/Twitter
 // Paste in DevTools console on x.com/i/bookmarks

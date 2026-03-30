@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/advancedSpaces.js
 // Advanced Spaces features for X/Twitter
 // by nichxbt

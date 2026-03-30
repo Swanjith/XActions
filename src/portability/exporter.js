@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Account Exporter
  * Orchestrates full account export: profile, tweets, followers, following, bookmarks, likes

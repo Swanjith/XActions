@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Guest Token Manager — Unauthenticated access to Twitter's public API
  *

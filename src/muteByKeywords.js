@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Mute Users by Keywords on X - by nichxbt
 // https://github.com/nirholas/xactions
 // 1. Go to any X timeline or search page

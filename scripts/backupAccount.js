@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/backupAccount.js
 // Browser console script for backing up your X/Twitter profile and tweets as JSON
 // Paste in DevTools console on x.com/YOUR_USERNAME

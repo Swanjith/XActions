@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/profileManager.js
 // Profile management automation for X/Twitter
 // by nichxbt

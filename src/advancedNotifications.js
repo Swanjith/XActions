@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/advancedNotifications.js
 // Advanced notification management for X/Twitter
 // by nichxbt

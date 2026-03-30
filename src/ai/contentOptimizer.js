@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions AI Hashtag & Content Optimizer
  * Suggests hashtags, improves tweet text, predicts performance.

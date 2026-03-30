@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Best Time to Post on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Analyze your posting history to find optimal posting times

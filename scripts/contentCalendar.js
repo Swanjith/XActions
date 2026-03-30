@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/contentCalendar.js
 // Browser console script for analyzing posting patterns and schedule visualization
 // Paste in DevTools console on x.com/USERNAME (your profile)

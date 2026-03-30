@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/autoPlugReplies.js
 // Browser console script for auto-replying to your viral tweets with a plug
 // Paste in DevTools console on x.com/YOUR_USERNAME

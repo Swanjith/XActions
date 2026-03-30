@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/bookmarkManager.js
 // Browser console script for exporting and clearing bookmarks on X/Twitter
 // Paste in DevTools console on x.com/i/bookmarks

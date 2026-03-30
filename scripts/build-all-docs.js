@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Build ALL SEO-Optimized HTML Pages from every .md file in the project
  * Scans: docs/, skills/, tutorials/claude-prompts/, root docs, plugins, extension

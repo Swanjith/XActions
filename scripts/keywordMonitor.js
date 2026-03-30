@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/keywordMonitor.js
 // Browser console script for monitoring timeline keywords and alerting on matches
 // Paste in DevTools console on x.com/search?q=keyword or x.com/home

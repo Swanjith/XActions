@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions — Content Calendar
  * Weekly content planning, review queue, auto-post, performance tracking

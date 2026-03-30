@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Generate Missing Documentation
  * Creates docs/examples/*.md for all undocumented browser scripts

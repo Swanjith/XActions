@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/quoteTweetAutomation.js
 // Browser console script for auto quote-tweeting matching tweets with templates
 // Paste in DevTools console on x.com/home or any timeline/search

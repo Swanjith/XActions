@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/engagementManager.js
 // Engagement and interaction automation for X/Twitter
 // by nichxbt

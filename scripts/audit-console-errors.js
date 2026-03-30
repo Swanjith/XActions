@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // Audit all dashboard pages for browser console errors
 // Usage: node scripts/audit-console-errors.js [--verbose] [--port 3001] [--top-only]
 // by nichxbt

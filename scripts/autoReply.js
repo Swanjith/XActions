@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/autoReply.js
 // Browser console script for auto-replying to tweets matching keyword triggers
 // Paste in DevTools console on x.com/home or any timeline/search

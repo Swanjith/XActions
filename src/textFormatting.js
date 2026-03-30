@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Text Formatting Helper for X - by nichxbt
 // https://github.com/nirholas/xactions
 // Format text with bold, italic, strikethrough, monospace using Unicode characters

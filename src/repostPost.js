@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Repost (Retweet) Posts on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Repost specific posts by URL or bulk repost from search/timeline

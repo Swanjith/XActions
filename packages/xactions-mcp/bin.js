@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions MCP Server — thin wrapper package
 // This makes `npx xactions-mcp` work by delegating to the xactions package.
 // by nichxbt

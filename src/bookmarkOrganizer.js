@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Bookmark Organizer on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Organize bookmarks into folders (Premium feature)

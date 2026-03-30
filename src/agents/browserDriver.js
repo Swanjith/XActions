@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions — Browser Driver
 // Puppeteer stealth wrapper for X.com automation
 // by nichxbt

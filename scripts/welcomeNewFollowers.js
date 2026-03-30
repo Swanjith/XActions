@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/welcomeNewFollowers.js
 // Browser console script for welcoming new followers with DMs on X/Twitter
 // Paste in DevTools console on x.com/USERNAME/followers

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/blockListManager.js
 // Block list import/export/sharing for X/Twitter
 // by nichxbt

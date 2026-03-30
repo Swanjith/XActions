@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Audit Followers on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Analyze your followers: find fakes, bots, inactive accounts

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Robust Pagination & Retry Engine
  * Smart pagination, retries, deduplication, and dataset storage for scrapers.

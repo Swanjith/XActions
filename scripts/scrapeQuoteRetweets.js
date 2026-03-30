@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Quote Retweets Scraper
  * Get all quote retweets of a specific tweet

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/autoRepost.js
 // Browser console script for auto-reposting tweets matching keywords or users
 // Paste in DevTools console on x.com/home or any timeline/search

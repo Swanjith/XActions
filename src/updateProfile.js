@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Update Profile on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Programmatically update your bio, display name, location, website

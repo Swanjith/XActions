@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Tweet Stream
  * Watches a user's tweets and emits new ones via callback.

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/postComposer.js
 // Post creation, threads, polls, scheduling, articles for X/Twitter
 // by nichxbt

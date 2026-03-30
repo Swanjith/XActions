@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/premiumManager.js  
 // Premium subscription feature management for X/Twitter
 // by nichxbt

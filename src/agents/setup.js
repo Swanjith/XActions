@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions — Agent Setup Wizard
 // Interactive first-time configuration for the Thought Leader Agent
 // by nichxbt

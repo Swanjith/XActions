@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Evergreen Content Recycler
  * Identifies top-performing tweets and automatically re-posts them on a schedule.

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Premium Gifting — by nichxbt
 // https://github.com/nirholas/XActions
 // Gift an X Premium subscription to another user from their profile.

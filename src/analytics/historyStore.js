@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Historical Analytics Database
  * Time-series storage for account metrics, tweet performance, and engagement trends.

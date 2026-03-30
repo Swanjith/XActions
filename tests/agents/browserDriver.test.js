@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions — BrowserDriver Tests (unit-level, no real browser)
 // by nichxbt
 

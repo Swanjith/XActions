@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 import Queue from 'bull';
 import { PrismaClient } from '@prisma/client';
 import { processUnfollowNonFollowers } from './operations/unfollowNonFollowers.js';

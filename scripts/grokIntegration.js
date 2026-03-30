@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/grokIntegration.js
 // Browser console script for interacting with Grok AI on X
 // Paste in DevTools console on x.com/i/grok

@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Local Scheduler
  * Cron-based task scheduler with job history and webhook triggers.

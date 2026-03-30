@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/shadowbanChecker.js
 // Browser console script for checking if your X/Twitter account is shadowbanned
 // Paste in DevTools console on x.com (any page, logged in)

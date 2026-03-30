@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/reportSpam.js
 // Browser console script for reporting spam accounts on X/Twitter
 // Paste in DevTools console on x.com (any page)

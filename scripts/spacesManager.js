@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/spacesManager.js
 // Browser console script for scraping live and scheduled Spaces on X/Twitter
 // Paste in DevTools console on x.com/i/spaces or x.com/explore

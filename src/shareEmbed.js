@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // Share & Embed Posts on X - by nichxbt
 // https://github.com/nirholas/xactions
 // Copy post links, get embed codes, or bulk copy links from timeline

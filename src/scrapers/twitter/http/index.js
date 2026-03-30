@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Twitter HTTP Scraper
  * Direct HTTP-based scraping via Twitter's internal GraphQL API

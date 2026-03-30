@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // View Analytics (Premium) — by nichxbt
 // https://github.com/nirholas/XActions
 // Navigate to analytics dashboard, scrape impressions/engagements/followers, and export data.

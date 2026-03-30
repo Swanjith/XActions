@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/audienceOverlap.js
 // Browser console script for analyzing shared followers between X accounts
 // Paste in DevTools console on x.com/ACCOUNT/followers

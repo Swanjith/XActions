@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/keywordLiker.js
 // Like only posts containing specific keywords — with a prompt input box
 // Paste in DevTools console on x.com/home or any feed/search page

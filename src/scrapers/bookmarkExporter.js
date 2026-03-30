@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Bookmark Exporter
  * Export all your X/Twitter bookmarks to JSON/CSV

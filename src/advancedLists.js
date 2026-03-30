@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/advancedLists.js
 // Advanced list management for X/Twitter
 // by nichxbt

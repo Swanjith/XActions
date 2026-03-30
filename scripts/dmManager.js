@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/dmManager.js
 // Browser console script for sending DMs and exporting conversations on X/Twitter
 // Paste in DevTools console on x.com/messages

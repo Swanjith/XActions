@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // XActions — Thought Leader Agent (Main Orchestrator)
 // 24/7 LLM-powered autonomous agent for X.com thought leadership
 // by nichxbt

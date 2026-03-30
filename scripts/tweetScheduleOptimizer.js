@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/tweetScheduleOptimizer.js
 // Browser console script for generating an optimal weekly posting schedule
 // Paste in DevTools console on x.com/USERNAME

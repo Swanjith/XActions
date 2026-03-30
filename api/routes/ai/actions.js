@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * AI Action Endpoints
  * 
@@ -604,6 +605,396 @@ router.post('/auto-comment', async (req, res) => {
         note: 'Comments are selected randomly from provided templates',
         warning: dryRun ? null : 'Be mindful of spam - use varied, genuine comments',
       },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/follow
+ * Follow a specific user
+ */
+router.post('/follow', async (req, res) => {
+  const { username } = req.body;
+  if (!username) return res.status(400).json({ error: 'INVALID_INPUT', message: 'username is required' });
+
+  const cleanUsername = username.replace(/^@/, '').toLowerCase();
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'followUser',
+      config: { username: cleanUsername, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'follow', username: cleanUsername,
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 2000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/unfollow
+ * Unfollow a specific user
+ */
+router.post('/unfollow', async (req, res) => {
+  const { username } = req.body;
+  if (!username) return res.status(400).json({ error: 'INVALID_INPUT', message: 'username is required' });
+
+  const cleanUsername = username.replace(/^@/, '').toLowerCase();
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'unfollowUser',
+      config: { username: cleanUsername, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'unfollow', username: cleanUsername,
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 2000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/like
+ * Like a specific tweet
+ */
+router.post('/like', async (req, res) => {
+  const { tweetUrl, tweetId } = req.body;
+  if (!tweetUrl && !tweetId) return res.status(400).json({ error: 'INVALID_INPUT', message: 'tweetUrl or tweetId is required' });
+
+  let effectiveTweetId = tweetId;
+  if (tweetUrl) {
+    const match = tweetUrl.match(/status\/(\d+)/);
+    if (match) effectiveTweetId = match[1];
+  }
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'likeTweet',
+      config: { tweetId: effectiveTweetId, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'like', tweetId: effectiveTweetId,
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 2000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/retweet
+ * Retweet a specific tweet
+ */
+router.post('/retweet', async (req, res) => {
+  const { tweetUrl, tweetId } = req.body;
+  if (!tweetUrl && !tweetId) return res.status(400).json({ error: 'INVALID_INPUT', message: 'tweetUrl or tweetId is required' });
+
+  let effectiveTweetId = tweetId;
+  if (tweetUrl) {
+    const match = tweetUrl.match(/status\/(\d+)/);
+    if (match) effectiveTweetId = match[1];
+  }
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'retweetTweet',
+      config: { tweetId: effectiveTweetId, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'retweet', tweetId: effectiveTweetId,
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 2000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/quote-tweet
+ * Quote-tweet with a comment
+ */
+router.post('/quote-tweet', async (req, res) => {
+  const { tweetUrl, tweetId, text } = req.body;
+  if (!text) return res.status(400).json({ error: 'INVALID_INPUT', message: 'text is required' });
+  if (!tweetUrl && !tweetId) return res.status(400).json({ error: 'INVALID_INPUT', message: 'tweetUrl or tweetId is required' });
+
+  let effectiveTweetId = tweetId;
+  if (tweetUrl) {
+    const match = tweetUrl.match(/status\/(\d+)/);
+    if (match) effectiveTweetId = match[1];
+  }
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'quoteTweet',
+      config: { tweetId: effectiveTweetId, text, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'quote-tweet', tweetId: effectiveTweetId,
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 3000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/post-tweet
+ * Post a new tweet
+ */
+router.post('/post-tweet', async (req, res) => {
+  const { text, replyToTweetId } = req.body;
+  if (!text) return res.status(400).json({ error: 'INVALID_INPUT', message: 'text is required' });
+  if (text.length > 280) return res.status(400).json({ error: 'INVALID_INPUT', message: 'text exceeds 280 characters' });
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'postTweet',
+      config: { text, replyToTweetId: replyToTweetId || null, sessionCookie: req.sessionCookie },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'post-tweet',
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 3000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/auto-follow
+ * Auto-follow users matching criteria
+ */
+router.post('/auto-follow', async (req, res) => {
+  const { username, hashtag, keyword, maxFollows = 50, dryRun = false, delayMs = 3000, filters = {} } = req.body;
+
+  if (!username && !hashtag && !keyword) {
+    return res.status(400).json({ error: 'INVALID_INPUT', message: 'username, hashtag, or keyword required' });
+  }
+
+  const effectiveMax = Math.min(Math.max(parseInt(maxFollows) || 50, 1), 200);
+  const target = username
+    ? { type: 'username', value: username.replace(/^@/, '').toLowerCase() }
+    : hashtag ? { type: 'hashtag', value: hashtag.replace(/^#/, '') }
+    : { type: 'keyword', value: keyword };
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'autoFollow',
+      config: {
+        target, maxFollows: effectiveMax, dryRun: !!dryRun,
+        delayMs: Math.max(parseInt(delayMs) || 3000, 2000), filters,
+        sessionCookie: req.sessionCookie,
+      },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'auto-follow',
+        config: { targetType: target.type, targetValue: target.value, maxFollows: effectiveMax, dryRun: !!dryRun },
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 5000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/smart-unfollow
+ * Intelligently unfollow low-engagement accounts
+ */
+router.post('/smart-unfollow', async (req, res) => {
+  const { maxUnfollows = 50, dryRun = false, delayMs = 2000, minDaysSinceFollow = 7, skipVerified = false } = req.body;
+
+  const effectiveMax = Math.min(Math.max(parseInt(maxUnfollows) || 50, 1), 300);
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'smartUnfollow',
+      config: {
+        maxUnfollows: effectiveMax, dryRun: !!dryRun,
+        delayMs: Math.max(parseInt(delayMs) || 2000, 1000),
+        minDaysSinceFollow, skipVerified,
+        sessionCookie: req.sessionCookie,
+      },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'smart-unfollow',
+        config: { maxUnfollows: effectiveMax, dryRun: !!dryRun, skipVerified },
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 5000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/auto-retweet
+ * Auto-retweet matching tweets
+ */
+router.post('/auto-retweet', async (req, res) => {
+  const { username, hashtag, keyword, maxRetweets = 20, dryRun = false, delayMs = 5000 } = req.body;
+
+  if (!username && !hashtag && !keyword) {
+    return res.status(400).json({ error: 'INVALID_INPUT', message: 'username, hashtag, or keyword required' });
+  }
+
+  const effectiveMax = Math.min(Math.max(parseInt(maxRetweets) || 20, 1), 50);
+  const target = username
+    ? { type: 'username', value: username.replace(/^@/, '').toLowerCase() }
+    : hashtag ? { type: 'hashtag', value: hashtag.replace(/^#/, '') }
+    : { type: 'keyword', value: keyword };
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'autoRetweet',
+      config: {
+        target, maxRetweets: effectiveMax, dryRun: !!dryRun,
+        delayMs: Math.max(parseInt(delayMs) || 5000, 3000),
+        sessionCookie: req.sessionCookie,
+      },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'auto-retweet',
+        config: { targetType: target.type, targetValue: target.value, maxRetweets: effectiveMax, dryRun: !!dryRun },
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 5000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
+    });
+  } catch (error) {
+    return errorResponse(res, 500, 'ACTION_FAILED', error.message);
+  }
+});
+
+/**
+ * POST /api/ai/action/bulk-execute
+ * Execute multiple actions in sequence
+ */
+router.post('/bulk-execute', async (req, res) => {
+  const { actions, delayMs = 3000, stopOnError = false } = req.body;
+
+  if (!Array.isArray(actions) || actions.length === 0) {
+    return res.status(400).json({ error: 'INVALID_INPUT', message: 'actions array is required' });
+  }
+
+  const effectiveActions = actions.slice(0, 100);
+
+  try {
+    const operationId = generateOperationId();
+    const { queueJob } = await import('../../services/jobQueue.js');
+    await queueJob({
+      id: operationId,
+      type: 'bulkExecute',
+      config: {
+        actions: effectiveActions,
+        delayMs: Math.max(parseInt(delayMs) || 3000, 1000),
+        stopOnError: !!stopOnError,
+        sessionCookie: req.sessionCookie,
+      },
+      source: 'ai-api',
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        operationId, status: 'queued', type: 'bulk-execute',
+        config: { actionCount: effectiveActions.length, delayMs, stopOnError },
+        polling: { endpoint: `/api/ai/action/status/${operationId}`, recommendedIntervalMs: 5000 },
+      },
+      meta: { createdAt: new Date().toISOString() },
     });
   } catch (error) {
     return errorResponse(res, 500, 'ACTION_FAILED', error.message);

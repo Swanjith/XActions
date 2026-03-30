@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Stream Manager
  * Manages active streams, polling intervals, deduplication via Redis,

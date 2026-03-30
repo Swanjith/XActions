@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/pinTweetManager.js
 // Browser console script for pinning your best-performing tweet
 // Paste in DevTools console on x.com/YOUR_USERNAME (your profile)

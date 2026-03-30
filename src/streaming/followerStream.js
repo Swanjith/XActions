@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * XActions Follower Stream
  * Watches follower count changes and emits follow/unfollow events.

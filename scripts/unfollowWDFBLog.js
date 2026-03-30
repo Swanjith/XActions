@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/unfollowWDFBLog.js
 // Browser console script for unfollowing non-followers with detailed logging
 // Paste in DevTools console on x.com/USERNAME/following

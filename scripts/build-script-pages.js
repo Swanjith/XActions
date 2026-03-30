@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * Build Individual HTML Pages for Every Browser Console Script
  * Scans: src/*.js, src/automation/*.js, scripts/*.js, scripts/twitter/*.js

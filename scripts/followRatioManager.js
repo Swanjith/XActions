@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/followRatioManager.js
 // Browser console script for analyzing and optimizing your follow/following ratio
 // Paste in DevTools console on x.com/YOUR_USERNAME

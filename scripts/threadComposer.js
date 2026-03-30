@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 // scripts/threadComposer.js
 // Browser console script for interactive thread composing with draft persistence
 // Paste in DevTools console on x.com

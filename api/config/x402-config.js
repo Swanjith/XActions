@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). Business Source License 1.1.
 /**
  * x402 Micropayment Configuration (Optional)
  * 
@@ -490,6 +491,172 @@ export const AI_OPERATION_PRICES = {
   'utility:embed': '$0.002',         // Get embed code/share link
   'utility:qr-code': '$0.002',       // Generate QR code for profile
   'utility:follow-account': '$0.005', // Follow specific accounts
+
+  // ── New route-level pricing (added for full MCP parity) ──────────────────
+
+  // Posting routes (/api/ai/posting/*)
+  'posting:reply': '$0.005',          // Reply to a tweet
+  'posting:bookmark': '$0.002',       // Bookmark a tweet
+  'posting:bookmarks': '$0.01',       // Get bookmarks list
+  'posting:clear-bookmarks': '$0.01', // Clear all bookmarks
+  'posting:article': '$0.05',         // Publish article
+
+  // Engagement routes (/api/ai/engagement/*)
+  'engagement:follow': '$0.002',      // Follow a user
+  'engagement:unfollow': '$0.002',    // Unfollow a user
+  'engagement:like': '$0.002',        // Like a tweet
+  'engagement:retweet': '$0.002',     // Retweet
+  'engagement:quote-tweet': '$0.005', // Quote-tweet
+  'engagement:auto-follow': '$0.03',  // Auto-follow
+  'engagement:smart-unfollow': '$0.03', // Smart unfollow
+  'engagement:auto-retweet': '$0.02', // Auto-retweet
+  'engagement:bulk-execute': '$0.05', // Bulk execute actions
+  'engagement:notifications': '$0.005', // Get notifications
+  'engagement:mute': '$0.002',        // Mute user
+  'engagement:unmute': '$0.002',      // Unmute user
+  'engagement:trends': '$0.005',      // Trending topics
+  'engagement:explore': '$0.005',     // Explore feed
+  'engagement:detect-bots': '$0.02',  // Bot detection
+  'engagement:find-influencers': '$0.05', // Find influencers
+  'engagement:smart-target': '$0.05', // Smart targeting
+  'engagement:crypto-analyze': '$0.03', // Crypto sentiment
+  'engagement:audience-insights': '$0.03', // Audience insights
+  'engagement:engagement-report': '$0.05', // Engagement report
+
+  // Action routes (additional, /api/ai/action/*)
+  'action:follow': '$0.002',          // Follow user
+  'action:unfollow': '$0.002',        // Unfollow user
+  'action:like': '$0.002',            // Like tweet
+  'action:retweet': '$0.002',         // Retweet
+  'action:quote-tweet': '$0.005',     // Quote-tweet
+  'action:post-tweet': '$0.005',      // Post tweet
+  'action:auto-follow': '$0.03',      // Auto-follow
+  'action:smart-unfollow': '$0.03',   // Smart unfollow
+  'action:auto-retweet': '$0.02',     // Auto-retweet
+  'action:bulk-execute': '$0.05',     // Bulk execute
+
+  // Profile routes (/api/ai/profile/*)
+  'profile:check-premium': '$0.001',  // Check premium status
+  'profile:settings': '$0.005',       // Get settings
+  'profile:toggle-protected': '$0.005', // Toggle protected
+  'profile:blocked': '$0.01',         // Get blocked accounts
+
+  // Grok routes (/api/ai/grok/*)
+  'grok:analyze-image': '$0.03',      // Analyze image
+
+  // Lists routes (/api/ai/lists/*)
+  'lists:all': '$0.005',              // Get all lists
+  'lists:members': '$0.01',           // Get list members
+
+  // Spaces routes (/api/ai/spaces/*)
+  'spaces:list': '$0.005',            // Discover spaces
+  'spaces:join': '$0.05',             // Join a space
+  'spaces:leave': '$0.002',           // Leave a space
+  'spaces:status': '$0.001',          // Space status
+  'spaces:transcript': '$0.01',       // Space transcript
+
+  // Analytics routes (/api/ai/analytics/*)
+  'analytics:account': '$0.01',       // Account analytics
+  'analytics:post': '$0.005',         // Post analytics
+  'analytics:creator': '$0.01',       // Creator analytics
+  'analytics:brand-monitor': '$0.03', // Brand monitoring
+  'analytics:history': '$0.005',      // Analytics history
+  'analytics:snapshot': '$0.005',     // Take snapshot
+  'analytics:growth-rate': '$0.005',  // Growth rate
+  'analytics:compare-accounts': '$0.01', // Compare accounts
+  'analytics:analyze-voice': '$0.02', // Voice analysis
+  'analytics:generate-tweet': '$0.01', // Generate tweet
+  'analytics:rewrite-tweet': '$0.005', // Rewrite tweet
+  'analytics:summarize-thread': '$0.01', // Summarize thread
+
+  // Sentiment routes (/api/ai/sentiment/*)
+  'sentiment:analyze': '$0.005',      // Sentiment analysis
+  'sentiment:monitor': '$0.03',       // Monitor reputation
+  'sentiment:report': '$0.05',        // Reputation report
+
+  // Streams routes (/api/ai/streams/*)
+  'streams:start': '$0.01',           // Start stream
+  'streams:stop': '$0.002',           // Stop stream
+  'streams:list': '$0.001',           // List streams
+  'streams:pause': '$0.002',          // Pause stream
+  'streams:resume': '$0.002',         // Resume stream
+  'streams:status': '$0.001',         // Stream status
+  'streams:history': '$0.002',        // Stream history
+
+  // Workflows routes (/api/ai/workflows/*)
+  'workflows:create': '$0.01',        // Create workflow
+  'workflows:run': '$0.05',           // Run workflow
+  'workflows:list': '$0.001',         // List workflows
+  'workflows:actions': '$0.001',      // Available actions
+
+  // Portability routes (/api/ai/portability/*)
+  'portability:export-account': '$0.10', // Export account
+  'portability:migrate': '$0.10',     // Migrate account
+  'portability:diff': '$0.02',        // Diff exports
+  'portability:best-time': '$0.01',   // Best time to post
+  'portability:platforms': '$0.001',  // List platforms
+  'portability:import': '$0.02',      // Import data
+  'portability:convert': '$0.002',    // Convert format
+
+  // Personas routes (/api/ai/personas/*)
+  'personas:create': '$0.01',         // Create persona
+  'personas:list': '$0.001',          // List personas
+  'personas:status': '$0.001',        // Persona status
+  'personas:edit': '$0.005',          // Edit persona
+  'personas:delete': '$0.002',        // Delete persona
+  'personas:run': '$0.10',            // Run persona (continuous)
+  'personas:presets': '$0.001',       // Persona presets
+
+  // Graph routes (/api/ai/graph/*)
+  'graph:build': '$0.10',             // Build social graph
+  'graph:analyze': '$0.03',           // Analyze graph
+  'graph:recommendations': '$0.02',   // Graph recommendations
+  'graph:list': '$0.001',             // List graphs
+
+  // CRM routes (/api/ai/crm/*)
+  'crm:sync': '$0.05',                // Sync to CRM
+  'crm:tag': '$0.001',                // Tag contact
+  'crm:search': '$0.002',             // Search CRM
+  'crm:segment': '$0.005',            // CRM segment
+
+  // Schedule routes (/api/ai/schedule/*)
+  'schedule:add': '$0.005',           // Schedule post
+  'schedule:list': '$0.001',          // List scheduled
+  'schedule:remove': '$0.002',        // Remove scheduled
+  'schedule:rss-add': '$0.005',       // Add RSS feed
+  'schedule:rss-check': '$0.01',      // Check RSS
+  'schedule:rss-drafts': '$0.002',    // RSS drafts
+  'schedule:evergreen': '$0.01',      // Find evergreen content
+
+  // Optimizer routes (/api/ai/optimizer/*)
+  'optimizer:optimize': '$0.01',      // Optimize tweet
+  'optimizer:hashtags': '$0.005',     // Suggest hashtags
+  'optimizer:predict': '$0.01',       // Predict performance
+  'optimizer:variations': '$0.01',    // Generate variations
+
+  // Notify routes (/api/ai/notify/*)
+  'notify:send': '$0.01',             // Send notification
+  'notify:test': '$0.002',            // Test webhook
+
+  // Datasets routes (/api/ai/datasets/*)
+  'datasets:list': '$0.001',          // List datasets
+  'datasets:get': '$0.005',           // Fetch dataset
+
+  // Teams routes (/api/ai/teams/*)
+  'teams:create': '$0.005',           // Create team
+  'teams:members': '$0.002',          // Get team members
+
+  // Scraping additions (/api/ai/scrape/*)
+  'scrape:replies': '$0.005',         // Get tweet replies
+  'scrape:quote-tweets': '$0.005',    // Get quote tweets
+  'scrape:user-likes': '$0.005',      // Get tweets user liked
+  'scrape:mentions': '$0.005',        // Get @mentions
+  'scrape:recommendations': '$0.005', // Get recommended accounts
+
+  // Monitor additions (/api/ai/monitor/*)
+  'monitor:keyword': '$0.02',         // Monitor keyword mentions
+  'monitor:follower-alerts': '$0.01', // Follower change alerts
+  'monitor:track-engagement': '$0.02', // Track tweet engagement over time
 };
 
 // Pricing for browser script downloads (GET /api/scripts/src/:name, GET /api/scripts/automation/:name)

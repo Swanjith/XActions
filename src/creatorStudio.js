@@ -1,3 +1,4 @@
+// Copyright (c) 2024-2026 nich (@nichxbt). MIT License.
 // src/creatorStudio.js
 // Creator Studio and monetization tools for X/Twitter
 // by nichxbt
