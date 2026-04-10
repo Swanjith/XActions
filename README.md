@@ -40,6 +40,8 @@ Scrapers &nbsp;·&nbsp; MCP Server for AI Agents &nbsp;·&nbsp; CLI &nbsp;·&nbs
   <a href="https://x.ai"><img src="https://img.shields.io/badge/built_with-Grok_🤖-1DA1F2?style=flat-square" alt="Built with Grok"></a>
 </p>
 
+  https://xactions.app
+
 <br>
 
 [**Website**](https://xactions.app) &nbsp;·&nbsp; [**npm**](https://www.npmjs.com/package/xactions) &nbsp;·&nbsp; [**Docs**](docs/getting-started.md) &nbsp;·&nbsp; [**MCP Server**](docs/mcp-setup.md) &nbsp;·&nbsp; [**Docker**](Dockerfile) &nbsp;·&nbsp; [**API Ref**](docs/api-reference.md)
