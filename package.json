@@ -108,7 +108,8 @@
     "redis": "^4.6.11",
     "remotion": "^4.0.428",
     "socket.io": "^4.7.5",
-    "stripe": "^14.10.0"
+    "stripe": "^14.10.0",
+    "xactions": "^3.1.0"
   },
   "optionalDependencies": {
     "@atproto/api": "^0.13.35",
